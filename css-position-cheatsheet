@@ -1,0 +1,82 @@
+https://css-tricks.com/almanac/properties/p/position/
+
+
+/* CSS `position:` Cheatsheet */
+    // The `position` property can help you manipulate the location of an element
+
+
+
+/* Properties for `position:` */
+    positon: static | relative | absolute | fixed | sticky | inherit ;
+    
+    top: 0 | Xpx | X% | Xem ;
+    bottom: 0 | Xpx | X% | Xem ;;
+    left: 0 | Xpx | X% | Xem ;;
+    right: 0 | Xpx | X% | Xem ;;
+    
+    z-index: <number> ;
+
+    margin: auto ;
+
+    float: left | right ;           /* Older functionality */
+
+
+
+/* Property Descriptions for `position:` */
+    position: static | relative | absolute | fixed | sticky | inherit ;
+        /*
+        Activates the position property allowing the user to manipulate an element positon.
+            static: (default) 
+                - Element will stick to the normal page flow. 
+                - No effect from left/right/top/bottom/z-index.
+            relative: 
+                - Element's original position remains in the flow of the document, just like static 
+                - Can be moved around with the properties `top`, `bottom`, `left`, and `right`
+            absolute: 
+                - Element is removed from the flow of the document and other elements will behave as if it's not even there.
+                - Can be moved around with the properties `top`, `bottom`, `left`, and `right`
+                - If a child element has an `absolute` value then the parent element will behave as if the child doesn't exist.
+                - In order to position the child element absolutely from its parent element, we need to set the parent element itself to `relative`.
+                    - Now the properties `top`, `bottom`, `left`, and `right` will refer to the parent element. 
+            fixed: 
+                - Element is removed from the flow of the document and placed relative only to the document, not any particular parent. 
+                - Unaffected by scrolling.
+                - Functions same as `absolute`
+            sticky: 
+                - Allows you to position an element relative to anything on the document and then, once a user has scrolled past a certain point in the viewport, fix the position of the element to that location so it remains persistently displayed, like an element with a `fixed` value.
+                - 
+            inherit: 
+                - The `position` value doesn't cascade, so this can be used to specifically force it to, and `inherit` the positioning value from its parent
+        */
+
+    top: 0 | Xpx | X% | Xem ;
+    bottom: 0 | Xpx | X% | Xem ;
+    left: 0 | Xpx | X% | Xem ;
+    right: 0 | Xpx | X% | Xem ;
+        /*
+        Thse values will "nudge" the element from it's original position towards the stated direction. 
+            If value is 0, it will pull the edge of the positioned elemnt flush to that edge of the document.
+        */
+
+    z-index: <number> ;
+        /*
+        When elements are positioned to overlap, the element coming later in the HTML markup will, by default, appead on top.
+        `z-index` specifies the order of how elements are stacked on top of one another. 
+            <number> value can be positive or negative
+                Default value is zero (0).
+                The higher the <number> value, the higher in the stack an item is placed.
+        */
+
+    margin: auto ;
+        /*
+        Used to center a block element horizontally
+        Works for inline elements such as images
+        Can change images to block elements by setting the `display` property to `block`
+        */
+
+    float: left | right ;           /* Older functionality */
+        /*
+        - Floating elements are removed from the normal flow of the document and pushed to either the left or right of the containing parent element.
+        - Commonly used with the `width` property to specify how much horizontal space the floated element requires.
+        - Used to create multiple column layouts
+        */

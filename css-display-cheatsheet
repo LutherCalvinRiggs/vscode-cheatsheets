@@ -1,0 +1,58 @@
+
+https://css-tricks.com/almanac/properties/d/display/
+
+/* CSS `display` Cheatsheet */
+    // Every element on a web page is a rectangular box. 
+    // The `display` property determines just how that rectangular box behaves.
+
+
+
+/* Properties for display: */
+    display: inline | inline-block | block | run-in | flex | grid | flow-root | table-values | none ;
+
+
+
+
+/* Property Descriptions for display: */
+    display: inline | inline-block | block | run-in | none ;
+        /*
+        inline; 
+            - Default of all elements. Ex <span>, <em> or <b>
+            - When text is wrapped within an elemnt, it won't break the flow of the text.
+            - Inline elements will accept `margin` and `padding`, but will only push the other elements horizontally away as the element still sits inline. 
+            - `inline` elements will ignore `height` and `width`
+        inline-block; 
+            - Similar to inline in that it will set inline with the natural flow of text (on the "baseline").
+            - Difference is you are able to set a `width` and `height` which will be respected by the surrounding text.
+        block; 
+            - A number of elements (container elemenets such as <div>, <section> and <ul>, as well as text "block" like <p> and <h1>) are set to block by the browser.
+            - Block level elements do not sit inline but break past them.
+            - By default, without setting a `width`, they will take up as much horizontal space as they can.
+            - Once an element is set as a block, it can be centered horizontally using the `margin: auto;` property.
+        run-in; 
+            - Not particularaly common or well supported
+            - Like if you want a header element to sit inline with the text below it. Floating it won't work and neither will anything else, as you don't want the header to be a child of the text element below it, you want it to be its own indpendent element.
+        flex;
+            - Activates the Flexbox features.
+            - See css-flex-box-cheatsheet
+        grid; 
+            - Activates the Grid features.
+            - See css-grid-cheatsheet 
+        flow-root;
+            - Creates a new "block formatting context", but is otherwise like `block`.
+        none; 
+            - Visually removes the element from the page. 
+            - The element is still in the DOM but is inaccessbile and ignored by screen readers, etc.
+        table-values;
+            - Forces non-table elements to behave like table elements.
+            - Uses the following property values: 
+                `table` 
+                `table-cell` 
+                `table-column` 
+                `table-colgroup` 
+                `table-header-group` 
+                `table-row-group` 
+                `table-footer-group` 
+                `table-row` 
+                `table-caption` 
+        */

@@ -1,0 +1,68 @@
+/* start of desktop styles */
+
+@media screen and (max-width: 991px) {
+/* start of large tablet styles */
+
+}
+
+@media screen and (max-width: 767px) {
+/* start of medium tablet styles */
+
+}
+
+@media screen and (max-width: 479px) {
+/* start of phone styles */
+
+}
+
+
+/* Apple screen sizes (iPhone SE - 8plus, iPad mini - Pro, browser 1366-768) */
+/* Apply in this order to be consistent between landscape and portrait modes */
+
+        @media screen and (min-width: 1300px) {
+        /* styling for medium-large browser and large horizontal tablet */
+            h1{
+                border-color: green;
+                border-style: solid;
+            }
+        }
+
+        @media screen and (max-width: 1200px) {
+        /* styling for medium HORIZONTAL tablet */
+            h1{
+                border-color: red;
+                border-style: solid;
+            }
+        }
+
+        @media screen and (min-height: 1300px) {
+        /* styling for large tablet */
+            h1{
+                border-color: blue;
+                border-style: solid;
+            }
+        }
+        
+        @media screen and (max-width: 900px) {
+        /* styling for small-medium VERTICAL tablet */
+            h1{
+                border-color: orange;
+                border-style: solid;
+            }
+        }
+
+        @media screen and (max-width: 750px) {
+        /* styling for mobile landscape */
+            h1{
+                border-color: purple;
+                border-style: solid;
+            }
+        }
+
+        @media screen and (max-width: 479px) {
+        /* styling for mobile portrait */
+            h1{
+                border-color: yellow;
+                border-style: solid;
+            }
+        }

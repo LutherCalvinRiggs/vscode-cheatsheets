@@ -1,159 +1,303 @@
 
-container-element{
-    display: grid;                                  
-        /* Activates css grid container within an element. */
-    
-    grid-template-columns: Xpx | Xem | Xfr | auto | X%;     
-        /* REQUIRED - specifies number of columns and size for container. */
-    
-    grid-template-rows: Xpx | Xem | Xfr | auto | X%;        
-        /* To adjust row manually - specifies number of rows and size for container. */
+https://css-tricks.com/snippets/css/complete-guide-grid/
+Always wants to line things up in two directions (horizontal and vertical)
+Can intentionally overlap items
+Grids generally require media queries for resizing
 
-    grid-template-area: "header header header"
-                        "advert content content"
-                        "footer footer footer";
-        /* Used to name areas. Words for columns. "" for rows. */
+/* Grid Box Cheatsheet */
+    // Two-deminsional grid-based layout system intended for complex 2D layouts. 
+    // The source order of the grid items doesn't matter. CSS can place them in any order, which makes it super easy to rearrange you grid with media queries.
 
-    grid-template: ????;
-        /* Shorthand for `templates` (`column` `row` `area`). Uses single delaration. */
-    
 
-    grid-column-gap: Xpx | Xem | X%;
-        /* Sets gap space between columns. */
-    
-    grid-row-gap: Xpx | Xem | X%;
-        /* Sets gap space between rows. */
-    
-    grid-gap: Xpx | Xem | X%;
-        /* Shorthand for `gap`. 1 value, both. 2 value, `row` then `column` */
-    
 
-    justify-items: `stretch` | `start` | `center` | `end`;
-        /* HORIZONTALLY aligns all grid items in container. 
-        start - flush with start edge of their cell
-        end - flush with end edge of their cell
-        center - centered in their cell
-        stretch (default) - fills whole WIDTH of the cell 
+/* Basics and Terminology */
+    // The grid container is the direct parent of all the grid items. <div class="container"></div>
+    // Grid Lines make up the structure of the grid and can be either verical (column grid lines) or horizontal (row grid lines) and reside on either side of a row or column.
+    // Grid Tracks are the space between to adjacent grid lines, can be thought of as the columns or rows of the grid.
+    // Grid Area is the total space surrounded by four grid lines. A grid area may be composed of any number of grid cells.
+    // Grid Items are the children (direct descendants) of a grid container. If not a direct descendant then it is not an item of the grid.
+    // Grid Cells are the single unit spaces between two adjacent row, or column, grid lines. 
+
+
+
+/* Properties for the parent container */
+    display: grid | inline-grid;
+    
+    grid-template-columns: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
+    grid-template-rows: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
+
+    grid-template-areas: "<name> | . | none | ... " 
+                         "<name> | . | none | ... " ;
+    grid-template: none | <grid-template-rows> / <grid-template-columns> ;
+    
+    column-gap: Xpx | auto ;
+    row-gap: Xpx | auto ;
+    gap: <row-gap>  <column-gap> ;
+    
+    justify-items: start | end | center | stretch ;
+    align-items: start | end | center | stretch ;
+    place-items: <align-items> <justify-items> ;
+    
+    justify-content: start | end | center | stretch | space-around | space-between | space-evenly ;
+    align-content: start | end | center | stretch | space-around | space-between | space-evenly ;
+    place-content: <align-content> <justify-content> ;
+    
+    grid-auto-columns: Xpx | X% | Xfr ;
+    grid-auto-rows: Xpx | X% | Xfr ;
+    grid-auto-flow: row | column | row dense | column dense ;
+    
+    grid: <grid-template-rows> <grid-template-columns> <grid-template-areas> <grid-auto-rows> <grid-auto-columns> <grid-auto-flow> ;
+
+
+
+/* Properties for the child container */
+    grid-column-start: <number> | <name> | span <number> | span <name> | auto ;
+    grid-column-end: <number> | <name> | span <number> | span <name> | auto ;
+    grid-row-start: <number> | <name> | span <number> | span <name> | auto ;
+    grid-row-end: <number> | <name> | span <number> | span <name> | auto ;
+    grid-column: <start-line>/<end-line> | <start-line> / span <value> ;
+    grid-row: <start-line>/<end-line> | <start-line> / span <value> ;
+
+    grid-area: <name> | <row-start>/<column-start>/<row-end>/<column-end> ;
+
+    justify-self: start | end | center | stretch ;
+    align-self: start | end | center | stretch ;
+    place-self: start | end | center | stretch ;
+
+
+
+/* Property Descriptions for the parent container */
+    display: grid | inline-grid;
+        /*
+        Defines the element as a grid container and establishes a new grid formatting context for its contents. 
+            grid: generates a block-level grid
+            inline-grid: generates and inline-level grid
         */
-    
-    align-items: `stretch` | `start` | `center` | `end`;
-        /* VERTICALLY aligns all grid items in container. 
-        start - flush with start edge of their cell
-        end - flush with end edge of their cell
-        center - centered in their cell
-        stretch (default) - fills whole HEIGHT of the cell 
+
+    grid-template-columns: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
+    grid-templates-rows: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
+        /*
+        Defines the columns and rows of the grid with a space-separated list of values. 
+        Values represent the track size and the space between them represents the the grid line.
+            <track-size>: Xpx, X%, Xrem, Xfr 
+            <line-name>: an arbitrary name of your choosing, in brackets [first], [end], [last-line], [col4-start], [row1-end] etc
+            repeat(): used if your definition has repeating parts. repeat(<iterations>, <track-sizes> | <live-names>)
+            min-content: 
+            max-content: 
+            minmax(<size-value1>, <size-value2>): size will be no small than <size-value1> and no bigger than <size-value2>
+            auto: fraction (fr) of free space is calculated AFTER any non-flexible items
         */
 
-    place-items: `align-items value` `justify-items value`;
-        /* Shorthand for align- and justify-items. Uses same values as `justify-items` and `align-items`. If no second value, value is applied to both. */
-    
-
-    justify-content: `start` | `end` | `center` | `stretch` | `space-around` | `space-between` | `space-evently`;
-        /* Aligns grid HORIZONTALLY within the container, IF THE GRID IS SMALLER AND NON-FLEXIBLE (px). 
-        start - flush with start edge of the container
-        end - flush with end edge of the container
-        center - center of the grid container
-        stretch - resizes to fill full WIDTH
-        space-around - even space between grid items, half-sized spaces on far ends
-        space-between - even space between grid items, no space at far ends
-        space-evenly - even space between grid items, including far ends
+    grid-template-areas: "<name> | . | none | ... " 
+                         "<name> | . | none | ... " ;
+        /*
+        Defines a grid template by referencing the names of the grid areas which are specified with the grid-area property. 
+        Repeating the name of a grid area causes the content to span those cells. 
+        A period (.) signifies and empty cell. 
+        The syntax itself provides a visualization of the structure of the grid with every name representing a cell in a row and every set of " " represents a row
+            <grid-area-name>: the name chosen for a rows cell, to be specified with the child's <grid-area>
+            . : a period signifies and empty grid cell
+            none: no grid areas are defined
+        Example:    grid-template-areas:
+                        "header header header"
+                        "none content content"
+                        ". . advert"
+                        "footer footer footer" ;
+            This creates a grid that is 3 columns wide and 4 rows tall.
         */
+
+    grid-template: none | <grid-template-rows> / <grid-template-columns> ;
+        /*
+        Shorthand for setting <grid-template-rows>, <grid-template-columns>, and <grid-template-areas> in a single declaration.
+            none: sets all three properties to their initial values
+            <grid-template-columns> / <grid-template-rows>: sets columns and rows to the specified values, respectively and sets areas to `none`
         
-     align-content: `start` | `end` | `center` | `stretch` | `space-around` | `space-between` | `space-evently`;
-        /* Aligns grid VERTICALLY within the container, IF THE GRID IS SMALLER AND NON-FLEXIBLE (px). 
-        start - flush with start edge of the container
-        end - flush with end edge of the container
-        center - center of the grid container
-        stretch - resizes to fill full HEIGHT
-        space-around - even space between grid items, half-sized spaces on far ends
-        space-between - even space between grid items, no space at far ends
-        space-evenly - even space between grid items, including far ends
         */
 
-    place-content: `align-content value` `justify-content value`;
-        /* Shorthand for align- and justify-content. Uses same values as `justify-content` and `align-content`. If no second value, value is applied to both. */
-    
-    
-    grid-auto-columns: Xpx | Xem | Xfr | auto | X%;
-        /* Used to specify column widths when implicit columns are needed to fill space. */
-    
-    grid-auto-rows: Xpx | Xem | Xfr | auto | X%;
-        /* Used to specify row heights when implicit rows are needed to fill space. */
-    
-    grid-auto-flow: row | column | row dense | column dense;
-        /* Auto places items on the grid that have not been explicitly placed. 
-        row (default) - fills each row in turn, adding new rows if needed. 
-        column - fills each column in turn, adding new columns if needed. 
-        dense - attempts to fill holes earlier in the grid if smaller items come up later. 
+    column-gap: Xpx | auto ;
+    row-gap: Xpx | auto ;
+    grid-column-gap: Xpx | auto ;               /* Old syntax */
+    grid-row-gap: Xpx | auto ;                  /* Old syntax */
+        /*
+        Specifies the size of the grid lines; like setting the width of the gutters etween columns and rows.
+        Gutters are only created between the columns and rows, not on the outer edges.
+            <line-size>: a length value
         */
-    
 
-    grid: ????;
-        /* Shorthand for setting grid properties. */
-}
-
-
-
-
-item-element{
-    grid-column-start: <number> | <name> | span <number> | span <name> | auto;
-    grid-column-end: <number> | <name> | span <number> | span <name> | auto;
-    grid-row-start: <number> | <name> | span <number> | span <name> | auto;
-    grid-row-end: <number> | <name> | span <number> | span <name> | auto;
-        /* Determines grid item's location with the grid by referring to specific grid lines. 
-        <number> - grid line number. Line numbers start at 1.
-        <name> - grid line name (ie row2 | col3)
-        span <number> - item will span across provided number of grid tracks
-        span <name> - item will span until it hits the next line with the provided name
-        auto - indicates auto placement, an automatic span, or a default span of one
+    gap: <row-gap>  <column-gap> ;
+    grid-gap: <row-gap>  <column-gap> ;          /* Old syntax */
+        /*
+        Shorthand for `row-gap` and `column-gap`
+        If no <row-gap> is specified, it's set to the same value as the <column-gap>
+            <gap-size>: a length value - Xpx | auto
         */
-    
-    grid-column: X/X;
-        /* Specifies horizontal area by column grid lines. Lines start at 1. 
-        Also accepts the same values as the longhand version, including span. */
-    
-    grid-row: Y/Y;
-        /* Specifies vertical area by row grid lines. Lines start at 1. 
-        Also accepts the same values as the longhand version, including span. */
-    
-    grid-area: `area name`;
-        /* Specifies an items grid-template-area by name. CANNOT form L-shapes. */
-    
-    justify-self: `stretch` | `start` | `center` | `end`;
-        /* HORIZONTAL alignment for item contents. 
-        start - flush with start edge of the container
-        end - flush with end edge of the container
-        center - center of the grid container
-        stretch - resizes to fill full WIDTH
+
+    justify-items: start | end | center | stretch ;
+        /*
+        Aligns grid items along the inline (row) axis.
+        This value applies to all grid items in the container.
+            stretch: (default) fills the whole width of the cell
+            start: aligns items to be flush with the start edge of their cell
+            end: aligns items to be flush with the end edge of their cell
+            center: aligns items in the center of their cell
+            
         */
-    
-    align-self: `stretch` | `start` | `center` | `end`;
-        /* VERTICAL alignment for item contents. 
-        start - flush with start edge of the container
-        end - flush with end edge of the container
-        center - center of the grid container
-        stretch - resizes to fill full HEIGHT
+
+    align-items: start | end | center | stretch ; 
+        /*
+        Aligns grid items along the block (column) axis.
+        This value applies to all grid items in the container.
+            stretch: (default) fills the whole width of the cell
+            start: aligns items to be flush with the start edge of their cell
+            end: aligns items to be flush with the end edge of their cell
+            center: aligns items in the center of their cell
         */
-    
-    place-self:
-        /*  */
-}
+
+    place-items: <align-items> <justify-items> ;
+        /*
+        Sets both the <align-items> and <justify-items> properties in a single declaration.
+        The first value sets <align-items> and the second value sets <justify-items>. If the second value is omitted, the first value is assigned to both properties.
+            stretch: (default) fills the whole width of the cell
+            start: aligns items to be flush with the start edge of their cell
+            end: aligns items to be flush with the end edge of their cell
+            center: aligns items in the center of their cell
+        */        
+
+    justify-content: start | end | center | stretch | space-around | space-between | space-evenly ;
+        /*
+        Aligns the grid along the inline (row) axis.
+            start: aligns the grid to be flush with the start edge of the grid container
+            end: aligns the grid to be flush with the end edge of the grid container
+            center: aligns the grid in the center of the grid container
+            stretch: resizes the grid items to allow the grid to fill the full width of the grid container
+            space-around: places an even amount of space between each grid item, with half-sized spaces on the far ends
+            space-between: places an even amount of space between each grid item, with no space at the far ends
+            space-evenly: places an even amount of space between each grid item, including the far ends
+        */
+
+    align-content: start | end | center | stretch | space-around | space-between | space-evenly ;
+        /*
+        Aligns the grid along the block (column) axis.
+            start: aligns the grid to be flush with the start edge of the grid container
+            end: aligns the grid to be flush with the end edge of the grid container
+            center: aligns the grid in the center of the grid container
+            stretch: resizes the grid items to allow the grid to fill the full width of the grid container
+            space-around: places an even amount of space between each grid item, with half-sized spaces on the far ends
+            space-between: places an even amount of space between each grid item, with no space at the far ends
+            space-evenly: places an even amount of space between each grid item, including the far ends
+        */
+
+    place-content: <align-content> <justify-content> ;
+        /*
+        Sets both the <align-content> and the <justify-content> properties in a single declaration.
+        The first value sets <align-content> and the second value sets <justify-content>. If the second value is omitted, the first value is assigned to both properties.
+        */
+
+    grid-auto-columns: Xpx | X% | Xfr ;
+    grid-auto-rows: Xpx | X% | Xfr ;
+        /*
+        Specifies the size of any auto-generated grid tracks (aka implicit grid tracks). These are created when there are more gird items than cells in the grid or when a grid item is placed outside of the explicit grid.
+            <track-size>: Xpx | X% | Xfr
+        */
+
+    grid-auto-flow: row | column | row dense | column dense ;
+        /*
+        This property controls how the auto-placement algorithm work. 
+            row: (default) tells the auto-placement algorithm to fill in each row in turn, adding new rows as necessary 
+            column: tells the auto-placement algorithm to fill in each column in turn, adding new columns as necessary
+            dense: tells the auto-placement algorithm to attempt to fill in holes earlier in the grid if smaller items come up later. This will only change the visual order of your items and might case them to appear out of order, which is bad for accessibility.
+        */
+
+    grid: <grid-template-rows> <grid-template-columns> <grid-template-areas> <grid-auto-rows> <grid-auto-columns> <grid-auto-flow> ;
+        /*
+        Shorthand for setting all of the following properties in a single declaration (Note: you can only specify the explicit or the implicit grid properties in a single grid declaration).
+            none: sets all sub-properties to their initial values
+            <grid-template>: works the same as the <grid-template> shorthand
+            <grid-template-rows>/[auto-flow && dense?]<grid-auto-columns>?: sets <grid-template-rows> to the specified value.
+                If the `auto-flow` keyword is to the right of the slash, it sets <grid-auto-flow> to `column`.
+                If the `dense` keyword is specified additionally, the auto-placement algorithm uses a "dense" packing algorithm.
+                If <grid-auto-columns> is omitted, it is set to `auto`.
+            [auto-flow && dense?]<grid-auto-rows>?/<grid-template-columns>?: sets <grid-template-columns> to the specified value.
+                If the `auto-flow` keyword is to the left of the slash, it sets <grid-auto-flow> to `row`.
+                If the `dense` keyword is specified additionally, the auto-placement algorithm uses a "dense" packing algorithm.
+                If <grid-auto-rows> is omitted, it is set to `auto`.
+        */
 
 
 
+/* Property Descriptions for the child item */
+    grid-column-start: <number> | <name> | span <number> | span <name> | auto ;
+    grid-column-end: <number> | <name> | span <number> | span <name> | auto ;
+    grid-row-start: <number> | <name> | span <number> | span <name> | auto ;
+    grid-row-end: <number> | <name> | span <number> | span <name> | auto ;
+        /*
+        Determines a grid item's location within the grid by referring to specific grid lines. 
+        <grid-column-start>/<grid-row-start> is the line where the item begins, and <grid-column-end>/<grid-row-end> is the lin where the item ends.
+            <number>: number refering to a grid line
+            <name>: name referring to a grid line 
+            span <number>: item will span across the provided number of grid tracks
+            span <name>: item will span across until it hits the next line with the provided name
+            auto: indicates auto-placement, an automatic span, or a default span of one
+        If no value is declared an item will span 1 track by default.
+        Items can overlap each other. `z-index` can be used to control their stacking order.
+        */
 
-/* Function used to declare properties */
+    grid-column: <start-line>/<end-line> | <start-line> / span <value> ; 
+    grid-row: <start-line>/<end-line> | <start-line> / span <value> ;
+        /*
+        Shorthand for <grid-column-start> + <grid-column-end>, and <grid-row-start> + <grid-row-end>, respectively.
+            <number>: number refering to a grid line
+            <name>: name referring to a grid line 
+            span <number>: item will span across the provided number of grid tracks
+            span <name>: item will span across until it hits the next line with the provided name
+            auto: indicates auto-placement, an automatic span, or a default span of one
+        If no end line value is declared, the item will span 1 track by default.
+        */
 
-`repeat(times-repeated, size-value);`
-    /* Used with grid-template-columns and grid-template-rows. */
+    grid-area: <name> | <row-start>/<column-start>/<row-end>/<column-end> ;
+        /*
+        Gives an item a name so that it can be referenced by a template created with the <grid-template-areas> property. 
+            <name>: corresponds to the name of an area specified with the parent property <grid-template-area> 
+            <row-start>/<column-start>/<row-end>/<column-end>: can be numbers or named lines
+        */
 
-`minmax(min-size-value, max-size-value);`
-    /* Used with grid-template-columns and grid-template-rows. Specifies range for item when container changes size. Treated as one size value by `g-t-column` or `g-t-rows`. */
+    justify-self: start | end | center | stretch ;
+        /*
+        Aligns grid items along the inline (row) axis.
+        This value applies only to this specific grid item.
+            stretch: (default) fills the whole width of the cell
+            start: aligns the grid item to be flush with the start edge of the cell
+            end: aligns the grid item to be flush with the end edge of the cell
+            center: aligns the grid item in the center of the cell
+            
+        */
 
-`auto-fill`
-    /* Feature of the `repeat` function. */
-    Ex: `repeat(auto-fill, minmax(60px, 1fr));`         /* Adds rows or columns of desired size as container adjusts. */
+    align-self: start | end | center | stretch ; 
+        /*
+        Aligns grid item along the block (column) axis.
+        This value applies only to this specific grid item.
+            stretch: (default) fills the whole width of the cell
+            start: aligns the grid item to be flush with the start edge of the cell
+            end: aligns the grid item to be flush with the end edge of the cell
+            center: aligns the grid item in the center of the cell
+        */
 
-`auto-fit`
-    /* Feature of the `repeat` function. */
-    Ex: `repeat(auto-fit, minmax(60px, 1fr));`          /* Collapses empty rows/columns and stretches items to fit container. */
+    place-self: start | end | center | stretch ;
+        /*
+        Sets both the <align-self> and <justify-self> properties in a single declaration.
+            auto: "default" alignment for the layout mode
+            <align-self>/<justify-self>: the first value sets <align-self>, the second <justify-self>. If the second value is omitted, the first value is assigned to both properties. 
+        */
+
+
+
+/* The most powerful lines in Grid */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            /* This is better for small screens, once min() is better supported */
+            /* grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); */
+        grid-gap: 1rem;
+            /* This is the standardized property now, but has slightly less support */
+            /* gap: 1rem */
+    }
