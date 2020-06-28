@@ -74,8 +74,8 @@ Grids generally require media queries for resizing
             inline-grid: generates and inline-level grid
         */
 
-    grid-template-columns: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
-    grid-templates-rows: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
+    grid-template-columns: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto | auto-fit ;
+    grid-templates-rows: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto | auto-fit ;
         /*
         Defines the columns and rows of the grid with a space-separated list of values. 
         Values represent the track size and the space between them represents the the grid line.
@@ -86,6 +86,7 @@ Grids generally require media queries for resizing
             max-content: 
             minmax(<size-value1>, <size-value2>): size will be no small than <size-value1> and no bigger than <size-value2>
             auto: fraction (fr) of free space is calculated AFTER any non-flexible items
+            auto-fit: automatically adds a new column or row when a maximum width or height (respectively) is met. Used in conjunction with minmax()
         */
 
     grid-template-areas: "<name> | . | none | ... " 

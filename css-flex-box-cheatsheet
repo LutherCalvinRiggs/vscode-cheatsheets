@@ -25,9 +25,11 @@ Will automatically try to fill an entire row width
 
 /* Properties for the parent (flex container) */
     display: flex | inline-flex ;
+    
     flex-direction: row | row-reverse | column | column-reverse ; 
     flex-wrap: nowrap | wrap | wrap-reverse ;
     flex-flow: flex-direction | flex-wrap ;
+    
     justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly ;
     align-items: flex-start | flex-end | center | stretch | baseline ;
     align-content: flex-start | flex-end | center| stretch | space-between | space-around ; 
