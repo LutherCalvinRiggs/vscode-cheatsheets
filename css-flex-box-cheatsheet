@@ -26,13 +26,13 @@ Will automatically try to fill an entire row width
 /* Properties for the parent (flex container) */
     display: flex | inline-flex ;
     
-    flex-direction: row | row-reverse | column | column-reverse ; 
-    flex-wrap: nowrap | wrap | wrap-reverse ;
-    flex-flow: flex-direction | flex-wrap ;
+    - flex-direction: row | row-reverse | column | column-reverse ; 
+    - flex-wrap: nowrap | wrap | wrap-reverse ;
+    - flex-flow: flex-direction | flex-wrap ;
     
-    justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly ;
-    align-items: flex-start | flex-end | center | stretch | baseline ;
-    align-content: flex-start | flex-end | center| stretch | space-between | space-around ; 
+    - justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly ;
+    - align-items: flex-start | flex-end | center | stretch | baseline ;
+    - align-content: flex-start | flex-end | center| stretch | space-between | space-around ; 
 
 
 
@@ -77,16 +77,16 @@ Will automatically try to fill an entire row width
     justify-content: flex-start | flex-end | center | space-between | space-around | space-evenly ;
         /*
         Defines alignment along the main axis. Helps distribute space leftover from the flex. Some control over alignment when items overflow the line.
-            flex-start: (default) items are packed toward the start
-            flex-end: items are packed toward the end
-            start: items are packed toward start of the writing mode direction
-            end: items are packed toward the end of the writing mode direction
-            left: items are packed toward the left edge of the container
-            right: items are packed toward the right edge of the container
-            center: items are centered along the line
-            space-between: items are evenly distributed in the line; first on start and last on end
-            space-around: items are evenly distributed with equal space around them. 
-            space-evenly: items are distributed so that the spacing between any two items and the space to the edges is equal.  
+            - flex-start: (default) items are packed toward the start
+            - flex-end: items are packed toward the end
+            - start: items are packed toward start of the writing mode direction
+            - end: items are packed toward the end of the writing mode direction
+            - left: items are packed toward the left edge of the container
+            - right: items are packed toward the right edge of the container
+            - center: items are centered along the line
+            - space-between: items are evenly distributed in the line; first on start and last on end
+            - space-around: items are evenly distributed with equal space around them. 
+            - space-evenly: items are distributed so that the spacing between any two items and the space to the edges is equal.  
                 safe: can't push an element such that it renders off screen in such a way the content can't be scrolled to 
                 unsafe: 
         */

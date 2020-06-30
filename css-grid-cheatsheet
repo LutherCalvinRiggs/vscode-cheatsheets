@@ -21,32 +21,32 @@ Grids generally require media queries for resizing
 
 
 /* Properties for the parent container */
-    display: grid | inline-grid;
+    - display: grid | inline-grid;
     
-    grid-template-columns: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
-    grid-template-rows: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
+    - grid-template-columns: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
+    - grid-template-rows: Xpx | X% | Xrem | Xfr | repeat(<iterations>, <track-sizes> | <live-names>) | min-content | max-content | auto ;
 
-    grid-template-areas: "<name> | . | none | ... " 
-                         "<name> | . | none | ... " ;
-    grid-template: none | <grid-template-rows> / <grid-template-columns> ;
+    - grid-template-areas: "<name> | . | none | ... " 
+                           "<name> | . | none | ... " ;
+    - grid-template: none | <grid-template-rows> / <grid-template-columns> ;
     
-    column-gap: Xpx | auto ;
-    row-gap: Xpx | auto ;
-    gap: <row-gap>  <column-gap> ;
+    - column-gap: Xpx | auto ;
+    - row-gap: Xpx | auto ;
+    - gap: <row-gap>  <column-gap> ;
     
-    justify-items: start | end | center | stretch ;
-    align-items: start | end | center | stretch ;
-    place-items: <align-items> <justify-items> ;
+    - justify-items: start | end | center | stretch ;
+    - align-items: start | end | center | stretch ;
+    - place-items: <align-items> <justify-items> ;
     
-    justify-content: start | end | center | stretch | space-around | space-between | space-evenly ;
-    align-content: start | end | center | stretch | space-around | space-between | space-evenly ;
+    - justify-content: start | end | center | stretch | space-around | space-between | space-evenly ;
+    - align-content: start | end | center | stretch | space-around | space-between | space-evenly ;
     place-content: <align-content> <justify-content> ;
     
-    grid-auto-columns: Xpx | X% | Xfr ;
-    grid-auto-rows: Xpx | X% | Xfr ;
-    grid-auto-flow: row | column | row dense | column dense ;
+    - grid-auto-columns: Xpx | X% | Xfr ;
+    - grid-auto-rows: Xpx | X% | Xfr ;
+    - grid-auto-flow: row | column | row dense | column dense ;
     
-    grid: <grid-template-rows> <grid-template-columns> <grid-template-areas> <grid-auto-rows> <grid-auto-columns> <grid-auto-flow> ;
+    - grid: <grid-template-rows> <grid-template-columns> <grid-template-areas> <grid-auto-rows> <grid-auto-columns> <grid-auto-flow> ;
 
 
 
