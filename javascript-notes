@@ -1,0 +1,707 @@
+/* JavaScript Numbers */
+    - No different number types
+    - JS uses the + operator for both addition and concatenation.
+        - Numbers are added. Stings are concatenated.
+        - Adding a number and a string results in a string concatenation.
+
+
+/* Numeric Strings */ 
+    - JS will try to convert strings to numbers in all numeric operations:
+        var x = "100";
+        var y = "10";
+        var z = x / y;      // z will be 10
+    - Division, multiplication and subtraction will all work in the above numberic calculation. However, addition (+) will result in a string.
+
+
+/* NaN (Not a Number) */
+    - NaN (Not a Number): a reserved word indicating that a number is not a legal number. Trying to do an arithmetic with a non-numeric string will result in NaN.
+        var x = 100 / "Apple";      // x will be NaN
+    - However, if the string contains a numberic value, the result will be a number.
+        var x = 100 / "10";         // x will be 10
+    _ You can use the global JS function `isNaN()` to find out if a value is a number:
+        var x = 100 / "Apple";
+        isNaN(x);                   // retunrs true because x is Not a Number
+    - If you use NaN in a mathematical operation, the result will also be NaN:
+            var x = NaN;
+            var y = 5;
+            var z = x + y;              // z will be NaN
+        - Or a concatenation:
+            var x = NaN;
+            var y = "5";
+            var z = x + y;              // z will be NaN5
+    - NaN is a number 
+        typeof NaN;                     // returns "number"
+
+
+/* Infinity */
+    - `Infinity` (or `-Infinity`) is the value JS will return if you calculate a number outside the largest possible number.
+        var myNumber = 2;
+        while (myNumber != Infinity) {      // Execute until Infinity
+            myNumber = myNumber * myNumber;
+        }
+    - Division by 0 (zero) also generates Infinity
+        var x = 2 /0;           // x will be Infinity
+        var y = -2 / 0;         // x will be -Infinity
+    - `Infinity` is a number: `typeof Infinity` returns `number`.
+        typeof Infinity;        // returns "number"
+
+
+/* Hexadecimal */
+    - JS interprets numeric constants as hexadecimal if they are preceded by 0x.
+        var x = 0xFF;           // x will be 255
+    - NEVER WRITE A NUMBER WITH A LEADING ZERO (LIKE 07). SOME JS VERSIONS INTERPRET NUMBERS AS OCTAL IF THEY ARE WRITTEN WITH A LEADING ZERO.
+    - By default, JS desplays numbers as 'base 10' decimals, but you can use the `toString()` method to output numbers from 'base 2' to 'base 36'. Hexadecimal is 'base 16', decimal is 'base 10', octal is 'base 8' and binary is 'base 2'.
+        var myNumber = 32;
+        myNumber.toString(10);  // returns 32
+        myNumber.toString(32);  // returns 10
+        myNumber.toString(16);  // returns 20
+        myNumber.toString(8);   // returns 40
+        myNumber.toString(2);   // returns 100000
+
+
+/* Numbers Can be Objects */
+    - Normally JS numbers are primitive values created from literals
+        var x = 123;                    // typeof x returns number
+    - Numbers can also be defined as objects with the keyword `new`:
+        var y = new Number(123);        // typeof y returns objects
+    - DO NOT CREATE NUMBER OBJECTS. IT SLOWS DOWN EXECUTION SPEED.
+        - The `new` keyword complicates the code. This can reproduce some unexpected results.
+    - When using the `==` operator, equal numbers are equal:
+        var x = 500;
+        var y = new Number(500);
+            // (x == y) is true because x and y have equal values
+    - When using the === operator, equal numbers are not equal, beause the === operator EXPECTS EQUALITY IN BOTH TYPE AND VALUE.
+        var x = 500;
+        var y = new Number(500);
+            // (x === y) is false because x and y have different types
+    - Objects cannot be compared
+        var x = new Number(500);
+        var y = new Number(500);
+            // (x == y) is false because objects cannot be compared
+        - COMPARING TWO JS OBJECTS WILL ALWAYS RETURN `false`
+
+
+/* JS Arithmetic Operators */
+    - Arithmetic operators perform arithmetic on numbers (literals or variables).
+        Operators           Description
+            +                   addition
+            -                   subtraction
+            *                   multiplication
+            **                  exponentation
+            /                   Division
+            %                   modulus (remainder)
+            ++                  increment
+            --                  decrement
+
+
+/* Arithmetic operations */
+    - A typical arithmetic operation operates on two numbers
+        - The two numbers can be literals:
+            var x = 100 + 50;
+        - Or variables:
+            var x = a + b;
+        - Or expressions:
+            var x = (100 + 50) * a;
+    
+
+/* Operators and Operands */
+    - The numbers (in an arithmetic operation) are call operands.
+    - The operation (to be performed betwee the two operands) is defined by an operator.
+    - Adding
+        The addition operator (+) add numbers:
+            var x = 5;
+            var y = 2;
+            var z = x + y;
+    - Subtracting
+        The subtration operator (-) subtracts numbers:
+            var x = 5;
+            var y = 2;
+            var z = x - y;
+    - Multiplying
+        The multiplication operator (*) multiplies numbers:
+            var x = 5;
+            var y = 2;
+            var z = x * y;
+    - Dividing
+        The division operator (/) divides numbers:
+            var x = 5;
+            var y = 2;
+            var z = x / y;
+    - Remainder
+        The modulus operator (%) returns the division remainder:
+            var x = 5;
+            var y = 2;
+            var z = x % y;
+        In arithmetic, the division of two integers produces a quotient and a remainder.
+        In mathematics, the result of the modulo operation is the remainder of an arithmetic division.
+    - Incrementing
+        The increment operator (++) increments numbers:
+            var x = 5;
+            x++;
+            var z = x;
+    - Decrementing
+        The decrement operator (--) decrements numbers:
+            var x = 5;
+            x--;
+            var z = x;
+    - Exponentiation
+        The exponentiation operator (**) raises the first operand to the power of the second operand:
+            var x = 5;
+            var z = x ** 2;     // result is 25
+        x ** y produces the same result as `Math.pow(x,y)`:
+            var x = 5;
+            var z = Math.pow(x,2);     // result is 25
+
+    - Terms: "unary", "binary"
+        An operator is 'unary' if it has a single operand (x = 3). For example, the unary negation `-` reverses the sign of a number:
+            let x = 1;
+            x = -x;
+            alert(x);       // -1, unary negation was applied
+        An operator is 'binary' if it has two operands (x=1, y=3). The same `-` exists in binary form as well:
+            let x = 1, y = 3;
+            alert( y-x );   // 2, binary minus subtracts values
+        - In the examples above, we have two different operators that share the same symbol: the negation operator, a unary operator that reverses the sign, and the subtraction operator, a binary operator that subtracts one number from another.
+
+    - Numberic conversion, unary +
+        The plus (+) exists in two forms: the binary form and the unary form.
+            The unary plus or, aka the + operator, applied to a single value doesn't do anything to numbers. But if the operand is not a number, the unary plus converts it into a number.
+                // No effect on numbers
+                    let x = 1;
+                    alert( +x );        // 1
+
+                    let y = -2;
+                    alert( +y );        // -2
+
+                // Converts non-numbers
+                    alert( +true );     // 1
+                    alert( +"" );       // 0
+                        // This does the same thing as `Number(...)`, but is shorter.
+            
+                // Example conversion using input values from a <form>
+                    let apples = "2";
+                    let oranges = "3";
+
+                    // both values converted to numbers before the binary plus
+                    alert( +apples + +oranges );   // 5
+
+                    // the longer variant
+                    alert( Number(apples) + Number(oranges) );  //5
+            Unary pluses are applied first, they convert strings to numbers, and then the binary plus sums them up.
+        
+    - Chaining assignments
+        Chained assignments evaluate from RIGHT to LEFT. 
+            let a, b, c;
+
+            a = b = c = 2 + 2;
+
+            alert( a ); // 4
+            alert( b ); // 4
+            alert( c ); // 4
+                // First, the rightmost expression (2 + 2) is evaluated and then assigned to the variables on the left: c, b and a (in that order). At the end, all the variables share a single value.
+                // For the purposes of readability it's better to split such code into a few lines.
+    
+    - Modify-in-place
+        Applying an operator to a variable and storing the new result in the same variable.
+            let n = 2;
+            n = n + 5;
+            n = n * 2;      // n = 14
+        Notation can be shortend using the operators += and *=
+            let n = 2;
+            n += 5;
+            n *= 2;         // n = 14
+        Such operators have the same precedence as the normal assignment, so they run after most other calculations.
+            let n = 2;
+            n *= 3 + 5;
+            alert( n );     // 16 (right part evaluated first, same as n *= 8) 
+        
+    - Increment/decrement
+        CAN ONLY BE APPLIED TO VARIABLES!
+        The operators ++ and -- can be placed either before or after a variable.
+            When the operator goes after the variable, it is in "postfix form": a++
+            When the operator goes in front of the variable, it is in "prefix form": ++a
+                The prefix form returns the new value while the postfix form returns the old value (prior to increment/decrement).
+                    // Prefix example
+                        let counter = 1;
+                        let a = ++counter:      // (*)
+                        alert( a ):             // 2
+                        // In the line (*), the prefix form `++counter` increments `counter` and returns the new value, 2. So, the `alert` shows `2`.
+                    // Postfix example
+                        let counter = 1;
+                        let a = counter++;      // (*) changed ++counter to counter++
+                        alert( a );             // 1
+                        // In the line (*); the postfix form `counter++` also increments `counter` but returns the old value (prior to increment). So the `alert` shows 1.
+        If the result of increment/decrement is not used, there is no difference in which form to use.
+            To increase the value and immediately use the result of the opeartor, use the PREFIX form.
+            To increase the value but use the previous value, use the POSTFIX form.
+        The operators ++/-- can be used inside expressions as well. Thier precedence is higher than most other arithmetical operations.
+
+    - Bitwise operators
+        Bitwise operators treat arguments as 32-bit integer numbers and work on the level of their binary representation.
+        These operators are not JS-specific. They are supported in most programming languages.
+            AND ( & )
+            OR ( | )
+            XOR ( ^ )
+            NOT ( ~ )
+            LEFT SHIFT ( << )
+            RIGHT SHIFT ( >> )
+            ZERO-FILL RIGHT SHIFT ( >>> )
+        These operators are used very rarely, when we need to fiddle with numbers on the very lowest (bitwise) level. 
+            Web development has little use for bitwise operators.
+            In some special areas, such as cryptography, they are useful.
+
+    - Comma 
+        One of the rarest and most unusual operators. Sometimes, used to write shorter code.
+            Allows us to evaluate several expressions, dividing them with a comma (,). 
+            Each of them is evaluated but only the result of the last one is returned.
+                let a = (1+2, 3+4);
+                alert ( a );        // 7 (the result of 3+4)
+        Comma operators have very low precedence, lower than =, so parentheses are important in the above example.
+            Without them: `a = 1+2, 3+4;` evaluates + first, summing the numbers into `a = 3, 7`, then the assignment operator = assigns `a = 3`, and the rest is ignored. 
+                Equivalent to `(a = 1 + 2), 3 + 4;`
+        Commas are commonly used in more complex constructs to put seeral actions in one line.
+            for (a = 1, b = 3, c = a * b; a < 10; a++) {
+                ...
+            }
+            // three operations in one line
+        Such tricks are used in many JS frameworks. That's why we're mentioning them, but usually they don't improve code readability so we should think well before using them.
+
+
+/* Operaotr Precedence */
+    - Operator Precedence
+        Operator precedence describes the order in which operations are performed in an arithmetic expression.
+        Multiplication (*) and division (/) have higher precedence than addition (+) and subtraction (-).
+        The precedence can be changed by using parentheses.
+        When many operations have the same precedence (like addition and subtraction), there are computed fom left to right.
+
+
+/* JavaScript Operator Precedence Values */
+    Value           Operator          Description                                        Example
+        20              ( )             Expression grouping                                 (3+4)
+
+        19              .               Member                                              person.name
+        19              []              Member                                              person["name"]
+        19              ()              Function call                                       myFunction()
+        19              new             Create                                              new Date()
+
+        17              ++              Postfix Increment                                   i++
+        17              --              Postfix Decrement                                   i--
+
+        16              ++              Prefix Increment                                    ++i
+        16              --              Prefix Decrement                                    --i
+        16              !               Logical not                                         !(x==y)
+        16              typeof          Type                                                typeof x
+
+        15              **              Exponentiation (ES2016 or higher)                   10 ** 2
+
+        14              *               Multiplication                                      10 * 5
+        14              /               Division                                            10 / 5
+        14              %               Division Remainder                                  10 % 5
+
+        13              +               Addition                                            10 + 5
+        13              -               Subtraction                                         10 - 5
+
+        12              <<              Shift Left                                          x << 2
+        12              >>              Shift Right                                         x >> 2
+        12              >>>             Shift Right (unsigned)                              x >>> 2
+
+        11              <               Less than                                           x < y
+        11              <=              Less than or equal                                  x <= y
+        11              >               Greater than                                        x > y
+        11              >=              Greater than or equal                               x >= y
+        11              in              Property in Object  (ES2016 or higher)              "PI" in Math 
+        11              instanceof      Instance of Object  (ES2016 or higher)              instanceof Array
+
+        10              ==              Equal                                               x == y
+        10              ===             Strict equal                                        x === y 
+        10              !=              Unequal                                             x != y
+        10              !==             Strict unequal                                      x !== y
+
+        9               &               Bitwise AND                                         x & y
+        8               ^               Bitwise XOR                                         x ^ y
+        7               |               Bitwise OR                                          x | y
+        6               &&              Logical AND                                         x && y 
+        5               ||              Logical OR                                          x || y 
+        4               ?:              Condition                                           ? "Yes : "No"
+
+        3               +=              Assignment (modify-in-place)                        x += y
+        3               /=              Assignment (modify-in-place)                        x /= y 
+        3               -=              Assignment (modify-in-place)                        x -= y
+        3               *=              Assignment (modify-in-place)                        x *= y 
+        3               %=              Assignment (modify-in-place)                        x %= y 
+        3               <<=             Assignment                                          x <<= y
+        3               >>=             Assignment                                          x >>= y
+        3               >>>=            Assignment                                          x >>>= y 
+        3               &=              Assignment                                          x &= y
+        3               ^=              Assignment                                          x ^= y
+        3               |=              Assignment                                          x |= y 
+
+        2               yield           Pause Function (ES2016 or higher)                   yield x 
+
+        1               ,               Comma                                               5, 6
+
+    - EXPRESSION IN PARENTHESES ARE FULLY COMPUTED BEFORE THE VALUE IS USED IN THE REST OF THE EXPRESSION.
+    
+
+/* JAVASCRIPT VARIABLES */
+    - A "named storage" for data. Can be used to store goodies, visitors, and other data.
+    - `let` keyword  
+        Used to create a variable in JS
+            let message;
+        Now, we can put some data into it by using the assignment operator =:
+            let message;
+            message = 'Hello";      // store the string
+        The string is now saved into the memory area associated with the variable and can be accessed using the variable name:
+            let message:
+            message = 'Hello!';
+            alert( message );       // shows the variable concatenated
+        The variable declaration and assignment can be combined into a single line:
+            let message = 'Hello!';
+            alert ( message );
+        Multiple variables can be declared in one line (separated by a comma):
+            let user = 'John', age = 25, message = 'Hello';
+                NOT RECOMMENDED - for the sake of better readability, use a single line per variable 
+                    let user = 'John',
+                        age = 25,
+                        message = 'Hello';
+        `let` provides block-scoping that is absent in the fucntion-scoped `var`
+            Example     var callbacks = [];
+                        (function() {
+                            for (let i = 0; i < 5; i++) {
+                                callbacks.push( function() { return i; } );
+                            }
+                        })();
+                        console.log(callbacks.map( function(cb) { reutnr cb(); } ));
+            `let` stats in the block scope of the loop, causing a separate instance of i for each iteration.
+            `var` would be hoisted(?) to the top of the function's scope 
+
+    - `var` keyword
+        In older scripts, you may also find the keyword `var`, used to declare variables
+            var message = 'Hello';
+        `var` is still useful in situations where you want to maintain function scope instead of block scope 
+        
+    - Changing variable values 
+        Variable values can be changed as many times as we want:
+                let message;
+                message = 'Hello!';
+                messgae = 'World!';
+                alert( message );       // prints 'World!'
+            When the value is changed, the old data is removed from the variable.
+
+    - Copying data between variables
+        Data can be copied from one variable to another   
+            let hello = 'Hello world!';
+            let message;
+            message = hello;            // copy 'Hello world' from hello into message
+            // now two variables hod the same data
+            alert( hello );             // Hello world!
+            alert( message );           // Hello world!
+
+    - Declaring variables twice
+        DECLARING TWICE TRIGGERS AND ERROR
+            A variable should be declared only once
+            A repeated declaration of the same variable is an error 
+                let message = "this";
+                let message = "that";   // SyntaxError: 'message' has already been declared
+            Once a variable is declared, it should be referred to WITHOUT the keyword `let`
+
+    - Variable naming
+        There are two limitations on variable names in JS:
+            1) The name must contain only letters, digits, or the symbols $ and _
+            2) The first character must NOT be a digit
+                let userName;
+                let test123;
+        When a name contains multiple words, camelCase is commonly used. 
+            That is, words go one after another, each word except the first starting with a capital letter. 
+            Ex: lutherCalvinRiggs
+        The dollar sign ($) and the underscore (_) can also be used in names. They are regular symbols, just like letters, without any special meaning.
+            let $ = 1;
+            let _ = 2;
+            alert( $ + _ );     // 3
+        Examples of incorrect variable names:
+            let 1a;             // cannot start with a digit
+            let my-name;        // hyphens (-) aren't allowed in the name
+        Case matters: variables named `apple` and `ApplE` are two different variables
+        Non-Latin letters are allowed, but not recommended   
+            It is possible to use any language, including cyrillic letters or even hieroglyphs, however, there is an international convention to use English in variable names.
+            If your code has a long life, people from other countries may need to read it in the future.
+        Reserved names  
+            This is a list of reserved words which CANNOT be used as variable names because they are used by the language itself:
+                let
+                class
+                return
+                function 
+        
+    - `use strict`
+        Normally, we need to define a variable before using it. But in the old times, it was technically possible to create a variable by a mere assignment of the value without using `let`. This still works now if we don't put `use strict` in our scripts to maintain compatibility with old scripts.
+            // note: no "use strict" in this example
+            num = 5;            // the variable "num" is created if it didn't exist
+            alert( num );       // 5
+            
+            "use strict";
+            num = 5;            // error: num is not defined 
+    
+    - Constants
+        To declare a constant (unchanging) variable, use `const` instead of `let`:
+            const myBirthday = '18.04.1982';
+        Variables decared using `const` CANNOT by reassigned. An attempt to do so would cause an error:
+            const myBirthday = '18.04.1982';
+            myBirthday = '01.01.2001':          // error, can't reassign the constant!
+                `const` will throw an error is an attempt is made to change its value after it has been declared, a useful feature to prevent accidental mutation.
+        When a programmer is use that a variable will never change, they can declare it with `const` to guarantee and clearly communicate that fact to everyone
+    - Uppercase constants 
+        There is a widespread practice to use constants as aliases for difficult-to-remember values that are known prior to execution. 
+        Such constants are named using capital letters and uncerscores
+            Example of constants for collors in so-called "web" (hexadecimal) format:
+                const COLOR_RED = "#F00"
+                const COLOR_GREEN = "#0F0"
+                const COLOR_BLUE = "#00F"
+                const COLOR_ORANGE = "#FF7F00";
+                // ...when we need to pick a color 
+                let color = COLOR_ORANGE;
+                alert( color );                     // #FF7F00
+            Benefits:
+                COLOR_ORANGE is much easier to remember than #FF7F00 
+                It is much easier to mistype #FF7F00 than COLOR_ORANGE
+                When reading the code, COLOR_ORANGE is much more meaningful than #FF7F00
+            USE CAPITALS WHEN THE CONSTANTS ARE KNOWN PRIOR TO EXECUTION AND THERE ARE CONSTANTS THAT ARE CALCULATED IN RUN-TIME, DURING THE EXECUTION, BUT DO NOT CHANGE AFTER THEIR INITIAL ASSIGNMENT.
+                In other words, capital-named constants are only used as aliases for "hard-coded" values 
+    
+    - Name things right
+        A variable name should have a clean, obvious meaning, describing the data that it stores
+            One of the things that separates the beginners from the experienced developers
+            In a real project, most fo the time is spent modifying and extending an existing code base rather than writing something completely separate from scratch. When we return to some code after doing something else for a while, it's much easier to find information that is well-labeled, or uses good variable names.
+            Some variable naming rules are:
+                Use human-readable names like `userName` or `shoppingCart`
+                Stay way from abbreviations or short names like `a, b, c`, unless you really know what you're doing
+                Make names maximally descriptive and concise. Names like `data` and `value` are bad because they are too broad. Only use broad names if the context of the code makes it exceptionally obvious which data or value the variable is referencing.
+                Agree on terms within your team and in your own mind. If a site visitor is called a "user" then we should name related variables `currentUser` or `newUser` instead of `currentVisitor` or `newManInTown`
+
+    - Reuse or create
+        Reusing variables is like having boxes into which people throw different things without changing their stickers. What's in the box now? Who knows? 
+        This may save a little bit on variable declaration, but will lose ten times more on debugging
+        EXTRA VARIABLES ARE GOOD 
+            Modern JS minifiers and browsers optimize code well enough, so it won't create performance issues. 
+            Using different variables for different values can even help the engine optimize your code.
+    
+    - Variables should be named in a way that allows us to easily understand what's inside them.
+
+
+/* Data Types */
+    - A value in JS is always of a certain type. For example, a string or a number.
+    - There are eight basic data types in JS 
+    - We can put any type in a variable. For example, a variable can at one moment be a string and then store a number.
+        // no error
+        let message = "hello";
+        message = 123456;
+    - Programming languages that allow such things, such as JS, are called "dynamically typed", meaning that there exists data types, but variables are not bound to any of them.
+
+    - Number
+            let n = 123;
+            n = 12.345;
+        The number type represents both integer and floating point numbers.
+        Beyond regular numbers, there are so-called "special numberic values" which also belong to this data type: 
+            `Infinity` 
+                Represents the mathematical Infinity and is a special value that's greater than any number
+                We can get it as a result of division by zero 
+                    alert( 1 / 0 );        // Infinity
+                Or just reference it directly
+                    alert( Infinity );      // Infinity
+            `-Infinity` 
+            `NaN`
+                Represents a computational error. It is a result of an incorrect or an undefined mathematical operation, for instance:
+                    alert( "not a number" / 2 );        // NaN, such division is erroneous
+                NaN is sticky. Any further operation on NaN reutnrs NaN:
+                    alert( "not a number" / 2 + 5 );    // NaN 
+        Special numberic values formally belong to the "number" type. Of course they are not numbers in the common sense of this word.
+            Doing maths is "safe" in JS. We can do anything: divide by zero, treat non-nmeric strings as numbers, etc.
+            The script will never stop with a fatal error ("die"). At worst, we'll get NaN as the result.
+
+    -BigInt
+        In JS, the "number" type cannot represent integer values larger than (2^53-1), (or 9007199254740991), or less than -(-2^53-1) for negatives. It's a technical limitation caused by their internal representation.
+        For most purposes that's quite enough, but sometimes we need really big numbers, eg for cryptography or microsecond-precision timestamps.
+        `BigInt` type was recently added to the language to represent integers of arbitrary length.
+        A `BigInt` value is created by appending `n` to the end of an integer:
+            // the "n" at the end means it's a BigInt
+            const bigInt = 1234567890123456789012345678901234567890n;
+        Right now `BigInt` is supported in Firefox/Chrome/Edge, but not in Safari/IE. (7.1.2020)
+
+    - String
+        A STRING IN JS MUST BE SURROUNDED BY QUOTES
+        In JS, there are 3 types of quotes:
+            Double and single quotes are "simple" quotes. There's practically no difference between them in JS.
+                Double quotes: "Hello"
+                    let str = "Hello";
+                Single quotes: 'Hello'
+                    let str2 = 'Single quotes are ok too';
+            Backticks are "extended functionality" quotes. They allow us to embed variables and expressions into a string by wrapping them in ${_}. The expression inside ${...} is evaluated and the result becomes a part of the string. Anything can be put into the ${...}
+                Backticks: `Hello`
+                    let phrase = `can embed another ${str}`;
+
+                    let name = "John";
+                    // embed a variable
+                    alert( `Hello, ${name}!` );         // Hello, John!
+                    // embed an expression
+                    alert( `the result is ${1+2}` );    // the result is 3
+        There is no 'character' type.
+            In som languages, there is a special "character" type for a single character. For example, in the C language and in Java it is called "char".
+            In JS, there is no such type. There's only one type: `string`. A string may consist of only one character or many of them.
+    
+    - Boolean (logical type)
+        The boolean type has only two values: `true` and `false`
+        This type is commonly used to store yes/no values: `true` means "yes, correct", and `false` means "no, incorrect".
+            let nameFieldChecked = true;        // yes, name field is checked 
+            let ageFieldChecked = false;        // no, age field is not checked 
+        Boolean values also come as a result of comparisons:
+            let isGreater = 4 > 1;
+            alert( isGreater );         // true (the comparison result is "yes")
+        
+    - The "null" value 
+        The special `null` value does not belong to any of the types described above.
+        It forms a separate type of its own which contains only the `null` value:
+            let age = null;
+            // This code states that `age` is unknown 
+        In JS, `null` is not a "reference to a non-existing object" or a "null pointer" like in some other languages. It's just a special value which represents "nothing", "empty" or "value unknown".
+    
+    - The "undefined" value 
+        The special value `undefined` also stands apart. It makes a type of its own, just like `null`.
+        The meaning of `undefined` is "value is not assigned"
+        If a variable is declared, but not assigned, then its value is `undefined`:
+            let age;
+            alert( age );       // shows "undefined"
+        Technically, it is possible to explicitly assign `undefined` to a variable:
+                let age = 100;
+                // change the value to undefined 
+                age = undefined;
+                alert( age );       // "undefined"
+            ...But this is not recommended. 
+        Normally, one uses `null` to assign an "empty" or "unknown" value to a variable, while `undefined` is reserved as a default initial value for unassigned things. 
+
+    - Objects and Symbols
+        The `object` type is special.
+            All other types are called "primitive" because their values can contain only a single thing (be it a string or a number or whatever). In contrast, objects are used to store collections of data and more complex entities.
+        The `symbol` type is used to create unique identifiers for objects.
+
+    - The typeof operator 
+        The `typeof` operator returns the type of the argument. It's useful when we want to process values of different types differently or just want to do a quick check. 
+        It supports to forms of syntax (meaning it works with parentheses or without them):
+            1) As an operator: `typeof x`
+            2) as a function: `typeof(x)`
+        The call to `typeof x` returns a string with a type name:
+            typeof undefines            // "undefined"
+            typeof 0                    // "number"
+            typeof 10n                  // "bigint"
+            typeof true                 // "boolean"
+            typeof "foo"                // "string"
+            typeof Symbol("id")         // "symbol"
+            typeof Math                 // "object"
+                // `Math` is a built-in object that provides mathematical operations.
+            typeof null                 // "object"
+                // This is an officially recognized error in `typeof` behavior, coming from the early days of JS and kept for compatibility. Definitely, `null` is not an object. It is a special value with a separate type of its own.
+            typeof alert                // "function"
+            
+
+/* Strings */
+    - A string is simply a piece of text. 
+    - String methods help you to work with strings.
+
+    - String Methods and Properties
+        Primitive values, like "John Doe", cannot have properties or methods (because they are not objects).
+        Yet, JS treats primitive values as objects when executing methods and properties.
+
+    - String length
+        The `length` property returns the length of a string 
+            let txt = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let sln = txt.length;           // 26
+    
+    - Finding a string in a string
+        The `indexOf()` method returns the index of (the position of) the `first` occurrence of a specified text in a string:
+            let str = "Please locate where 'locate' occurs!";
+            let pos = str.indexOf('locate");        // 7
+        JS counts positions from zero (0)
+        The `lastIndexOf()` method returns the index of the last occurence of a specified text in a string.
+            let str = "Please locate where 'locate' occurs!";
+            let pos = str.lastIndexOf("locate");    // 21
+        Both `indexOf()` and `lastIndexOf()` return -1 if the text is not found.
+            let str = "Please locate where 'locate' occurs!";
+            let pos = str.lastIndexOf("John");    // -1 
+        Both methods accept a second parameter as the starting position for the search:
+            let str = "Please locate where 'locate' occurs!";
+            let pos = str.indexOf('locate", 15);    // 21
+        The `lastIndexOf()` method searches backwards (from the end to the beginning), meaning: if the second parameter is `15`, the search starts at position 15, and searches to the beginning of the string.
+            let str = "Please locate where 'locate' occurs!";
+            let pos = str.lastIndexOf("locate", 15);    // 7
+
+    - Searching for a String in a String 
+        The `search()` method searches a string for a specified value and returns the position of the match:
+            let str = "Please locate where 'locate' occurs!";
+            let pos = str.search("locate");         // 7
+        
+    - The indexOf() and search() method are NOT equal
+        The search() method cannot take a second start position argument.
+        The indexOf() method cannot take powerful search values (regular expressions).
+
+    - Extracting string parts 
+        There are 3 methods for extracting a part of a string:
+
+            The slice() Method: `slice(start, end)`
+                `slice()` extracts a part of a string and returns the extracted part in a new string.
+                This method takes two paramenters:
+                    The start position 
+                    The end position (end not included)
+                        let str = "Apple, Banana, Kiwi";
+                        let res = str.slice(7, 13);         // Banana
+                    If a parameter is negative, the position is counted from the end of the string.
+                        let str = "Apple, Banana, Kiwi";
+                        let res = str.slice(-12, -6);       // Banana
+                    If you omit the second parameter, the method will slice out the rest of the string:
+                        let str = "Apple, Banana, Kiwi";
+                        let res = str.slice(7);             // Banana, Kiwi 
+
+                        let str = "Apple, Banana, Kiwi";
+                        let res = str.slice(-12);           // Banana, Kiwi 
+
+            The substring() Method: `substring(start,end)`
+                Similar to slice(), however, substring() cannot accept negative indexes.
+                    let str = "Apple, Banana, Kiwi";
+                    let res = str.substring(7, 13);             // Banana
+                If you omit the second parameter, substring() will slice out the rest of the string.
+
+            The substr() Method: `substr(start, length)`
+                Similar to slice(), however, the second parameter specifies the length of the extracted part.
+                    let str = "Apple, Banana, Kiwi";
+                    let res = str.slice(7, 6);             // Banana
+                If you omit the second parameter, substr() will slice out the rest of the string.
+                    let str = "Apple, Banana, Kiwi";
+                    let res = str.slice(7);             // Banana, Kiwi 
+                If the first parameter is negative, the position counts from the end of the string.
+                    let str = "Apple, Banana, Kiwi";
+                    let res = str.slice(-4);             // Kiwi 
+
+    - Replacing string content 
+        The replace() method replaces a specified value with another value in a string:
+            str = "Please visit Microsoft!";
+            let n = str.replace("Microsoft", "W3Schools");      // Please visit W3Schools!
+        
+        THE replace() METHOD DOES NOT CHANGE THE STRING IT IS CALLED ON. IT RETURNS A NEW STRING.
+        
+        By default, the replace() method replaces ONLY THE FIRST MATCH.
+            str = "Please visit Microsoft and Microsoft!";
+            let n = str.replace("Microsoft", "W3Schools");      // Please visit W3Schools and Microsoft!
+        
+        By default, the replace() method is CASE SENSITIVE
+            str = "Please visit Microsoft!";
+            let n = str.replace("MICROSOFT", "W3Schools");      // Please visit Microsoft!
+
+        To replace case insensitive, use a regular expression with an `/i` flag (insensitive):
+            str = "Please visit Microsoft!";
+            let n = str.replace(/MICROSOFT/i, "W3Schools");     // Please visit W3Schools!
+                NOTE THAT REGULAR EXPRESSIONS ARE WRITTEN WITHOUT QUOTES
+
+        To replace ALL MATCHES, use a regular expression with a `/g` flag (global match):
+            str = "Please visit Microsoft and Microsoft!";
+        let n = str.replace(/MICROSOFT/g, "W3Schools");         // Please visit W3Schools and W3Schools!
+
+    - Converting to Upper and Lower Case
+        
+
+
