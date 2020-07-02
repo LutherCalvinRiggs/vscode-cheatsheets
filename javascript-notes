@@ -5,12 +5,14 @@
         - Adding a number and a string results in a string concatenation.
 
 
+
 /* Numeric Strings */ 
     - JS will try to convert strings to numbers in all numeric operations:
         var x = "100";
         var y = "10";
         var z = x / y;      // z will be 10
     - Division, multiplication and subtraction will all work in the above numberic calculation. However, addition (+) will result in a string.
+
 
 
 /* NaN (Not a Number) */
@@ -33,6 +35,7 @@
         typeof NaN;                     // returns "number"
 
 
+
 /* Infinity */
     - `Infinity` (or `-Infinity`) is the value JS will return if you calculate a number outside the largest possible number.
         var myNumber = 2;
@@ -46,6 +49,7 @@
         typeof Infinity;        // returns "number"
 
 
+
 /* Hexadecimal */
     - JS interprets numeric constants as hexadecimal if they are preceded by 0x.
         var x = 0xFF;           // x will be 255
@@ -57,6 +61,7 @@
         myNumber.toString(16);  // returns 20
         myNumber.toString(8);   // returns 40
         myNumber.toString(2);   // returns 100000
+
 
 
 /* Numbers Can be Objects */
@@ -81,6 +86,7 @@
         - COMPARING TWO JS OBJECTS WILL ALWAYS RETURN `false`
 
 
+
 /* JS Arithmetic Operators */
     - Arithmetic operators perform arithmetic on numbers (literals or variables).
         Operators           Description
@@ -94,6 +100,7 @@
             --                  decrement
 
 
+
 /* Arithmetic operations */
     - A typical arithmetic operation operates on two numbers
         - The two numbers can be literals:
@@ -103,6 +110,7 @@
         - Or expressions:
             var x = (100 + 50) * a;
     
+
 
 /* Operators and Operands */
     - The numbers (in an arithmetic operation) are call operands.
@@ -266,12 +274,14 @@
         Such tricks are used in many JS frameworks. That's why we're mentioning them, but usually they don't improve code readability so we should think well before using them.
 
 
+
 /* Operaotr Precedence */
     - Operator Precedence
         Operator precedence describes the order in which operations are performed in an arithmetic expression.
         Multiplication (*) and division (/) have higher precedence than addition (+) and subtraction (-).
         The precedence can be changed by using parentheses.
         When many operations have the same precedence (like addition and subtraction), there are computed fom left to right.
+
 
 
 /* JavaScript Operator Precedence Values */
@@ -342,7 +352,8 @@
     - EXPRESSION IN PARENTHESES ARE FULLY COMPUTED BEFORE THE VALUE IS USED IN THE REST OF THE EXPRESSION.
     
 
-/* JAVASCRIPT VARIABLES */
+
+/* Variables */
     - A "named storage" for data. Can be used to store goodies, visitors, and other data.
     - `let` keyword  
         Used to create a variable in JS
@@ -486,6 +497,7 @@
     - Variables should be named in a way that allows us to easily understand what's inside them.
 
 
+
 /* Data Types */
     - A value in JS is always of a certain type. For example, a string or a number.
     - There are eight basic data types in JS 
@@ -600,6 +612,7 @@
             typeof alert                // "function"
             
 
+
 /* Strings */
     - A string is simply a piece of text. 
     - String methods help you to work with strings.
@@ -616,7 +629,7 @@
     - Finding a string in a string
         The `indexOf()` method returns the index of (the position of) the `first` occurrence of a specified text in a string:
             let str = "Please locate where 'locate' occurs!";
-            let pos = str.indexOf('locate");        // 7
+            let pos = str.indexOf("locate");        // 7
         JS counts positions from zero (0)
         The `lastIndexOf()` method returns the index of the last occurence of a specified text in a string.
             let str = "Please locate where 'locate' occurs!";
@@ -702,6 +715,445 @@
         let n = str.replace(/MICROSOFT/g, "W3Schools");         // Please visit W3Schools and W3Schools!
 
     - Converting to Upper and Lower Case
+        `toUpperCase()` converts a string to upper case:
+            let text1 = "Hello World!";
+            let text2 = text1.toUpperCase();  // HELLO WORLD!
+        `toLowerCase()` converts a string to lower case:
+            let text1 = "Hello World!";
+            let text2 = text1.toLowerCase();  // hello world!
+    
+    - The concat() Method
+        `concat()` joins two or more strings:
+            let text1 = "Hello";
+            let text2 = "World";
+            let text3 = text1.concat(" ", text2);       // Hello World 
+                // This method takes text1, adds a space (" "), then adds text2
+        The `concat()` method can be used instead of the plus operator. 
+            These two lines do the same thing:
+                let text = "Hello" + " " + "World!";
+                let text = "Hello".concat(" ", "World!");
         
+    ALL STRING METHODS RETUNR A NEW STRING. THEY DON'T MODIFY THE ORIGINAL STRING.
+        Formally said: Strings are immutable - they cannot be changed, only replaced.
+
+    - String.trim()
+        The `trim()` method removes whitespace from both sides of a string:
+            let str = "          Hello World!         "
+            alert(str.trim());          // Hello World!
+        THE trim() METHOD IS NOT SUPPORTED IN IE 8 OR Lower
+            If you need to support IE 8 , you can use `replace()` with a regular expression instead:
+                let str = "       Hello World!        ";
+                alert(str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, ''));
+            You can also use the replace solution above to add a trim function to the JS `String.prototype`:
+                if (!String.prototype.trim) {
+                    String.prototype.trim = function() {
+                        return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+                    };
+                }
+                let str = "             Hello World!             ";
+                alert(str.thrim());
+    
+    - Extracting String Characters
+        There are 3 methods for extracting string Characters:
+            The `charAt()` method returns the character at a specified index (position) in a string:
+                let str = "HELLO WORLD";
+                str.charAt(0);              // returns H 
+            The `charCodeAt()` method returns the unicode of the character a the specified index in a string:
+                The method returns a UTF-16 code (an integer between 0 and 65535)
+                    let str = "HELLO WORLD";
+                    str.charCodeAt(0);      // returns 72
+            Property Access []
+                ECMAScript 5 (2009) allows property access [] on strings:
+                    let str = "HELLO WORLD";
+                    str[0];                 // returns H 
+                PROPERTY ACCESS MIGHT BE A LITTLE UNPREDICTABLE:
+                    It does not work in IE 7 or earlier
+                    It makes strings look like arrays (THEY ARE NOT)
+                    If no character is found, [] returns undefined, while charAt() returns an empty string
+                    It is read only. str[0] = "A" give no error (but does not work!)
+                        let str = "HELLO WORLD";
+                        str[0] = "A";               // give no error, but does not work
+                        str[0];                     // returns H
+    
+    IF YOU WANT TO WORK WITH A STRING AS AN ARRAY, YOU CAN CONVERT IT TO AN ARRAY.
+    - Converting a string to an Array
+        The `split()` Method is used to convert a string into an array.
+            let txt = "a,b,c,d,e";          // string 
+            txt.split(",");                 // split on commas
+            txt.split(" ");                 // split on spaces 
+            txt.split("|");                 // split on pipe 
+        If the SEPARATOR IS OMITTED, the returned array will contain the whole string in index [0].
+        If the SEPARATOR IS "", the returned array will be an array of single characters.
+            let txt = "Hello";              // string 
+            txt.split("");                  // split in characters 
+    
+    - Complete string reference 
+        For a complete reference, go to https://www.w3schools.com/jsref/jsref_obj_string.asp
+            The reference contains descriptions and examples of all string properties and methods.
+
+        For an exhaustive list of methods that can be used on strings, go to https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
+
+
+
+/* Conditionals */
+    - Comparisons 
+        We know many comparison operators from maths.
+        In JS they are written like this:
+            Greater/less than: a > b, a < b
+            Greater/less than or equals: a >= b, a <= b
+            Equals: a == b   Please note the double equality sign means the equality test while a single = means assignment. 
+            Not equals: a != b
+
+    - Boolean is the result
+        ALL COMPARISON OPERATORS RETURN A BOOLEAN VALUE 
+            true - means "yes", "correct" or "the truth"
+            false - means "no", "wrong" or "not the truth"
+                alert( 2 > 1 );     // true (correct)
+                alert( 2 == 1 );    // false (wrong)
+                alert( 2 != 1 );    // true (correct)
+        A comparison result can be assigned to a varialbe, just like any value:
+            let result = 5 > 4; // assign the result of the comparison
+            alert ( result );   // true
+    
+    - String comparison
+        To see whether a string is great than another, JS uses the so-called "dictionary" or "lexicographical" order. 
+        STRINGS ARE COMPARED LETTER-BY-LETTER
+            alert( 'Z' > 'A' );         // true
+            alert( 'Glow' > 'Glee' );   // true
+            alert( 'Bee' > 'Be' );      // true
+        The algorithm to compare two strings is simple:
+            1. Compare the first character to both strings.
+            2. If the first character from the first string is greater (or less) than the other string's, then the first string is greater (or less) than the second. We're done.
+            3. Otherwise, if both strings' first characters are the same, compare the second characters the same way.
+            4. Repeat until the end of either string.
+            5. If both strings end at the same length, then they are equal. Otherwise, the longer string is greater.
+                Not a real dictionary, but Unicode order    
+                    The comparison algorithm given above is roughly equivalent to the one used in dictionaries or phone books, but it's not exactly the same. 
+                    For instance, case matters. A capital letter 'A' is not equal to the lowercase 'a'. Which one is greater? The lowercase 'a', because the lowercase character has a greater index in the internal encoding table JS uses (Unicode). 
+    
+    - Comparison of different types 
+        When comparing values of different types, JS converts the values to numbers.
+            alert( '2' > 1 );       // true, string '2' becomes a number 2
+            alert( '01' == 1 ):     // true, string '01' becomes the number 1
+        For bolean values, `true` becomes '1' and `false` becomes '0'
+            alert( true == 1 );     // true
+            alert( false == 0 );    // true
+        IT IS POSSIBLE THAT AT THE SAME TIME:   
+            Two values are equal
+            One of them is `true` as a boolean and the other one is `false` as a boolean 
+                let a = 0;
+                alert( Boolean(a) );        // false
+                let b = "0";
+                alert( Boolena(b) );        // true
+                alert( a == b );            // true
+                    - From the JS standpoint, this result is quite normal. An equality check converts values using the numeric conversion (hence "0" becomes 0), while the explicit Boolean conversion uses another set of rules. 
+    
+    - Strict equality 
+        A regular equality check == has a problem. It cannot differentiate 0 from `false`.
+            alert ( 0 == false );       // true 
+        The same thing happens with an empty string:
+            alert( '' == false );       // true
+        This happens because operands of different types are converted to numbers by the equaltiy operat ==. An empty string, just like `false`, becomes a 0.
+        To differentiate `0` from `false`, a STRICT EQUALITY OPERATOR `===` checks the equality without type conversion.
+            In other words, if a and b are of different types, then `a === b` immediately returns `false` without an attempt to convert them. 
+                alert( 0 === false );       / false, because the types are different 
+            There is also a "strict non-equality" operator `!==` analogous to `!=`
+                The strict equalty operator is a bit longer to write, but makes it obvious what's going on and leaves less room for errors. 
+    
+    - Comparison with null and undefined 
+        There's a non-intuitive behavior when `null` or `undefined` are compared to other values. 
+        For a strict quality check `===`
+            These values are differen, becaue each of them is a different type:
+                alert( null === undefined );        // false
+        For a non-strict check `==`
+            There's a speacial rule. These two are a "sweet couple": they equal each other ( in the sense of `==`), but not any other value. 
+                alert( null == undefined );         // true 
+        For maths and other comparisons `< > <= >=`
+            `null/undefined` are converted to numbers: `null` becomes `0`, while undefined becomes `NaN`
+            Funny things happen when we apply these rules. Also, how not to fall into a trap with them.
+                Strange result: null vs 0
+                    alert( null > 0 );      // false (1)
+                    alert( null == 0 );     // false (2)
+                    alert( null >= 0 );     // true (3)
+                    Mathematically, that's strange. The last result states that `null` is greater than or equal to zero, meaning one of the other comparisons should also be true, but they are not. 
+                        (1, 3) An equality check `==` and comparisons `> < >= <=` work differently. Comparisons convert `null` to a number, treating it as `0`. That is why `null >= 0` is true and `null > 0` is false. 
+                        (2) On the other hand, the equality check `==` for `undefined` and `null` is defined such that, without conversions, they equal each other and don't equal anything else. That's why `null == 0` is false.
+                An incomparable undefine 
+                    The value `undefined` shouldn't be compared to other values: 
+                        alert( undefined > 0 );         // false (1)
+                        alert( undefined > 0 );         // false (2)
+                        alert( undefined == 0 );        // false (3)
+                    Comparison (1) and (2) return `false` because `undefined` gets converted to `NaN` and `NaN` is a special numeric value which returns `false` for all comparisons 
+                    The equality check (3) returns `false` because `undefined` only equals `null`, `undefined`, and no other value. 
+                Avoid problems
+                    These tricky things will gradually become familiar over time, but there's a solid way to avoid problems with them:
+                        Treat any comparison with `undefined/null` except the stric equality `===` with exceptional care.
+                        Don't use comparision `>= > < <=` with a variable which may be `null/undefined`, unless you're really sure of hat you're doing. If a variable can have these values, check for them separately.
+    
+    - Summary
+        Comparison operators return a boolean value.
+        Strings are compared letter-by-letter in the "dictionary" order
+        When values of different types are compared, they get converted to numbers (with the exclusion of a strict equality check).
+        The values `null` and `undefined` equal (==) each other and do not equal any other value.
+        Be careful when using comparisons like `>` or `<` with variables that can occasionally be `null/undefined`. Checking for `null/undefined` separately is a good idea. 
+
+
+
+/* Conditional if else / else if Statements */
+    Conditional statments are use to perform different actions for different decisions
+    JS uses the following conditional statements:
+        Use `if` to specify a block of code to be executed, if a specified condition is true 
+        Use `else` to specify a block of code to be executed, if the same condition is false 
+        Use `else if` to specify a new condition to test, if the prior condition is false 
+        Use `switch` to specify many alternative blocks of code to be executed 
+
+    - The if Statement
+            if (condition) {
+                // block of code to be executed if the condition is true 
+            }
+        Specifies a block of JS code to be executed if a condition is true.
+            if (hour < 18) {
+                greeting = "Good day";
+            }       // Good day 
+    
+    - The else Statement 
+            if (condition) {
+                // block of code to be executed if the condition is true 
+            } else {
+                // block of code to be executed if the condition is false 
+            }
+        Specifies a block of code to be executed if the condition is false.
+            if (hour < 18) {
+                greeting = "Good day";
+            } else {
+                greeting = "Good evening";  
+            }       // Good evening 
+    
+    - The else Statement    
+            if (condition1) {
+                // block of code to be exectued if conditional is true 
+            } else if (condition2) {
+                // block of code to be executed if condition1 is false and condition2 is true 
+            } else {
+                // block of code to be executed if condition1 is false and condition2 is false 
+            }
+        Specifies a new condition if the first condition is false.
+            if (time < 10) {
+                greeting = "Good morning";
+            } else if {
+                greeting = "Good day";
+            } else {
+                greeting = "Good evening";
+            }
+
+
+
+/* Logical operators */
+    There are three logical operators in JS: `||` (or), `&&` (and), `!` (not)
+    Although they are called "logical", they can be applie to values of any type, not only boolean. 
+    Their result can also be of any type.
+
+    - || (OR)
+        The OR operator is represented with two vertical line symbols 
+            result a || b;
+        In classical programming, the logical OR is meant to manipulate boolean values only. If any of its arguments are `true`, tis returns `true`, otherwise it returns `false`.
+        In JS, the operator is a little bit trickier and more powerful. 
+
+        There are four possible logical combinations:
+            alert( true || true );      // true
+            alert( false || true );     // true 
+            alert( true || false );     // true 
+            alert( false || false );    // false 
+        As can be seen the result is always `true` except for the case when both operands are `false`.
+        If an operand is not boolean, it's converted to a boolean for the evaluation. 
+            For instance, the number `1` is treated as `true`, the number `0` as false:
+                if (1 || 0) {                   // works just like if( true || false )
+                    alert( 'truthy!' ); 
+                }
+        Most of the time, OR `||` is used in an `if` statement to test if ANY of the given conditions is `true`
+            let hour = 9;
+            if (hour < 10 || hour > 18) {
+                alert( 'The office is closed.' );
+            }
+        You can "extend", pass multiple conditions, in an OR statment:
+            let hour = 12;
+            let isWeekend = true;
+            if (hour < 10 || hour > 18 || isWeekend) {
+                alert( 'The office is close.' );
+            }
+        The logicals described above are somewhat classical. What follows are the 'extra' features of JS.
+
+    - || (OR) finds the truthy value 
+        The extended algorithm works as follows:
+            result = value1 || value2 || varlue3;
+            The OR `||` operator does the following:
+                Evaluates operands from left to right
+                For each operand, converts it to boolean. If the result is `true`, stops and returns the original value of that operand.
+                If all operands have been evaluated (ie all were `false`), returns the last operand.
+        A value is returned in its original form, without the conversion
+            In other words, a chain of OR `||` returns the first truthy value or the last one if no truthy value is found.
+                alert( 1 || 0 );                    // 1 (1 is truthy)
+                alert( null || 1 );                 // 1 (1 is the first truthy value)
+                alert( null || 0 || 1 );            // 1 (the first truthy value)
+                alert( undefined || null || 0 );    // 0 (all falsy, returns the last value)
+            This leads to some interesting usage compared to a "pure, classical, boolean-only OR"
+                1) Getting the first turhty value from a list of variables or expressions  
+                    For instance, we have `firstName`, `lastName` and `nickName` variables, all optional.
+                    Let's use OR || to choose the one that has the data and show it (or `anonymous` if nothing set):
+                        let firstName = "";
+                        let lastName = "";
+                        let nickName = "SuperCoder";
+                        alert( firstName || lastName || nickName || "Anonymous" );      // SuperCoder 
+                    If all of the variables were falsy, "Anonymous" would show up.
+                2) Short-circuit evaluation
+                    Another feature of OR || operator is the so-called "short-circuit" evaluation 
+                    It means that || processes its arguments until the first truthy value is reached, and then the value is returned immediately, without even touching the other argument. 
+                    That importance of this feature becomes obvious if an operand isn't just a value, but an expression with a side effect, such as a variable assignment or a function call. 
+                        true || alert("not printed");
+                        false || alert("printed");
+                            In the above example, only the second message is printed ( "printed" )
+                            In the first line, the OR || operator stops the evaluation immediately upon seeing `true`, so the `alert` isn't run. 
+                    Sometimes, people use this feature to execute commands only if the condition on the left part is falsy.
+    
+    - && (AND)
+        The AND operator is represented with two ampersands `&&`:
+            result = a && b;
+        In classical programming, AND returns `true` if both operands are truthy and `false` otherwise:
+            alert( true && true );          // true
+            alert( false && true );         // false 
+            alert( true && false );         // false
+            alert( false && false );        // false 
+        An example with `if`:
+            let hour = 12;
+            let minute = 20;
+            if (hour == 12 && minute == 30) {
+                alert( 'The time is 12:30' );
+            }
+        Just as with OR, any value is allowed as an operand of AND:
+            if (1 && 0) {                                               // evaluated as true && false 
+                alert( "won't work, because the result is falsy" );
+            }
+    
+    - AND `&&` finds the first false value 
+        Given multiple AND'ed values:
+            result = value1 && value 2 && value3;
+        The AND `&&` operator does the following:
+            Evaluates operands from left to right 
+            For each operand, converts it to a boolean. If the result is `false`, stops and returns the origina value of that operand.
+            If all operands have been evaluated (ie all were truthy), returns the last operand 
+        AND returns the first falsy value or the last value if none were found 
+            The rules above are similar to OR. The difference is that AND returns the first falsy value while OR returns the first truthy value. 
+                // if the first operand is truthy, AND returns the second operand
+                alert( 1 && 0 );        // 0
+                alert( 1 && 5 );        // 5
+
+                // if the first operand is falsy, AND returns it. The second operand is ignored
+                alert( null && 5 );                 // null 
+                alert( 0 && "no matter what" );     // 0
+
+            We can also pass several values in a row, as below. Notice how the first falsy is returned:
+                alert( 1 && 2 && null && 3 );       // null
+            When all values are truthy, the last value is returned:
+                alert( 1 && 2 && 3 );               // 3, the last value 
+
+        Precedence of AND `&&` is higher than OR `||`
+            The code `a && b || c && d` is essentially the same as if the `&&` expressions were in parentheses: 
+                    `( a && b || c && d )`
+        Don't replayce `if` with `||` or `&&`
+            Sometimes, people use the AND `&&` operator as a "shorter to write `if`"
+                    let x = 1;
+                    (x > 0) && alert( 'Greater than zero!' );
+                The above expression is analogous to the expression below:
+                    let x = 1;
+                    if (x > 0) {
+                        alert( 'Greater than zero!' );
+                    }
+            Although the variant with `&&` appears shorter, `if` is more obvious and tends to be a little bit more readable.
+            It is recommended to use every construct for its purpose: use `if` if we want if and use `&&` if we want AND.
+    
+    - ! (NOT)
+        The boolean NOT operator is represented with an exclamation sign (!)
+            result = !value;
+        The operator accepts a single argument and does the following:
+            1. Converts the operand to boolean type: `true/false`
+            2. Returns the inverse value 
+            Example 
+                alert( !true );         // false 
+                alert( !0 );            // true 
+        A double NOT `!!` is sometimes used for converting a value to boolean type
+                alert( !!"non-empty string" );  // true 
+                alert( !!null );                // false 
+            That is, the first NOT converts the value to boolean and returns the inverse, and the second NOT inverses it again. In the end, we have a plain value-to-boolean conversion.
+        The built-in `Boolean` fuction is a more verbose way to do the same thing:
+            alert( Boolean("non-empty string") );       // true 
+            alert( Boolean(null) );                     // false 
+        The precendence of NOT `!` is the highest of all logical operators, so it always executes first, before `&&` or `||`
+
+    - Additional Examples 
+        alert( null || 2 || undefined );
+            // 2 - the first truthy value 
+
+        alert( alert(1) || 2 || alert(3) );
+            // first 1, then 2 
+                The call to `alert` does not retun a value. In other words, it returns `undefined`
+                    1. The first OR `||` evaluates its left operand `alert(1)`. This shows the first message with `1`.
+                    2. The `alert` returns `undefined`, so OR goes on to the second operand searching for a truthy value.
+                    3. The second operand `2` is truth, so the execution is halted, `2` is returned and then shown by the outer alert.
+                There will be no `3`, because the evaluation does not reach `alert(3)`
+        
+        alert( 1 && null && 2);
+            // null - because it's the first falsy value from the list 
+
+        alert( alert(1) && alert(2) );
+            // 1, and then undefined 
+                The call to `alert` returns `undefined` (it just shows a message, so there's no meaningful return).
+                Because of that, `&&` evaluates the left operand (outputs `1`), and immediately stops, because `undefined` is a falsy value. And `&&` looks for a falsy value and returns it, so it's done. 
+
+        alert( null || 2 && 3 || 4 );
+            // 3 
+                The precedence of AND `&&` is higher than `||`, so it executes first.
+                The expression becomes: `null || 3 || 4`
+                The result is the first truthy value 
+        
+        Write an 'if' condition to check that `age` is between `14` and `90` inclusively ("inclusively" means that `age` can reach the edges of `14` and `90`)
+            if ( age >= 14 && age <= 90 );
+            
+        Write an 'if' condition to check that `age` is NOT between `14` and `90` inclusively 
+            if ( !( age >= 14 && age <= 90 ) );
+                or 
+            if ( age < 14 || age > 90 );
+        
+        Which of the following `alert`s are going to execute and what will the restult be?
+            if (-1 || 0) alert( 'first' );                  // executes, result = 'first'       -1 || 0 = -1, truthy
+            if (-1 && 0) alert( 'second' );                 // doesn't execute,                 -1 && 0 = 0, falsy  
+            if (null || -1 && 1) alert( 'third' );          // executes,                        null || 1 = 1, truthy  
+
+            
+        Check the login
+            let userName = prompt("Who's there?", '');
+
+            if (userName == "Admin") {
+
+                let password = prompt("Please enter your password", '');
+        
+                if (password == "TheMaster") {
+                    alert( "Welcome!" );
+                } else if (password == '' || password == null) {
+                    alert( "Cancelled" );
+                } else {
+                    alert( "Wrong password" );
+                }
+            
+            } else if (userName == '' || userName == null) {
+                alert( "Cancelled" );
+            } else {
+                alert( "I don't know you" );
+            }
+
+
+            
+/*  */
+
+
 
 
