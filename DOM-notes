@@ -1,0 +1,113 @@
+https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction
+
+    - Because the vast majority of code that uses the DOM revolves around manipulating HTML documents, it's common to refer to the noeds in the DOM as elements, although strictly speaking not every node is an element.
+
+/* DOM Fundamental data types */
+    Document 
+        When a member returns an object of type `document` (eg the `ownerDocument` property of an element returns the `document` to which it belongs), this object is the root `document` itself.
+    
+    Node 
+        Every object located within a document is a node of some kind. In an HTML document, an object can be an element node but also a text node or attribute node. 
+
+    Element 
+        The `element` type is based on `node`. It refers to an element or a node of type `element` returned by a member of the DOM API. Rather than saying, for example, that the `document.createElement()` method returns an object reference to a `node`, we just say that this method returns the `element` that has just been created in the DOM. `element` objects implement the DOM `Element` interface and also the more base `Node` interface, both of which are included together in this reference. In an HTML document, elements are further enhanced by the HTML DOM API's `HTMLElement` interface as well as other interfaces describing capabilities of specific kinds of elements (for instance, `HTMLTableElement` for <table> elements).
+
+    NodeList 
+        A `nodeList` is an array of elements, like the kind that is returned by the method document.getElementsByTagName(). Items in a `nodeList` are accessed by index in either of two ways:
+            list.item(1)
+            list[1]
+        These two are equivalent. In the first, `item()` is the single method on the `nodeList` object. The latter uses the typical array syntax to fetch the second item on the list.
+
+    Attribute 
+        When an `attribute` is returned by a member (eg by the `createAttribute()` method), it is an object reference that exposes a special (albeit small) interface for attributes. Attributes are nodes in the DOM just like elements are, though you may rarely use them as much.
+
+    NamedNodeMap
+        A `namedNodeMap` is like an array, but the items are accessed by name or index, though this latter case is merely a convenience for enumeration, as they are in no particular order in the list. A `namedNodeMap` has an `item()` method for this purpose, and you can also add a remove items from a `namedNodeMap`. 
+
+    - It is common to refer to any `Attribute` node as simply an `attribute`, for example, and to refer to an array of DOM nodes as a `nodeList`. 
+
+/* DOM interfaces */
+    This section is about the objects and the actual things you can use to manipulate the DOM hierarchy. There are many points where understanding how these work can be confusing For example, the object representing the HTML `form` element gets its `name` property from the `HTMLFormElement` interface but its `className` property from the `HTMLElement` interface. In both cases, the property you want is simply in that form object.
+
+    - Interfaces and Objects 
+        Many objects borrow from several different interfaces. The table object, for example, implements a specialized `HTMLTableElement` interface, which includes such methods as `createCaption` and `insertRow`. But since it's also an HTML element, `table` implements the `Element` interface described in the DOM `Element` Reference chapter. And finally, since an HTML element is also, as far as the COM is concerned, a node in the tree of nodes that make up the object model for an HTML or SML page, the table object also implements the more basic `Node` interface, from which `Element` derives.
+
+        When you get a reference to a `table` object, as in the following example, you routinely use all three of these interfaces interchangeably on the object, perhaps without knowing it.
+            
+            const table = document.GetElementById("table");
+            const table Attrs = table.attributes;               // Noce/Element interface 
+            for (let i = 0; i < tableAttrs.lentgh; i++) {
+                // HTMLTableElement interface: border attribute 
+                if(tableAttrs[i].nodeName.toLowerCase() == "border")
+                    table.border = "1";
+            }
+            // HTMLTableElement interface: summary attribute
+            table.summary = "note: increased border";
+
+    - Core Interfaces in the DOM 
+        This section lists some of the most commonly-used interfaces in the DOM. The idea is not to describe what these APIs do here but to give you an idea of the sorts of methods and properties you will see very often as you use the DOM. 
+
+        The `document` and `window` objects are the objects whose interfaces you generally use most often in DOM programming. In simple terms, the `window` object represents something like the browser, and the `document` object is the root of the document itself. `Element` inherits from the generic `Node` interface, and together these two interfaces provide many of the methods and properties you use on individual elements. These elements may also have specific interfaces for dealing with the kind of data those elements hold, as in the `table` object example in the previous section. 
+
+        The following is a brief list of common APIs in web and XML page scripting using the DOM.
+            document.getElementByID(id)
+            document.getElementsByTagName(name)
+            document.createElement(name)
+            parentNode.appendChild(node)
+            element.innerHTML
+            element.style.left
+            element.setAttribute()
+            element.getAttribute()
+            element.addEventListener()
+            window.content
+            window.onload
+            window.scrollTo()
+
+
+/* Testing the DOM API */
+    This provides samples for every interface that you can use in your own web development. In some cases, the samples are completely HTML pages, with the DOM access in a <script> element, the interface (eg buttons) necessary to fire up the script in a form, and the HTML elements upon wich the DOM operates listed as well. These samples can be copied and pasted to a new HTML document to run the example from the browser.
+
+    There are some cases, however, when the examples are more concise. To run examples that only demonstrate the basic relationship of the interface to the HTML elements, you may want to set up a test page in which interfaces can be easily accessed from scripts. The following ver simple web page provides a <script> element in the header in which you can place functions that test the interface, a few HTML elements with attributes that you can retrieve, set, or otherwise manipulate, and the web user interface necessary to call those unctions from the browser.
+
+    You can use this test page or create a similar one to test the DOM interfaces you are interested in and see how they work on the broswer platform. You can update the contents of the test() function as needed, create more buttons, or add elements as necessary.
+
+        <html>
+        <head>
+            <title>Dom Tests</title>
+            <script>
+                function setBodyAttr(attr, value) {
+                    if (document.body) document.body[attr] = value;
+                    else throw new Error("no support");
+                }
+            </script>
+        </head>
+        <body>
+            <div style="margin: .5in; height: 400px;">
+                <p><b><tt>text</tt></b></p>
+                <form>
+                    <select onChange="setBodyAttr('text', this.options[this.selectedIndex].value);">
+                        <option value="black">black</option>
+                        <option value="red">red</option>
+                    </select>
+                    <p><b><tt>bgColor</tt></b></p>
+                    <select onChange="setBodyAttr('bgColor',this.options[this.selectedIndex].value);">
+                        <option value="white">white</option>
+                        <option value="lightgrey">grey</option>
+                    </select>
+                    <p><b><tt>link</tt></b></p>
+                    <select onChange="setBodyAttr('link',this.options[this.selectedIndex].value);">
+                        <option value="blue">blue</option>
+                        <option value="green">green</option>
+                    </select>
+                    <small>
+                        <a href="http://some.website.tld/page.html" id="sample">
+                            (sample link)
+                        </a>
+                    </small><br />
+                        <input type="button" value="version" onclick="ver()" />
+                </form>
+            </div>
+        </body>
+        </html>
+
+    To test a lot of interfaces in a singe page - for example, a "suite" of properties that affect the colors of a web page - you can create a similar test page with a whole console of buttons, textfields, and other HTML elements. 

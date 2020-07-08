@@ -1585,3 +1585,200 @@
             
 
 
+/* JS Functions */
+    - Built-in Functions    
+        // the replace() string function takes a source string, and a target string and replaces the source string, with the target string, and returns the newly formed string 
+                let myText = 'I am a string';
+                let newString = myText.replace('string', 'sausage');        // replaces the word 'string' with 'sausage'
+                consol.log(newString);
+
+        // the join() function takes an array, joins all the array items together into a single string, and returns this new string 
+                let myArray = ['I', 'love', 'chocolate', 'frogs'];
+                let madeAString = myArray.join(' ');                        // joins all of the strings to a single string 
+                console.log(madeAString);
+
+        // the random() function generates a random number between 0 and up to but not including 1, and returns that number 
+                let myNumber = Math.random();
+
+        The JavaScript language has many built-in functions to allow you to do usefull things without having to write all that code yourself. In fact, some of the code you are calling when you invoke a built in browser function couldn't be written in JavaScript - many of these functions are calling parts of the background browser code, which is written largely in low-level system languages like c++, not web languages like JavaScript.
+
+        Bear in mind that some built-in browser functions are not part of the core JavaScript language - some are defined as part of browser APIs, which build on top of the default language to provide even more functionality 
+            (https://developer.mozilla.org/en-US/Learn/JavaScript/First_steps/What_is_JavaScript#So_what_can_it_really_do)
+
+    - Functions versus methods 
+        Programmers call functions that are part of objects methods. 
+            The built-in code we've made use of so far camein both forms: functions and methods. You can check a full list of the built-in functions, as well as the built-in objects and their corresponding methods (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
+
+            You've also seen a lot of custom functions in the course so far - functions defined in your code, not inside the browser. Anytime you saw a custom name with parentheses straight after it, you were using a custom fucntion. 
+
+            Functions can contain whatever code you like - you can even call other functions from inside functions.
+
+    - Invoking functions
+        In order to use a function after it has been defined, you've got to run, or invoke, it. This is done by including the name of the function in the code somewhere, followed by parentheses.
+
+                function myFunction() {
+                    alert('hello');
+                }
+
+                myFunction();               // calls the function once 
+        
+    - Anonymous functions 
+        You may see functions defined and invoked in slightly different ways.
+
+        Functions can have names
+                function myFunction() {
+                    alert('hello');
+                }
+
+        Functions can be anonymous (NOT have names)
+                function() {
+                    alert('hello');
+                }
+
+            Anonymous functions won't do anything on their own. You generally use an anonymous function along with an event handler, for example the following would run the code inside the function whenever the associated button is clicked:
+
+                const myButton = document.querySelector('button');
+
+                myButton.onclick = function() {
+                    alert('hello');
+                }
+
+            The above example would require there to be a <button> element available on the page to select and click. 
+
+        An anonymous function can be assigned to the value of a variable:
+
+                const myGreeting = function() {
+                    alert('hello');
+                }
+        
+            The function can now be invoked using:      myGreeting();
+                This effectively gives the function a name.
+            
+        You can also assign the function to be the value of multiple variables: 
+
+            let anotherGreeting = myGreeting;
+
+        This function can now be invoked using either of:
+
+            myGreeting();
+            anotherGreeting();
+
+        But this would be confusing so we don't do it. It is better to just stick to this form:
+
+            function myGreeting() {
+                alert('hello');
+            }
+
+        You will mainly use anonymous functions to just run a load of code in response to an event firing - like a button being click - using an event handler. Again, this looks something like this: 
+
+            myButton.onclick = function() {
+                alert('hello');
+                // I can put as much code inside here as I want 
+            }
+
+    - Function parameters
+        Some functions require parameters to be specified when you are invoking them - these are values that need to be included inside the function parentheses, which it needs to do its job properly. Parameters are sometimes called arguments, properties, or even attributes.
+
+        As an example, the broswer's built-in `Math.random()` function doesn't require any parameters
+
+            let myNumber = Math.random();
+
+        The browser's built-in string `replace()` function however needs two parameters - the substring to find in the main string, and the substring to replace that sting with:
+
+            let myText = 'I am a string';
+            let newSting = myText.replace('string', 'sausage');
+
+        It should also be noted that sometiems paraters are optional. If you don't, the function will generally adopt some kind of default behavior. As an example, the array `join()` function's parameter is optional:
+
+            let myArray = ['I', 'love', 'chocolate', 'frogs'];
+
+            let madeAString = myArray.join(' ');
+            //returns 'I love chocolate frogs'
+
+            let madeAString = myArray.join();
+            // returns 'I, love, chocolate, frogs'
+
+        If no parameter is included to specify a joining/delimiting character, a comma is used by default. 
+
+    - Function scope and conflicts
+        When you create a function, the variables and other things defined inside the function are inside their own separate scope, meaning that they are locked away in their own separate compartments, unreachalbe from code outside the functions. 
+
+        The top level outside all your functions is called GLOBAL SCOPE. Values defined in the global scope are accessible from everywhere in the code. 
+
+        JavaScript is set up like this for various reasons - but mainly because of security and organization. Sometimes you don't want variables to be accessible from everywhere in the code - external scripts that you call in from elsewhere could start to mess with your code and cause problems because they happen to be using the same variable names as other parts of the code, causing conflicts. This might be done maliciously, or just by accident. 
+
+        Say you hvae an HTML file that is calling in two external JavaScript files, and both of them have a variable and a function defined that use the same name: 
+
+            <!-- Excerpt from my HTML -->
+            <script src="first.js"></script>
+            <script src="second.js"></script>
+            <script>
+                greeting();
+            </script>
+
+            // first.js
+            let name = 'Chris";
+            function greeting() {
+                alert('Hello' + name + ': welcome to our company.');
+            }
+        
+            // second.js 
+            let name = 'Zaptec';
+            function greeting() {
+                alert('Our company is called ' + name + '.');
+            }
+
+        Both functions you want to call are called `greeting()`, but you can only ever access the `first.js` file's `greeting()` function (the second one is ignored). In addition, attempting to declare the `name` variable a second time with the `let` keyword in the `second.js` file results in an error.
+
+        Keeping parts of your code locked away in functions avoids such proglems, and is considereed the best practice. 
+            If code were a zoo, each animal habitat would be a function and the zoo keep is like the global scope - they have the keys to access every enclosure.
+
+        * The same scoping rules do not apply to loop (eg `for() {...}`) and conditional blocks (eg `if() {...}`) - they look very similar, but they are not the same thing. 
+
+        * The 'ReferenceError: "x" is not defined' error is ONE OF THE MOST COMMON you'll encounter. If you get this error and you are sure that you have defined the variable in question, check what scope it is in. 
+        
+    - Functions inside functions 
+        Keep in mind that you can call a function from anywhere, even inside another function. This is often used as a way to keep code tidy - if you have a big comples function, it is easier to understand if you break it down into several sub-functions:
+
+                function.myBigFunction() {
+                    let myValue;
+
+                    subFunction1();
+                    subFunction2();
+                    subFunction3();
+                }
+
+                function subFunction1() {
+                    console.log(myValue);
+                }
+
+                function subFunction2() {
+                    console.log(myValue);
+                }
+
+                function subFunction3() {
+                    console.log(myValue);
+                }
+
+        Just make sure that the values being used inside the function are properly in scope. The example above would throw an error `ReferenceError: myValue is not defined`, because although the `myValue` variable is defined in the same scope as the function calls, it is not defined inside the function definitions - the actual code that is run when the functions are called. To make this work, you'd have to pass the value into the function as a parameter, like this: 
+
+                function.myBigFunction() {
+                    let myValue;
+
+                    subFunction1(myValue);                  // The `subFunction()` take in `myValue` 
+                    subFunction2(myValue);
+                    subFunction3(myValue);
+                }
+
+                function subFunction1(value) {              // They then assign `myValue` to `value` and 
+                    console.log(value);                     // pass `value` to the `console.log()`
+                }
+
+                function subFunction2(value) {
+                    console.log(value);
+                }
+
+                function subFunction3(value) {
+                    console.log(value);
+                }
+
