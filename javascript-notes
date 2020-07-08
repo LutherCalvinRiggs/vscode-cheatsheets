@@ -1151,9 +1151,437 @@
             }
 
 
+
+/* Conditional examples using HTML & JS */
+
+    - Multiple `if() {} else {}` statement for weather
+        
+        <label for="weather"> Select the weather type today: </label>
+        <selet id="weather">
+            <option value=""> -- Make a choice -- </option>
+            <option value="sunny"> Sunny </option>
+            <option value="rainy"> Rainy </option>
+            <option value="snowing"> Snowing </option>
+            <option value="overcast"> Overcast </option>
+        </select>
+
+        <p></p>
+
+
+        cont select = document.querySelector('select');
+        const para - document.querySelector('p');
+
+        select.addEventListener('change', setWeather);
+
+        function setWeather() {
+            const choice = select.value;
+
+            if(choice === 'sunny') {
+                para.textContent = 'It is nice and sunny outside today. Wear shorts! Got to the beach!';
+            } else if (choice === 'rainy') {
+                para.textContent = 'Rain is falling outside. Don't forget your raincoat!';
+            } else if (choice === 'snowing') {
+                para.textContent = 'Snow is falling! Don't forget your hat!';
+            } else if (choice === 'overcase') {
+                para.textContent = 'It's a glooming day. Bring an umbrella, just in case.';
+            } else {
+                para.textContent = '';
+            }
+        }
+
+    - Any value that is not `false`, `undefined`, `null`, `0`, `NaN`, or an empty string ('') actually returns `true` when tested as a conditional statement, therefore you can simply use a variable name on its own to test whether it is `true`, or even that it exists (that is, not undefined).
+        
+        let cheese = 'Cheddar';
+
+        if (cheese) {
+            console.log('Yay! Cheese available for making cheese on toast.');
+        } else {
+            console.log('No cheese on toast for you today.');
+        }
+
+    - Another example where one does not need to explicityly specify '=== true'
+
+        let shoppingDone = false;
+
+        if (shoppingDone) {                 // no need to explicitly specify '=== true'
+            let childsAllowance = 10;
+        } else {
+            let childsAllowance = 5;
+        }
+
+    - Nesting if...else statments inside one another 
+        
+        if (choice === 'sunny') {
+            if (temperature < 86) {
+                para.textContent = 'It is ' + temperature + ' degrees outside - nice and sunny.';
+            } else if (temperature >= 86) {
+                para.textContent = 'It is ' + temperature + ' degree outside - REALLY HOT!;
+            }
+        }
+
+        // Even though the code all works together, each if...else statement works completely independent of each other.
+
+    - You could write the `'sunny' + temperature` code using && (AND)
+
+        if (choice === 'sunny' && temperature is < 86) {
+            para.textContent = 'It is ' + temperature + ' degrees outside - nice and sunny.';
+        } else if (choice === 'sunny' && temperature is >= 86) {
+            para.textContent = 'It is ' + temperature + ' degree outside - REALLY HOT!;
+        }
+
+    - A || (OR) conditional
+
+        if (iceCreamTruckOutside || houseStatus === 'on fire') {
+            console.log('You should leave the house quickly.');
+        } else {
+            console.log('Probably should just stay in then.');
+        }
+
+    - To write the previous if...else using a != (NOT)
+
+        if (!(iceCreamTruckOutised || houseStatus === 'on fire')) {
+            console.log('Probably should just stay in then.');
+        } else {
+            console.log('You should leave the house quickly.');
+            )
+        }
+
+    - You can combine as many logical statements together as you want to
+
+        if ((x === 5 || y > 3 || z <= 10) && (loggedIn || userName === 'Steve')) {
+            // run the code 
+        }
+
+        To make this work you MUST specify a complete test on either side of each OR operator.
+
+    - 
+
+
+
+/* switch Statements */ 
+    - Good for cases where you want to set a variable to a certain choice of value or print out a particular statement depending on a condition, especially if you've got a large number of choices.
+    - Switch statements take a single expression/value as an input, then look through a number of choices until they find one that matches that value, executing the corresponding code that goes along with it.
+            switch (expression) {
+                case choice1:
+                    run this code
+                    break;
+                
+                // include as many cases as you like 
+
+                default:
+                    run this code is no cases are met
+            }
+        1. The keyword `switch`, followed by a set of parentheses.
+        2. An expression or value inside the parentheses.
+        3. The keyword `case`, followed by a choice that the expression/value could be, followed by a colon.
+        4. Some code to run if the choice matches the expression.
+        5. A `break` statement, followed by a semi-colon. If the previous choice matches the expression/value, the browser stops exectuing the code block here and moves on to any code that appears below the swith statement.
+        6. As many other cases (bullets 3-5) as you like.
+        7. The keyword `default`, followed by exactly the same code pattern as one of the cases (bullets 3-5), except that `default` does not have a choice after it, and you don't need to `break` statment as there is nothing to run after this in the block anyway. This is the default option that runs if none of the choices match.
+            * You don't have to include the `default` section. you can safely omit it if there is no chance that the expression could end up equaling an unknown value. However, if there is a chance of this, you need to include it to handle unkonwn cases. 
+    
+        Switch example:
+            <label for="weather"> Select the weather type today: </label>
+            <select id="weather">
+                <option value=""> -- Make a choice -- </option>
+                <option value="sunny">Sunny</option>
+                <option value="rainy">Rainy</option>
+                <option value="snowing">Snowing</option>
+                <option value="overcast">Overcast</option>
+            </select>
+
+            <p></p>
+
+
+            const select = document.querySelector('select');
+            const para = document.querySelector('p');
+
+            select.addEventListener('change', setWeather);
+
+            fuction setWeather() {
+                const choice = select.value;
+
+                switch (choice){
+                    case 'sunny':
+                        para.textContent = 'It's a sunny day. Let's go to the beach!';
+                        break;
+                    case 'rainy':
+                        para.textContent = 'It's a rainy day. Let's stay on the couch and watch movies!';
+                        break;
+                    case 'snowing';
+                        para.textContent = 'It's snowing! Let's make a snowman!';
+                        break;
+                    case 'overcast';
+                        para.textContent = 'Tut tut. Looks like rain. Don't forget your umbrella!';
+                        break;
+                    default:
+                        para.textContent = '';
+                }
+            }
+
+    - Using a switch statement in JS
+        The following is a working example of a `switch` statement. In this code block, we will find the current day of the week with the `new Date()` method, and `getDay()` to print a number corresponding to the current day. `1` stands for Monday, all the way through `7` which stands for Sunday. We'll start by setting up our variable.
             
-/*  */
+            const day = new Date().getDay();
+
+        Using `switch`, we will send a message to the console each day of the week. The program will run in order from top to bottom looking for a match and once one is found, the `break` command will halt the `switch` block from continuing to evaluate statements.
+
+            // Set the current day of the week to a variable, with 1 being Monday and 7 being Sunday 
+            const day = new Date().getDay();
+
+            switch (day) {
+                case 1:
+                    console.log("Happy Monday!");
+                    break;
+                case 2:
+                    console.log("It's Tuesday! You got this!");
+                    break;
+                case 3:
+                    console.log("Hump Day!");
+                    break;
+                case 4:
+                    console.log("Thirsty Thursday! Save me a pint!");
+                    break;
+                case 5:
+                    console.log("TGIF!");
+                    break;
+                case 6:
+                    console.log("Hoy se bebe para hoy es Sabado Gigante!");
+                    break;
+                case 7:
+                    console.log("I need a day off!");
+                    break;
+                default:
+                    console.log("Are we back in quarantine?");
+            }
+
+        Depending on the day of the week, your output will be different. We included a `default` block at the end to run in case of an error, which in this case should not happen as there are only 7 days of the week. We could also have only printed results for Monday to Friday and used the `default` block to show the same message through the weekend. 
+
+        * If we had omitted the `break` keyword in each statement, none of the other `case` statements would have evaluated to true, but the proram would have continued to check until it reached the end. In order to make our programs faster and more efficient, we include the `break`.
+
+    - Switch Ranges
+        To evaluate a range of values in a `switch` block, set the expression to `true` and do an operation within each `case` statement. 
+
+        To demonstrate, we will make a simple grading app which will take a number score and convert it to a letter grade, with the following requirements:
+            Grade of 90 and above = A
+            Grade of 80 to 89 = B
+            Grade of 70-79 = C 
+            Grade 60-69 = D 
+            Grade 59 or below = F 
+
+        Now we can write that as a `switch` statement. Since we're checking a range, we will perform the operation in each `case` to check if each expression is evaluating to `true` then break out of the statement once the requirments for `true` have been satisfied.
+
+            // Set the student's grade
+            const grade = 87
+
+            switch (true) {
+                // If score is 90 or greater 
+                case grade >= 90:
+                    console.log('A');
+                    break;
+                // If score is 80 or greater 
+                case grade >= 80:
+                    console.log('B');
+                    break;
+                // If score is 70 or greater
+                case grade >= 70:
+                    console.log('C');
+                    break;
+                // If score is 60 or greater
+                case grade >= 60:
+                    console.log('D');
+                    break;
+                // If score is below 60
+                default:
+                    console.log('F');
+                    break;
+            }
+
+        The expression in parentheses to be evaluated is `true` in this example. This means that any `case` that evaluates to `true` will be a match.
+        Just like with `else if`, `switch` is evaluated from top to bottom, and the first true match will be accepted. Terefore, even though our `grade` variable is `87` and therefore evaluates to `true` for C and D as well, the first match is B, which will be the output. 
+
+    - Multiple Cases with the same output 
+        You may encounter code in which multiple cases should have the same output. In order to accomplish this, you can use more than one case for each block of code.
+
+        This will be shown by creating an application matching the current month to the appropriate season. First, we will use the `new Date()` method to find a number corresponding to the current month, and apply that to the `month` variable. 
+
+            const month = new Date().getMonth();
+
+        The `new Date().getMonth()` method will output a number from 0 to 11, with 0 being January and 11 being December. Our application will then output the four seasons with the following specifications for simplicity:
+            Winter: January, February and March
+            Spring: April, May and June 
+            Summer: July, August and September 
+            Fall: October, November and December 
+
+        The following is the code for the season application: 
+
+            // Get number corresponing to the current month, with 0 being January and 11 being December 
+            const month = new Date().getMonth();
+
+            switch(month) {
+                // January, February, March 
+                case 0:
+                case 1:
+                case 2:
+                    console.log('Winter');
+                // April, May, June 
+                case 3:
+                case 4:
+                case 5:
+                    console.log('Spring');
+                // July, August, September 
+                case 6:
+                case 7:
+                case 8:
+                    console.log('Summer');
+                // October, November, December 
+                case 9:
+                case 10:
+                case 11:
+                    console.log('Fall');
+                default:
+                    console.log('Invalid Month');
+            }
 
 
+
+/* Ternary operator */
+    - The ternary or conditional operator is a small bit of syntax that tests a condition and returns one value/expression if it is `true`, and another if it is `false`. This can be useful in some situations, and can take up a lot less code than an if...else block if you simply have two choices that are chosen between via a `true`/`false` condition. 
+            
+            ( condition ) ? run this code : run this code instead 
+
+            let greeting = ( isBirthday ) ? 'Happy birthday! We hope you have a great day!' : 'Good morning!'
+        
+        In the above example, there is a variable `isBirthday`. If `isBirthday` is `true`, we give our guest a happy birthday message; if not, we give her the standard daily greeting. 
+
+    - The following example shows a simple theme chooser where the styling for the site is applied using a ternary operator.
+            <label> for="theme">Select theme: </label>
+            <select id="theme">
+                <option value="white">White</option>
+                <option value="black">Black</option>
+            </select>
+
+            <h1>This is my website</h1>
+
+
+            const select = document.querySelector('select');
+            const html = document.querySelector('html');
+            document.body.style.padding = '10px';
+
+            function update(bgColor, textColor) {
+                html.style.backgroundColor = bgColor;
+                html.style.color = textColor;
+            }
+
+            select.onchange = function() {
+                ( select.value === 'black' ) ? update('black', 'white') : update('white', 'black');
+            }
+
+        Here we've got a <select> element to choose a theme (black or white), plus a simple <h1> to display a website title. We also have a function called update(), which takes two colors as parameters (inputs). The website's background color is set to the first provided color, and its text color is set to the second provided color. 
+        Finally, we've also got an `onchange` event listener that serves to run a function containing a ternary operator. It starts with a test condition - `select.value === 'black'`. If this returns `true`, we run the `update()` function with parameters of black and white, meaning that we end up with background color of black and text color of white. If it returns `false`, we run the `update()` function with parameters of white and black, meaning that the site colors are inverted. 
+
+    - `if...else if... else` ternary operators can be written using the question mark operator (?)
+            let age = prompt('age?', 18);
+
+            let message = (age < 3) ? 'Hi, baby!' :
+                (age < 18) ? 'Hello!' :
+                (age < 100) ? 'Greetings!' :
+                'What an unusual age!' ;
+
+            alert( message ); 
+
+
+
+/* Active Learning Exercises */
+    - Active learning: A simple calendar
+            <label for="month">Choose a month: </label>
+            <select id="month">
+                <option value="january">Enero</option>
+                <option value="february">Febrero</option>
+                <option value="march">Marzo</option>
+                <option value="april">Abril</option>
+                <option value="may">Mayo</option>
+                <option value="june">Junio</option>
+                <option value="july">Julio</option>
+                <option value="august">Agosto</option>
+                <option value="september">Septembre</option>
+                <option value="october">Octubrey</option>
+                <option value="november">Noviembre</option>
+                <option value="december">Diciembre</option>
+            </select>
+
+            <h1></h1>
+
+
+            const select = document.querySelector('select');
+            const list = document.querySelector('ul');
+            const h1 = document.querySelector('h1');
+
+            select.onchange =  function() {
+                const choice = select.value;
+                let days = 31;
+                if (choice === 'february') {
+                    days = 28;
+                } else if (choice === 'april' || choice === 'june' || choice === 'september' || choice === 'november') {
+                    days = 30;
+                }
+            
+            createCalendar(days, choice);
+            }
+
+            function createCalendar(days, choice){
+                list.innerHTML = '';
+                h1.textContent = choice;
+                for(let i = 1; 1 <= days, i++){
+                    const listitem = document.createElement('li');
+                    listitem.textContent = i;
+                    list.appendChild(listitem);
+                }
+            }
+
+            
+    - Active learning: Color choices 
+            <label for="theme">Choose a theme: </label>
+                <select id="theme">
+                    <option value="white">White</option>
+                    <option value="black">Black</option>
+                    <option value="purple">Purple</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="psychedelic">Psychedelic</option>
+                </select>
+
+            <h1>This is my website</h1>
+
+            const choice = querySelector('select');
+            const html = querySelector('html');
+            document.body.style.padding = '10px';
+
+            select.onchange = function() {
+                const choice = select.value;
+
+                switch(choice){
+                    case 'white':
+                        update('white','black');
+                        break;
+                    case 'black':
+                        update('black','white');
+                        break;
+                    case 'purple':
+                        update('purple','white');
+                        break;
+                    case 'yellow':
+                        update('yellow','darkgray');
+                        break;
+                    case 'psychedelic':
+                        update('lime','purple');
+                        break;
+                }
+            }
+
+            function update(bgColor, textColor) {
+                html.style.backgroundColor = bgColor;
+                html.style.color = textColor;
+            }
+            
 
 

@@ -1,0 +1,85 @@
+/* JS Dev Tools Tricks */
+
+// Break on attribute modifications
+    Will pause the code where you place the break. Allows you to stop the program and analyze what's going on.
+
+// Regular
+    console.log('hello');
+        Will log a statment
+
+// Interpolated
+    console.log('Hello I am a %s string!', 'passed string'); 
+    console.log('Hello I am a ${var}');
+        Passes a string to the console log 
+
+// Styled 
+    console.log('%c I am some great text', 'font=size: 50px; background:red; text-shadow: 10px 10px 0 blue;')
+        Styles a consol log with CSS
+
+// Warning!
+    console.warn('Oh Nooo');
+        Logs a warning with a stack trace to show where it got called.
+
+// Error
+    console.error('Shit!');
+        Logs an error with a stack trace to show where it got called.
+
+// Info
+    console.info('Crocodiles eat 3-4 people per year');
+        Logs an info message
+
+// Testing 
+    console.assert(1 === 2, 'That is wrong');
+        Allows you to test for something and if it is wrong it will fire an error message. WILL ONLY FIRE IF THINGS ARE WRONG.
+        Logs an error with a stack trace to show where it got called.
+
+    const p = document.querySelcetor('p');
+    console.assert(p.classList.contains('ouch'), 'That is wrong');
+
+// Clearing
+    console.clear();
+        Clears the console.
+
+// Viewing DOM elements
+    console.log(p);
+        Will show the actual HTML element being called.
+    console.dir(p);
+        Will show all of the available methods and properties used in a drop down list. 
+
+// Grouping together
+    // This code will list all of the below console.logs
+    dogs.forEach(dog => {
+        console.log(`This is ${dog.name}`);
+        console.log(`${dog.name} is ${dog.age} years old`);
+        console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+    });
+
+    // By adding console.group() all of the console.log statements will e grouped by the console.group(var)
+    dogs.forEach(dog => {
+        console.group(`${dog.name}`);                                   // * console.group(var)
+        console.log(`This is ${dog.name}`);
+        console.log(`${dog.name} is ${dog.age} years old`);
+        console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+        console.groupEnd(`${dog.name}`);                                // * console.groupEnd(var)
+    });
+
+    // You can use console.groupCollapsed(var) to have the console.log statements pringted in a collapsed dropdown 
+
+// Counting
+    console.count(var);
+        Will tell you how many times a word or variable is used.
+
+// Timing
+    console.time('fetching data');
+    fetch('https://api.github.com/users/wesbos')
+        .then(data => data.json())
+        .then(data => {
+            console.timeEnd('fetching data');
+            console.log(data);
+        });
+
+        Will tell you how long it takes to fetch a piece of data 
+
+// Table
+    console.table();
+        Can take an array of objects and, assuming they all have the same properties, they will be displayed in a nice table. 
