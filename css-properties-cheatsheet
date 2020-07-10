@@ -1,0 +1,277 @@
+/* CSS Properties */
+    BACKGROUND 
+
+        background-image:
+            - Sets one or more background images on an element; separated by commas.
+            
+            - The images are drawn on stacking context layers on top of each other. THE FIRST LAYER specified is drawn as if it IS CLOSES TO THE USER.
+            
+            - Each background image is specified either as the keyword `none` of as an <image> value. 
+                - To specify multiple background images, supply multiple values, separated by a comma.
+                        background-image:
+                            linear-gradient(to bottom, rgba(255, 255,0,0.5), rgba(0,0,255,0.5)),
+                            url("your-image.png");                
+            - <values>
+
+                none;       keyword denoting the absence of images. If an image cannot be drawn (loaded), browsers handle it as they would a `none` value.
+
+                url("your-image.jpg");      denotes the image to display. There can be several of them, separated by commas, as multiple backgrounds are supported.
+        
+
+        background-attachment:
+            
+            - Sets whether a background image's position is fixed within the viewport, or scrolls with its containing block
+            
+            - Keyword values:
+
+                scroll;     background is fixed relative to the element itself and does not scroll with its contents. It is effectively attached to the element's border.
+
+                fixed;      background is fixed relative to the viewport. * NOT compatible with `background-cli: text;`
+
+                local;      background is fixed relative to the element's contents. If the element scrolls, the background scrolls with the element's contents, and the background painting area and background positioning area are relative to the scrollable area of the element rather than to the border framing them. 
+
+            - Global values:
+
+                inherit;
+            
+                initial;
+            
+                unset;
+
+
+        background-clip:
+            
+            - Sets whether an element's background extends underneath its border box, padding box, or content box. 
+            
+            - If the element has no `background-image` or `background-color`, this property will only have a visual effect when the border has transparent regions or partially opage regions (due to `border-style` or `border-image`); otherwise, the border masks the difference
+            
+            - Keyword values:
+
+                border-box;     background extends to the outside edge of the border (but underneath the border in z-ordering)
+            
+                padding-box;    background extends to the outside edge of the padding. No background is drawn.
+            
+                content-box;    background is painted within (clipped to) the content box.
+
+                text;           background is painted within (clipped to) the foreground text.
+
+            - Global values:
+
+                inherit;
+            
+                initial;
+            
+                unset;
+
+
+        background-origin:
+            - Sets the background's origin: from the border start, inside the border, or inside the padding.
+                Similar to setting `top:0;` and `let:0;` on a `position: absolute;`. This determines where the image starts. 
+                * Note that `background-origin` is ignored when `background-attachment` is fixed. 
+            
+            - Keyword values:
+
+                border-box;     background is positioned relative to the border box.
+            
+                padding-box;    background is positioned relative to the padding box.
+            
+                content-box;    background is positioned relative to the content box.
+
+            - Global values:
+
+                inherit;
+            
+                initial;
+            
+                unset;
+
+
+        background-color:
+            - Sets the background color of an element using keywords, hexadecimal values, RGB values, HSL values, special keyword values, and global values.
+            
+            * It is rendered behind any `background-image` that is specified, although the color will still be visible through any transparency in the image. 
+            
+            * Even if images are opaque, web devs should always specify a `background-color`. If the images cannot be loaded - for instance, when the network is down - the background color will be used as a fallback.
+
+
+        background-position:
+            
+            - Sets the initial position for each background image. The position is relative to the position layer set by `background-origin`
+            
+            - A position defines an x/y coordinate, to place an item relative to the edges of an element's box.
+            
+            - Can be defined using 1-4 values.
+                
+                If 1 value is used, the second value us assumed to be `center`.
+                
+                If 2 non-keyword values are used, the value1 = horizontal (X) and value2 = vertical (Y). 
+                    If both values are <length> or <percentage>, then the first defines X and the second Y. If the other value is `left` or `right`, then this value defines Y, relative to the top edge. If the other value is `top` or `bottom`, then this value defines X, relative to the left edge.
+
+                If 3 or 4 values are used, the length-percentage values are offsets for the preceding keyword values. 
+                    For 3-value syntax:
+                        If the first value is `left` or `right`, then this defines X. If `top` or `bottom`, then this defines Y and the other keyword value defines X.
+                        
+                        The <length> or <percentage> value, if it is the second value, is the offset for the first value. If it is the third value, it is the offset for the second value.
+
+                        The single length or percentage values is an offset for the keyword value that precedes it. THE COMBINATION OF ONE KEYWORD WITH TWO <LENGTH> OR <PERCENTAGE> VALUE IS NOT VALID. 
+                    
+                    For 4-value syntax: 
+                        The first and third values are keyword values defining X and Y. The second and fourth values are offsets for the preceding X and Y keyword values. If `left` or `right` are given here, then this defines X. If `top` or `bottom` are given, then this defines Y and the other keyword value defines X.
+
+                        The second and fourth values are <length> or <percentage> values. The second value is the offset for the first keyword. The fourth value is the offset for the second keyword. 
+
+            - Keyword values:
+
+                top;            places the item against the top edge, the following dimension value specifies the distance from the edge.
+
+                bottom;         places the item against the bottom edge, the following dimension value specifies the distance from the edge.
+
+                left;           places the item against the left edge, the following dimension value specifies the distance from the edge.
+
+                right;          places the item against the right edge, the following dimension value specifies the distance from the edge.
+
+                center;         centers the image.
+
+            - Percentage values:
+
+                X% Y%:          If both values are <length> or <percentage>, then the first defines X and the second Y. If the other value is `left` or `right`, then this value defines Y, relative to the top edge. If the other value is `top` or `bottom`, then this value defines X, relative to the left edge.
+
+            - Length values:
+
+                X Y:            If both values are <length> or <percentage>, then the first defines X and the second Y. If the other value is `left` or `right`, then this value defines Y, relative to the top edge. If the other value is `top` or `bottom`, then this value defines X, relative to the left edge.
+
+                The percentage offset of the given background image's position is relative to the container. A value of 0 or 0% will align the edge of the image with that edge of the container. 
+
+                * TO CENTER AN IMAGE IN A CONTAINER, specify the `background-position: 50% 50%;`
+
+            - Multiple images:
+
+                X Y, center:
+
+            - Edge offset values:
+
+                <edge> <offset amt>:    The <offset amt> can be either <length> or <percentage> and specifies the offset value from the preceding edge. 
+
+            - Global values:
+
+                inherit;
+            
+                initial;
+            
+                unset;
+
+
+        background-repeat:
+            
+            - Sets how background images are repeated. A background image can be repeated along the horizontal and vertical axes, or not repeated at all.
+
+            - By default, the repeated images are clipped to the size of the element, but they can be scaled to fit (using `round`) or evenly distributed from end to end (using `space).
+
+            - Keyword values with 1-value & 2-value syntax equivalents (horizontal , vertical):
+
+                repeat:         equivalent to `repeat repeat`.
+                                The image is repeated as much as needed to cover the whole background image painting area. The last image will be clipped if it doesn't fit.
+
+                space;          equivalent to `space space`.
+                                The image is repeated as much as possible withouth clipping. The first and last images are pinned to either side of the element, and whitespace is distributed evenly between the images. The `background-position` property is ignored unless only one image can be displayed without clipping. The only case where clipping happens using `space` is when there isn't enough room to display one image.
+
+                round;          equivalent to `round round`.
+                                As the allowed space increases in size, the repeated images will stretch (leaving no gaps) until there is room (space left >= half of the image width) for another one to be added. When the next iamge is added, all of the current ones compress to allow room. Example: an image with an original width of 260px, repeated three times, might stretch until each repetition is 300px wide, and then another image will be added. They will then compress to 225px.
+
+                no-repeat;      equivalent to `no-repeat no-repeat`.
+                                The image is not repeated (and hence the background image painting area will not necessarily be entirely covered). The position of the non-repeated background image is defined by the `background-position` property. 
+
+                repeat-x;       equivalent to `repeat no-repeat`.
+
+                repeat-y;       equivalent to `no-repeat repeat`.
+
+            - Global values:
+
+                inherit;
+
+                initial;
+
+                unset;
+
+
+        background-size:
+            
+            - Sets the size of the element's background image. The image can be left to its natural size, stretched, or constrained to fit the available space.
+
+            - Spaces not covered by a background image are filled with the `backgroun-color` property, and the background color will be visible behind background images that have transparency/translucency.
+
+            * May be included immediately after `position`, separated with the / character, liks this: `center/80%`
+
+            - Keyword values:
+
+                cover;          Scales the image as large as possible without cropping or stretching the image.
+
+                contain;        Scales the image as large as possible withouth stretching the image. If the proportions of the image differe from the element, it is cropped either vertically or horizontally so that no empty space remains.
+
+                auto;           Scales the background image in the corresponding direction such that its intrinsic proportions are maintained.
+
+                <length>        Stretches the image in the corresponding dimension to the specified length. Negative values are not allowed.
+
+                <percentage>    Stretches the image in the corresponding dimension to the specified percentage of the background positioning area. The background positioning area is determined by the value of `background-origin` (by default, the padding box). However, if the background's `background-attachment` value is `fixed`, the positioning area is instead the entire viewport. Negative values are not allowed. 
+
+            - 1-value syntax:
+
+                Specifies the width fo the image. The height become AUTO.
+                    % | em | px | auto;     
+                    - negative values are not allowed 
+
+            - 2-value syntax: 
+
+                The first value specifies the width of the image, the second value specifies the height.
+                    % | em | px | auto;
+
+            - Multiple backgrounds: 
+
+            - Global values:
+
+                inherit;
+
+                initial;
+
+                unset;
+
+            - The computation of values depends on the image's intrinsic dimensions (width and height) and intrinsic proportions (width-to-height ratio). These attributes are as follows:
+
+                    A bitmap images (such as a JPG) always has intrinsic dimensions and proportions.
+
+                    A vector image (such as SVG) does not necessarily have intrinsic dimensions. If it has both horizontal and vertical intrinsic dimensions, it also has intrincis proportions. If it has no dimensions or only one dimension, it may or may not have proportions.
+
+                    CSS <gradient>s have no intrinsic dimensions or intrinsic proportions.
+
+                    Background images created with the `element()` function use the intrinsic dimensions and proportions of the generating element. 
+
+                If both components of `background-size` are specified and are not `auto`, the background image is rendered at the specified size.
+
+                If the `background-size` is `contain` or `cover`,then,  while preserving its intrinsic proportions, the image is rendered at the largest size contained within, or covering, the background positioning area. If the image has no intrinsic proportions, then it's rendered at the size of the background positioning area. 
+
+                If the `background-size` is `auto` or `auto auto`:
+
+                    If the image has both horizontal and vertical intrinsic dimensions, it's rendered at that size.
+
+                    If the image has no intrinsic dimensions and has no intrinsic proportions, it's rendered at the size of the background positioning area. 
+
+                    If the image has no intrinsic dimensions but has intrinsic proportions, it's rendered as if `contain` had been specified instead.
+
+                    If the image has only on intrinsic dimension and has intrinsic proportions, it's renered at the size corresponding to that one dimension. The other dimension is computed using the specified dimension and the intrinsic proportions.
+
+                    If the image has only one intrinsic dimension but has no intrinsic proportions, it's rendered using the specified dimension and the other dimension of the background positiing area. 
+
+                If the `background-size` has one `auto` component and one non-`auto` component:
+
+                    If the image has intrinsic proportions, it's stretched to the specified dimension. The unspecified dimension is computed using the specified dimension and the intrinsic proportions. 
+
+                    If the image has no intrinsic proportions, it's stretched to the specified dimension. The unspecified dimension is computed using the image's corresponding intrinsic dimension, if there is one. If there is no such intrinsic dimension, it becomes the corresponding dimension of the background positioing area.
+
+
+        background:
+
+            - Shorthand for the following background style properties:
+                
+            - Any omitted sub-values will be set to their initial value.
+
+            - The background property is specified as one or more background layers, separated by commas.

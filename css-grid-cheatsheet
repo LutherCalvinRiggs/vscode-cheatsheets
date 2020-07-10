@@ -79,14 +79,14 @@ Grids generally require media queries for resizing
         /*
         Defines the columns and rows of the grid with a space-separated list of values. 
         Values represent the track size and the space between them represents the the grid line.
-            <track-size>: Xpx, X%, Xrem, Xfr 
-            <line-name>: an arbitrary name of your choosing, in brackets [first], [end], [last-line], [col4-start], [row1-end] etc
-            repeat(): used if your definition has repeating parts. repeat(<iterations>, <track-sizes> | <live-names>)
-            min-content: 
-            max-content: 
-            minmax(<size-value1>, <size-value2>): size will be no small than <size-value1> and no bigger than <size-value2>
-            auto: fraction (fr) of free space is calculated AFTER any non-flexible items
-            auto-fit: automatically adds a new column or row when a maximum width or height (respectively) is met. Used in conjunction with minmax()
+            - <track-size>: Xpx, X%, Xrem, Xfr 
+            - <line-name>: an arbitrary name of your choosing, in brackets [first], [end], [last-line], [col4-start], [row1-end] etc
+            - repeat(): used if your definition has repeating parts. repeat(<iterations>, <track-sizes> | <live-names>)
+            - min-content: 
+            - max-content: 
+            - minmax(<size-value1>, <size-value2>): size will be no small than <size-value1> and no bigger than <size-value2>
+            - auto: fraction (fr) of free space is calculated AFTER any non-flexible items
+            - auto-fit: automatically adds a new column or row when a maximum width or height (respectively) is met. Used in conjunction with minmax()
         */
 
     grid-template-areas: "<name> | . | none | ... " 
