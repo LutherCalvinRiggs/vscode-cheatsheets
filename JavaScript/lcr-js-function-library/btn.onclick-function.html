@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Function start</title>
+    <style>
+      .msgBox {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 242px;
+        background: #eee;
+      }
+
+      .msgBox p {
+        line-height: 1.5;
+        padding: 10px 20px;
+        padding-left: 82px;
+        background-position: 25px center;
+        background-repeat: no-repeat;
+        color: #333;
+      }
+
+      .msgBox button {
+        background: none;
+        border: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 1.1rem;
+        color: #aaa;
+      }
+
+    </style>
+  </head>
+  <body>
+    <button>Display message box</button>
+
+    <script>
+
+    function displayMessage(msgText, msgType) {
+        const html = document.querySelector('html');
+            /* Used to select an HTML element and store a reference to it in a constant. This allows us to maipulate it later on. */
+
+
+
+        const panel = document.createElement('div');
+            /* Used to create an HTML element and store a reference to it in a constant. */
+        panel.setAttribute('class', 'msgBox');
+            /* Used to set a `class` attribute to the panel with a value of `msgBox`. This is to make it easier to style the element with pre-written CSS. */
+        html.appendChild(panel);
+            /* DOM function used to nest one element inside the other as a child of it. 'panel' is the variable name of the element that will be appended. 'html' is the element that will become the parent. If skipped, the element we created won't appear on the page on its own. */
+
+
+
+        const msg = document.createElement('p');
+            /* Creates a new 'p' element. */
+        msg.textContent= msgText;
+            /* Used to insert a message inside of the new 'p' <element>: 'msg' */
+        panel.appendChild(msg);
+            /* Appends the new 'p' to the 'panel' */
+
+
+
+        const closeBtn = document.createElement('button');
+            /* Creates a new 'p' element. */
+        closeBtn.textContent = 'x';
+            /* Used to insert a message inside of the new 'button' <element>: 'closeBtn' */
+        panel.appendChild(closeBtn);
+            /* Appends the new 'button' to the 'panel' */
+
+
+
+        closeBtn.onclick = function() {
+            /* Makes it so that when a button is clicked, some code is run to delete the whole panel from the page - to close the message box. Made equal to any anonymous function, which contains the code to run when the button is clicked. */
+
+            panel.parentNode.removeChild(panel);
+                /* Removes a specific child element of the HTML element - in this case the panel <div> */
+        }
+
+        if (msgType === 'warning') {
+            msg.style.backgroundImage = 'url(icons/warning.png)';
+            panel.style.backgroundColor = 'red';
+        } else if (msgType === 'chat') {
+            msg.style.backgroundImage = 'url(icons/chat.png)';
+            panel.style.backgroundColor = 'aqua';
+        } else {
+            msg.style.paddingLeft = '20px';
+        }
+
+
+
+        /* This whole block of code generates a block of HTML that looks like the following, and then inserts it into the page:
+        
+            <div class="msgBox">
+                <p>This is a message box</p>
+                <buttong>x</button>
+            </div>
+        
+        */
+    }
+
+    const btn = document.querySelector('button');
+        /* Stores a reference to the 'button' */
+    btn.onclick = function(){
+        displayMessage('Your inbox is almost full — delete some mails', 'warning');
+    };
+        /* Similar to `closeBtn.onclick...`, calls some code in response to the button being clicked. BUT instead of calling an anonymous function containing some code, we are calling our function name directly. */
+
+            /* If the parentheses are included after the function name, the function will be called immediately instead of when the button is clicked.  */
+
+    </script>
+  </body>
+</html>

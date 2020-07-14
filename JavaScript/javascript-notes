@@ -1782,3 +1782,105 @@
                     console.log(value);
                 }
 
+    - Build your own function:
+
+        <body>
+        <button>Display message box</button>
+
+        <script>
+
+        function displayMessage(msgText, msgType) {
+            const html = document.querySelector('html');
+                /* Used to select an HTML element and store a reference to it in a constant. This allows us to maipulate it later on. */
+
+
+
+            const panel = document.createElement('div');
+                /* Used to create an HTML element and store a reference to it in a constant. */
+            panel.setAttribute('class', 'msgBox');
+                /* Used to set a `class` attribute to the panel with a value of `msgBox`. This is to make it easier to style the element with pre-written CSS. */
+            html.appendChild(panel);
+                /* DOM function used to nest one element inside the other as a child of it. 'panel' is the variable name of the element that will be appended. 'html' is the element that will become the parent. If skipped, the element we created won't appear on the page on its own. */
+
+
+
+            const msg = document.createElement('p');
+                /* Creates a new 'p' element. */
+            msg.textContent= msgText;
+                /* Used to insert a message inside of the new 'p' <element>: 'msg' */
+            panel.appendChild(msg);
+                /* Appends the new 'p' to the 'panel' */
+
+
+
+            const closeBtn = document.createElement('button');
+                /* Creates a new 'p' element. */
+            closeBtn.textContent = 'x';
+                /* Used to insert a message inside of the new 'button' <element>: 'closeBtn' */
+            panel.appendChild(closeBtn);
+                /* Appends the new 'button' to the 'panel' */
+
+
+
+            closeBtn.onclick = function() {
+                /* Makes it so that when a button is clicked, some code is run to delete the whole panel from the page - to close the message box. Made equal to any anonymous function, which contains the code to run when the button is clicked. */
+
+                panel.parentNode.removeChild(panel);
+                    /* Removes a specific child element of the HTML element - in this case the panel <div> */
+            }
+
+            if (msgType === 'warning') {
+                msg.style.backgroundImage = 'url(icons/warning.png)';
+                panel.style.backgroundColor = 'red';
+            } else if (msgType === 'chat') {
+                msg.style.backgroundImage = 'url(icons/chat.png)';
+                panel.style.backgroundColor = 'aqua';
+            } else {
+                msg.style.paddingLeft = '20px';
+            }
+
+
+
+            /* This whole block of code generates a block of HTML that looks like the following, and then inserts it into the page:
+            
+                <div class="msgBox">
+                    <p>This is a message box</p>
+                    <buttong>x</button>
+                </div>
+            
+            */
+        }
+
+        const btn = document.querySelector('button');
+            /* Stores a reference to the 'button' */
+        btn.onclick = function(){
+            displayMessage('Your inbox is almost full — delete some mails', 'warning');
+        };
+            /* Similar to `closeBtn.onclick...`, calls some code in response to the button being clicked. BUT instead of calling an anonymous function containing some code, we are calling our function name directly. */
+
+                /* If the parentheses are included after the function name, the function will be called immediately instead of when the button is clicked.  */
+
+        </script>
+    </body>
+
+    - Function return values:
+
+        Return values are the values that a function returns when it has completed. It is very useful to know and understand what values are returned by functions, so we try to include this information wherever possible. 
+
+        Some functions don't retun any value. In these cases, our reference pages list the return value as `void` or `undefined`.
+
+        Generally, a return value is used where the function is an intermediate step in a calculation of some kind. 
+
+        Return values can be stored in a variable and used in future calculations. 
+            
+            To return a value from a custom function, you need to use the `return` keyword.
+
+        * It is generally a good idea to check that any necessary parameters are validated, and that any optional parameters have some kind of default value provided. This way, you program will be less likely to throw errors.
+
+        * As you go further into your programming career, you'll start doing the same kinds of things over and over again. It is a good idea to create your own library of utility functions dto do these sorts of things.
+
+
+
+
+        
+        

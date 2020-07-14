@@ -63,6 +63,56 @@ https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduct
             window.onload
             window.scrollTo()
 
+/* DOM API */
+    document.querySelector('<element>')
+        
+        Used to select an HTML element and store a reference to it in a constant. This allows us to maipulate it later on.
+
+            const html = document.querySelector('html');
+        
+    document.createElement('<element>')
+
+        Used to create an HTML element and store a reference to it in a constant. 
+
+            const panel = document.createElement('div');
+
+    <element>.setAttribute('class', 'class-name');
+        
+        Used to set a `class` attribute to the panel with a value of `msgBox`. This is to make it easier to style the element with pre-written CSS. 
+
+            panel.setAttribute('class', 'msgBox');
+
+    Node.appendChild('const');
+
+        A DOM function used to nest one element inside the other as a child of it. 
+
+        The 'const' is the variable name of the element that will be appended. 
+
+        The `Node` is element that will become the parent. 
+
+            html.appendChild(panel);
+
+        * Without specifying where to up the newly created element, it won't appear on the page.
+
+    Node.textContent
+
+        Used to insert a message inside of an <element>
+
+            msg.textContent = 'This is a message';
+
+    GlobalEventHandlers.onclick
+
+        The `onclick` handler is a property available on a button (or any element on the page) that can be set to a function to specify what code to run when the button is clicked.
+
+        When calling a function with `onclick`, be sure to NOT include the parentheses (). If the parentheses are included, the function will be called immediately. 
+
+    Node.removeChild()
+    
+        DOM API fucntion used to specify that we want to remove a specific child element of the HTML element.
+
+
+
+
 
 /* Testing the DOM API */
     This provides samples for every interface that you can use in your own web development. In some cases, the samples are completely HTML pages, with the DOM access in a <script> element, the interface (eg buttons) necessary to fire up the script in a form, and the HTML elements upon wich the DOM operates listed as well. These samples can be copied and pasted to a new HTML document to run the example from the browser.

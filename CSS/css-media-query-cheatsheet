@@ -1,0 +1,44 @@
+/* Large tablet landscape - Medium browser */
+@media screen and (max-width: 1375px){
+
+}
+
+/* Medium tablet landscape */
+@media screen and (max-width: 1200px){
+    
+}
+
+/* Small/mini tablet landscape - Large tablet portrait */
+@media screen and (max-width: 1050px){
+    
+}
+
+/* Medium, small and mini tablet protrait - Small browser */
+@media screen and (max-width: 875px){
+    
+}
+
+/* Large and medium phones landscape */
+@media screen and (max-width: 750px){
+    
+}
+
+/* Small phone landscape */
+@media screen and (max-width: 600px){
+    
+}
+
+/* Large phones portrait */
+@media screen and (max-width: 500px){
+    
+}
+
+/* Medium phones portrait */
+@media screen and (max-width: 400px){
+    
+}
+
+/* Small phones portrait */
+@media screen and (max-width: 350px){
+    
+}

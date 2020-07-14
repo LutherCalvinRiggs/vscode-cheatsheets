@@ -275,3 +275,38 @@
             - Any omitted sub-values will be set to their initial value.
 
             - The background property is specified as one or more background layers, separated by commas.
+
+    VISIBILITY
+
+        visibility: 
+            - Shows or hides an element without changing the layout of a document. The property can also hide rows or columns in a <table>
+
+            * To both hide an element and remove it from the document layout, use `display: none;` instead of `visibility`.
+
+            - Keyword values: 
+
+                hidden;     The element box is invisible (not drawn), but still affects layout as normal. Descendants of the element will be visible if they have `visibility` set to `visible`. The element cannot recieve focus (such as when navigating through tab indexes). 
+
+                visible;    The element box is visible.
+
+                collapse;   For <table> rows, columns, column groups, and row groups, the row(s) or column(s) are hidden and the space they would have occupied is removed (as if `display: none;` were applied to the column/row of the table). However, the size of other rows and columns is still calculated as though the cells in the collapsed row(s) or columns(s) are present. This value allows for the fast removal of a row or column from a table without forcing th recalculation of widths and heights for the entire table. - Collapsed flex items are hidden, and the space they would have occupied is removed. - For XUL elements, the computed size of the element is always zero, regarless of other styles that would normally affect the size, although margins still take effect. - For other elements, `collapse` is treated the same as `hidden`.
+
+            - Global values: 
+
+                inherit;    1 
+
+                initial;    1
+
+                unset;      1
+
+
+    PROPERTY 
+
+        property-name:
+
+            - Note | Keyword value: | Global value:
+                 
+                keyword; | <value>;     explanation.
+
+
+
