@@ -1879,8 +1879,85 @@
 
         * As you go further into your programming career, you'll start doing the same kinds of things over and over again. It is a good idea to create your own library of utility functions dto do these sorts of things.
 
+        It is possible to use `return` without a value. That causes the function to exit immediately.
 
+            function showMovie(age) {
+                if ( !checkAge(age) ) {
+                    return;
+                }
+                alert( "showing you the movie" ); 
+                // ...
+            }
 
+            // If `checkAge(age)` returns `false`, then `showMovie` won't proceed to the `alert`.
 
+        A function with an empty `return` or without it returns `undefined`:
+
+            function doNothing() { /* empty */ }
+            
+            alert( doNothing() === undefined );     // true
+
+        An empty `return` is also the same as `return undefined`:
+            function dNothing() {
+                return;
+            }
         
+            alert( doNothing() === undefined );     // true
+
+        * Never add a newline between `return` and the value. JS assumes a semicolon after `return`, so if you add a newline it effectively makes it an empty return. If you must use a newline, wrap the return in parentheses. 
+
+    - Function naming
+        
+        Functions are actions so their names are usually verbs. It is widespread practice to start a function with a verbal prefix which vaguely describes the action:
+
+                "show..." - shows something
+                "get..." - return a value 
+                "calc..." - calculate something 
+                "create..." - create something 
+                "check..." - check something and return a boolean 
+
+    - One function = one action 
+
+        A function should do exactly what is suggest by its name, no more. 
+
+        Two independedn actions usually deserve two functions, even if they are usually called together (in that case we can make a 3rd function that calls those two).
+
+        * Separate functions are easier to test and debug 
+
+    - Function Expressions 
+
+            let sayHi = function() {
+                alert( "Hello" );
+            };
+
+        The function is created and assigned to the variable explicitly, like any other value. No matter how the function is defined, it's just a value stored in the variable `sayHi`.
+
+        In JS, a function is a value, so we can deal with it as a value. Because functions are also values, they can be copied to another variable:
+    
+            function sayHi() {      // create - declares function and puts it in a varialbe named `sayHi`
+                alert( "Helo" );
+            }
+
+            let func = sayHi;       // copy - copies `sayHi` to variable `func` 
+                                    // note no parentheses after `sayHi` - if there were, this would write the result of the call `sayHi()` into `func`, not the function `sayHi` itself 
+
+            funct();                // run the copy - now the function can be called as `funct()` and as `sayHi()`
+            sayHi();                // run the original
+
+        * The same code can be written as follows, using a Function Expression:
+
+            let sayHi = function() {
+                alert( "Hello" );
+            };
+
+            let func = sayHi;
+
+        * Why is there a semicolon at the end?
+
+            There is no need for a ; at the end of code blocks and syntax structures that use them like `if{...}`, `for {}`, `function f {}`, etc
+
+            A Function Expression is used inside the statement: `let sayHi = ...;`, as a value. It's not a code block, but rather an assignment. The semicolon ; is recommended at the end of statements, no matter what the value is. So the semicolon here is not related to the Function Expression itself, it just terminates the statement. 
+
+    - Callback functions 
+
         
