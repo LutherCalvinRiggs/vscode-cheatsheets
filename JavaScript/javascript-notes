@@ -539,23 +539,34 @@
 
     - String
         A STRING IN JS MUST BE SURROUNDED BY QUOTES
+
         In JS, there are 3 types of quotes:
+
             Double and single quotes are "simple" quotes. There's practically no difference between them in JS.
+
                 Double quotes: "Hello"
                     let str = "Hello";
                 Single quotes: 'Hello'
                     let str2 = 'Single quotes are ok too';
+
             Backticks are "extended functionality" quotes. They allow us to embed variables and expressions into a string by wrapping them in ${_}. The expression inside ${...} is evaluated and the result becomes a part of the string. Anything can be put into the ${...}
+               
                 Backticks: `Hello`
+
                     let phrase = `can embed another ${str}`;
 
                     let name = "John";
+
                     // embed a variable
                     alert( `Hello, ${name}!` );         // Hello, John!
+
                     // embed an expression
                     alert( `the result is ${1+2}` );    // the result is 3
+
         There is no 'character' type.
-            In som languages, there is a special "character" type for a single character. For example, in the C language and in Java it is called "char".
+
+            In some languages, there is a special "character" type for a single character. For example, in the C language and in Java it is called "char".
+
             In JS, there is no such type. There's only one type: `string`. A string may consist of only one character or many of them.
     
     - Boolean (logical type)
@@ -618,55 +629,83 @@
     - String methods help you to work with strings.
 
     - String Methods and Properties
+
         Primitive values, like "John Doe", cannot have properties or methods (because they are not objects).
+
         Yet, JS treats primitive values as objects when executing methods and properties.
 
     - String length
+
         The `length` property returns the length of a string 
+
             let txt = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             let sln = txt.length;           // 26
     
     - Finding a string in a string
+
         The `indexOf()` method returns the index of (the position of) the `first` occurrence of a specified text in a string:
+
             let str = "Please locate where 'locate' occurs!";
             let pos = str.indexOf("locate");        // 7
+
         JS counts positions from zero (0)
+
         The `lastIndexOf()` method returns the index of the last occurence of a specified text in a string.
+
             let str = "Please locate where 'locate' occurs!";
             let pos = str.lastIndexOf("locate");    // 21
+
         Both `indexOf()` and `lastIndexOf()` return -1 if the text is not found.
+
             let str = "Please locate where 'locate' occurs!";
             let pos = str.lastIndexOf("John");    // -1 
+
         Both methods accept a second parameter as the starting position for the search:
+
             let str = "Please locate where 'locate' occurs!";
             let pos = str.indexOf('locate", 15);    // 21
+
         The `lastIndexOf()` method searches backwards (from the end to the beginning), meaning: if the second parameter is `15`, the search starts at position 15, and searches to the beginning of the string.
+
             let str = "Please locate where 'locate' occurs!";
             let pos = str.lastIndexOf("locate", 15);    // 7
 
     - Searching for a String in a String 
+
         The `search()` method searches a string for a specified value and returns the position of the match:
+
             let str = "Please locate where 'locate' occurs!";
             let pos = str.search("locate");         // 7
         
     - The indexOf() and search() method are NOT equal
+
         The search() method cannot take a second start position argument.
+
         The indexOf() method cannot take powerful search values (regular expressions).
 
     - Extracting string parts 
+
         There are 3 methods for extracting a part of a string:
 
             The slice() Method: `slice(start, end)`
+
                 `slice()` extracts a part of a string and returns the extracted part in a new string.
+
                 This method takes two paramenters:
+
                     The start position 
+
                     The end position (end not included)
                         let str = "Apple, Banana, Kiwi";
                         let res = str.slice(7, 13);         // Banana
+
                     If a parameter is negative, the position is counted from the end of the string.
+
                         let str = "Apple, Banana, Kiwi";
                         let res = str.slice(-12, -6);       // Banana
+
                     If you omit the second parameter, the method will slice out the rest of the string:
+
                         let str = "Apple, Banana, Kiwi";
                         let res = str.slice(7);             // Banana, Kiwi 
 
@@ -674,62 +713,90 @@
                         let res = str.slice(-12);           // Banana, Kiwi 
 
             The substring() Method: `substring(start,end)`
+
                 Similar to slice(), however, substring() cannot accept negative indexes.
+
                     let str = "Apple, Banana, Kiwi";
                     let res = str.substring(7, 13);             // Banana
+
                 If you omit the second parameter, substring() will slice out the rest of the string.
 
             The substr() Method: `substr(start, length)`
+
                 Similar to slice(), however, the second parameter specifies the length of the extracted part.
+
                     let str = "Apple, Banana, Kiwi";
                     let res = str.slice(7, 6);             // Banana
+
                 If you omit the second parameter, substr() will slice out the rest of the string.
+
                     let str = "Apple, Banana, Kiwi";
                     let res = str.slice(7);             // Banana, Kiwi 
+
                 If the first parameter is negative, the position counts from the end of the string.
+
                     let str = "Apple, Banana, Kiwi";
                     let res = str.slice(-4);             // Kiwi 
 
     - Replacing string content 
+
         The replace() method replaces a specified value with another value in a string:
+
             str = "Please visit Microsoft!";
             let n = str.replace("Microsoft", "W3Schools");      // Please visit W3Schools!
         
         THE replace() METHOD DOES NOT CHANGE THE STRING IT IS CALLED ON. IT RETURNS A NEW STRING.
         
         By default, the replace() method replaces ONLY THE FIRST MATCH.
+
             str = "Please visit Microsoft and Microsoft!";
             let n = str.replace("Microsoft", "W3Schools");      // Please visit W3Schools and Microsoft!
         
         By default, the replace() method is CASE SENSITIVE
+
             str = "Please visit Microsoft!";
             let n = str.replace("MICROSOFT", "W3Schools");      // Please visit Microsoft!
 
         To replace case insensitive, use a regular expression with an `/i` flag (insensitive):
+
             str = "Please visit Microsoft!";
             let n = str.replace(/MICROSOFT/i, "W3Schools");     // Please visit W3Schools!
                 NOTE THAT REGULAR EXPRESSIONS ARE WRITTEN WITHOUT QUOTES
 
         To replace ALL MATCHES, use a regular expression with a `/g` flag (global match):
+
             str = "Please visit Microsoft and Microsoft!";
         let n = str.replace(/MICROSOFT/g, "W3Schools");         // Please visit W3Schools and W3Schools!
 
     - Converting to Upper and Lower Case
+
         `toUpperCase()` converts a string to upper case:
+
             let text1 = "Hello World!";
             let text2 = text1.toUpperCase();  // HELLO WORLD!
+
         `toLowerCase()` converts a string to lower case:
+
             let text1 = "Hello World!";
             let text2 = text1.toLowerCase();  // hello world!
+
+        To capitalize only the first letter of a string, use the following code:
+
+            string.substring(0, 1).toUpperCase + string.substring(1);
     
     - The concat() Method
+
         `concat()` joins two or more strings:
+
             let text1 = "Hello";
             let text2 = "World";
             let text3 = text1.concat(" ", text2);       // Hello World 
                 // This method takes text1, adds a space (" "), then adds text2
+
         The `concat()` method can be used instead of the plus operator. 
+
             These two lines do the same thing:
+
                 let text = "Hello" + " " + "World!";
                 let text = "Hello".concat(" ", "World!");
         
@@ -1959,5 +2026,125 @@
             A Function Expression is used inside the statement: `let sayHi = ...;`, as a value. It's not a code block, but rather an assignment. The semicolon ; is recommended at the end of statements, no matter what the value is. So the semicolon here is not related to the Function Expression itself, it just terminates the statement. 
 
     - Callback functions 
+
+        A function is passed as a variable and can be "called back" later if necessary.
+
+            function ask(question, yes, no) {
+                if (confirm(question)) yes()
+                else no();
+            }
+        
+            function showOk() {
+                alert( "You agree." );
+            }
+
+            function showCancel() {
+                alert( "You canceled the execution." );
+            }
+
+            // usage: functions showOk, showCancel are passed as arguments to ask
+            ask("Do you agree?", showOk, showCancel);
+
+        The arguments `showOk` and `showCancel` of `ask` are called 'callback functions' or just 'callbacks'. In the case above, `showOk` becomes the callback for "yes", and `showCancel` for "no". 
+
+        The same function can be writting much shorter with Funciton Expressions:
+
+            function ask(question, yes, no) {
+                if (confirm(question)) yes()
+                else no();
+            }
+
+            ask(
+                "Do you agree?",
+                function() { alert("You agreed."); },
+                function() { alert("You canceled the execution."); }
+            );
+
+        Above, functions are declared right inside the `ask(...)` call. They have no name, and so are called anonymous. Such functions are not accessible outside of `ask` (because they are not assigned to variables), but that's just what we want here. 
+
+        * A function is a value representing an "action". Regular values like strings or numbers represent the data. A function can be perceived as an action. We can pass it between variables and run when we want. 
+
+    - Function Expression vs Function Declaration 
+
+        Let's formulate the key differennces between Declarations and Expressions:
+
+            1) Syntax: how to differentiate between them in the code.
+
+                Function Declaration: a function, declared as a separate statement, in the main code flow
+
+                    function sum(a, b) {
+                        return a + b;
+                    }
+
+                Function Expression: a function, created inside an expression or inside another syntax construct. Here, the function is created at the right of the "assignment expression"
+
+                    let sum = function(a, b) {
+                        return a + b;
+                    };
+
+            2) When a function is created 
+
+                A Function Expression is created when the execution nreaches it and is usable only from that moment. Once the execution flow passes to the right of the assignment `let sum = function`, the function is created and can be used (assigned, called, etc).
+
+                A Function Declaration can be called earlier than it is defined. Example, a global Function Declaration is visible in the whole script, no matter where it is. This is due to internal algorithms. When JS prepares to run the script, it first looks for global Function Declarations in nit and creates the functions. We can think of it as an "initialization stage". After all the Function Declarations are processed, the code is executed. 
+
+            3) Function scope    
+                
+                Function Declarations have "block scope". In In strict mode, when a Function Declaration is within a code block, it's visible everywhere inside that block. But not outside of it. 
+
+        When to choose Function Declaration versus Function Expression?
+
+            1) Function Declaration syntax - It give more freedom in how to organize our code, because we can call such functions before they are declared. It is easier to look up `function f(...) {...}` in the code than `let f = function(...) {...};`.
+
+            2) If a Function Declaration does not suit us or we need a conditional declaration, then Function Expression should be used. 
+
+    - Arrow Functions, the basics:
+
+        Arrow functions are another very simple and concise syntax for creating functions, often better than Function Expressions.
+
+            let func = (arg1, arg2, ...argN) => expression 
+
+        This creates a function `func` that accepts arguments `arg1...argN`, then nevaluates the `expression` on the right side with their use and returns its result. It's the shorter version of: 
+
+            let funnc = function(arg1, arg2, ...argN) {
+                return expression;
+            };
+
+        The following is a concrete example of an arrow function:
+
+            let sum = (a, b) => a + b;
+
+            alert( sum(1, 2) );         // 3
+
+        If you only have one argument, then the parentheses around the parameters can be omitted:
+
+            let double = n => n * 2;
+            
+            alert( double(3) );         // 6
+
+        If ther eare no arguments, parentheses will be empty (but they should be present):
+
+            let sayHi = () => alert("Hello!");
+
+            sayHi();
+
+        Arrow functions can be used in the same way as Function Expressions. For example, to dynamically create a function:
+
+            let age = prompt("What is your age?", 18);
+
+            let welcome = (age < 18) ?
+                () => alert('Hello') :
+                () => alert("Greetings!");
+
+            welcome();
+
+    - Multilinen arrow functions 
+
+        let sum = (a, b) => {           // the curly brace opens a multiline function 
+            let result = a + b;
+            return result;              // if we use curly braces, then we need an explicit "return"
+        }
+
+        alert( sum(1, 2) );             // 3
 
         
