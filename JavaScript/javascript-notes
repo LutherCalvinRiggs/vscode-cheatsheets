@@ -2148,3 +2148,166 @@
         alert( sum(1, 2) );             // 3
 
         
+
+/* JS Arrays */
+    - Arrays are built like so:
+
+            let arrayName = [<element1>, <element2>, ..., <elementN>]
+        
+        Spaces and lin breaks are not important. A declaration cann span multiple lines.
+
+    - Array access 
+
+        Arrays are accessed by referring to the index number:
+
+            let varName = arrayName[x];
+
+        The first item in the array is of index number 0 [0], the second [1], the third [2], and so on.
+
+            let first = arrayName[0];
+            let second = arrayName[1];
+
+                or
+
+            document.getElementById("demo").innerHTML = arrayName[0];
+
+        To access the full array, refer to the array name:
+
+            document.getElementById('demo')innerHTML = arrayName;
+
+    - Arrays are objects
+
+        The `typeOf` operator in JS returns "object" for arrays, but JS arrays are best described as arrays. 
+
+        Arrays use numbers to access its 'elements': arrayName[0]
+
+        Objects use names to access their "members". In the example below, `person.firstName` return John:
+
+            let person = {firstName:"John", lastName: "Doe", age: 46};
+
+    - Array elements can be objects
+
+        JS variables can be objects. Arrays are special kinds of objects. Because of this, you can have variables of different types in nthe same Array.
+
+            myArray[0] = Date.now;
+            myArray[1] = myFunction;
+            myArray[2] = myCars;
+
+    - Array properties and methods
+
+        The real strength of JS arrays are the built-in array properties and methods:
+
+            let x = cars.length;    // The length property retuns the number of elements
+            let y = cars.sort();    // The sort() method sorts arrays 
+
+        The `length` property of an array returns the length of an array (the number of array elements).
+
+            let fruits = ["Banana", "Orange", "Apple", "Mango"];
+            fruits.length;      // the length of fruits is 4
+
+        To access the first array element:
+
+            let first = fruits[0];
+
+        To access the last array element:
+
+            let last = fruits[ fruits.length - 1 ];
+
+    - Looping an array 
+
+        The safest way to loop through an array, is using a `for` loop:
+
+            let fruit, text, fLen, i;
+            let fruits = ["Banana", "Orange", "Apple", "Mango"];    
+            fLen = fruits.length;
+
+            text = "<ul>";
+                for (i = 0; i < fLen; i++) {
+                    text += "<li>" + fruits[i] + "</li>";
+                }
+            text += "</ul>";
+
+        You can also use the `Array.forEach()` function:
+
+            let fruit, text;
+            let fruits = ["Banana", "Orange", "Apple", "Mango"];    
+
+            text = "<ul>";
+                fruits.forEach(myFunction);
+            text += "</ul>";
+
+            function myFunction(value) {
+                text += "<li>" + value + "</li>";
+            }
+        
+    - Adding array elements
+
+        The easiest way to add a new element is to use the `push()` method
+
+            let fruits = ["Banana", "Orange", "Apple", "Mango"];
+            fruits.push("Lemon");    // adds a new element (Lemon) to fruits
+
+        You can also use the `length` property:
+
+            let fruits = ["Banana", "Orange", "Apple", "Mango"];
+            fruits[fruits.length] = "Lemon";    // adds a new element (Lemon) to fruits
+
+    - Associative arrays 
+
+        Many languages support arrays with named indexes. These are called associative arrays (or hashes). JS does NOT support arrays with named indexes.
+
+                var person = [];
+                person[0] = "John";
+                person[1] = "Doe";
+                person[2] = 46;
+                var x = person.length;     // person.length will return 3
+                var y = person[0];         // person[0] will return "John"
+
+        In JS, arrays ALWAYS use numbered indexes.
+
+            * If you use named indexes, JS will redefine the array to a standard object. After that, some array methods and properties will produce incorrect results.
+
+                var person = [];
+                person["firstName"] = "John";
+                person["lastName"] = "Doe";
+                person["age"] = 46;
+                var x = person.length;     // person.length will return 0
+                var y = person[0];         // person[0] will return undefined
+
+    - The difference between arrays and objects 
+
+        In JS, arrays use numbered indexes.
+
+        In JS, objects use named indexes.
+
+            * Arrays are a special kind of object, with numbered indexing. 
+
+    - When to use arrays. When to use objects.
+
+        Avoid `new Array()`
+
+            There is no need to use the JS built-in array constructor `new` Array().
+
+            Instead use []
+
+                var points = new Array();     // Bad
+                var points = [];              // Good 
+            
+            The `new` keyword only complicates the code. It can also produce unexpected results. 
+
+    - How to deteremine if it's an array 
+
+        Array.isArray( arrayName );   // returns true
+                                      // not supported in older browsers 
+
+            or
+
+        function isArray(x) {
+            return x.constructor.toString().indexOf("Array") > -1;
+        }           // Always returns true if the object prototype contains the word "Array"
+
+            or
+
+        arrayName instanceof Array;   // returns true if an object is created by a given constructor 
+        
+
