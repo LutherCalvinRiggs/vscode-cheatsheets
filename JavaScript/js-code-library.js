@@ -281,17 +281,77 @@
         admitted.textContent = admitted.textContent.slice(0, admitted.textContent.length-2) + ".";
 
     // Printing array items to a <li>   ?????
+        let myArray, text, i;
+        let myArray = ['1', '2', '3', '4', '5'];
         let list = document.createElement('ul');
 
-        for (i=0; i < myArray.length; i++){
-            let list = document.createElement('li');
-            list.textContent = myArray[i];
-        }
+        text = '<ul>';
+            for (i=0; i < myArray.length; i++){
+                // list.textContent = myArray[i];
+                text += "<li>" + myArray[i] + "</li>";
+            }
+        text += '<ul>';
 
         const section = document.querySelector('section');
         section.appendChild(list);
 
-        
+    // Searching for a name
+    
+        let name = 'Mustafa';
+        let para = document.createElement('p');
+        let phonebook = ['Chris:1549', 'Li Kang:9634', 'Anne:9065', 'Francesca:3001', 'Mustafa:6888', 'Tina:4312', 'Bert:7780', 'Jada:2282']
+
+        btn.addEventListener('click', function(){
+            // let searchName = input.value.toLowerCase();
+            let searchName = name.toLowerCase();
+            // input.value = '';
+            // input.focus();
+            let i = 0;
+            do {
+                
+                let bookEntry = phoneBook[i].split(':');
+                
+                if (searchName === bookEntry[0].toLowerCase()){
+                    para.textContent = 'Name: ' + bookEntry[0] 'Tel: ' + bookEntry[1];
+                    break;
+                } else {
+                    para.textContent = 'No enter found';
+                }
+
+                i++;
+
+            } while (i < phoneBook.length);
+        });
+
+    // 
+        let i = 500;
+        let para = document.createElement('p');
+
+        function isPrime(num) {
+        for(let i = 2; i < num; i++) {
+            if(num % i === 0) {
+            return false;
+            }
+        }
+        return true;
+        }
+
+        // 
+        while (i > 1) {
+
+            if (i.isPrime() === false) {
+                continue; 
+            } else {
+                para.textContent = i + ', ';
+            }
+
+            i--;
+        }
+        //
+         
+        let section = document.querySelector('section');
+        section.appendChild(para);
+    
 
 
 
