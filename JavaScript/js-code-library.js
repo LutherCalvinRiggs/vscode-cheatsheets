@@ -1,3 +1,59 @@
+// Determin if value is NaN
+value.isNaN();
+
+
+// Spread operator (...)
+
+    // To make an array 
+    [...["12345"]]  // Array [ "12345" ]
+    [..."12345"]    // Array(5) [ '1', '2', '3', '4', '5' ]
+
+    // Copying an array
+    let arrayName1 = [...arrayName2];
+
+    // Make a string
+    let stringName = ...arrayName;
+
+    // Concatenating arrays
+    let newArray = [...arrayName1, ... arrayName2];
+
+    // Find highest value in an array
+    Math.max(...arrayName);
+
+    // Find lowest value in an array
+    Math.min(...arrayName);
+
+    // Using an array as arguments
+    let arraName = [a, b, c];
+    functionName(...arrayName);
+    let functionName = (x, y, z){};
+
+    // Adding an item to a list
+    let arrayName = [x,y,z];
+    let newArray = [a, b, ...arrayName]; 
+
+    // Adding to a state in React
+
+    // Combining objects
+
+    // Converting NodeList to Array
+
+    // https://medium.com/coding-at-dawn/how-to-use-the-spread-operator-in-javascript-b9e4a8b06fab
+
+
+    // Execute a provided function once for each array element
+    arrayName.forEach(element => console.log(element));
+    
+    // Determine if an array includes a certain value among its entries (Boolean)
+    arrayName.includes(value);
+        // Returns 'true' or 'false'
+
+    // Create a new array with all elements that pass the test implemented by the profided function 
+    arrayName.filter(element => element.length > x);
+
+
+    // Rest parameters???
+
 // Arrays
 
     // Accessing FIRST array element
@@ -11,6 +67,12 @@
 
     // Join all array elements into a string, also allows you to specify a separator
         arrayName.join(" * ");
+
+    // To reverse the contents of an array
+        stringName.reverse();
+    
+        // To reverse a string and have it print backwards
+            stringName.split('').reverse().join('');
 
     // Returns the LAST element from an array
         let x = arrayName.pop();
@@ -72,6 +134,95 @@
         arrayName[x].split(':');
         let newArrayName = arrayName[x].split(':');
         // This creates a new array with new elements based on what was split. To recall the items that were split, use newArrayName[0] for the elemennt before the separator and newArrayName[n] for the element after the separator
+
+
+    // Sorting an array alphabetically
+        arrayName.sort();
+            // By default, sorts values as strings
+
+    // Reversing an array 
+        arrayName.reverse();
+
+        // Sort Descending
+            arrayName.sort();
+            arrayName.reverse();
+            // or use the Sort Numerically method
+
+    // Compare - define an alternative sort order
+        function(a, b) {return a-b};
+        // Sends the values to the compare function and sorts the values according to the returned value (negative, zero, positive). If negative, a is sorted before b. If positive, b before a. If 0, no sort.
+
+        // Sort numerically ascending
+            arrayName.sort(function(a, b) {return a - b});
+
+        // Sort numerically descending
+            arrayName.sort(function(a, b) {return b - a});
+
+        // Sorting in random order
+            arrayName.sort(function(a, b) {return 0.5 - Math.random()});
+            
+        // Fisher-Yates Shuffle method for random sorting
+            for (i = arrayName.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * i)
+                k = points[i]; 
+                points[i] = points [j];
+                points[j] = k;
+            }
+
+    // Find highest value in an array
+        arrayName.sort(function(a, b) {return a - b}); // sorts ascending
+        arrayName[arrayName.length - 1];
+
+    // Find highest value in an array
+    function arrayMax(arrayName) {
+        return Math.max.apply(null, arrayName);
+    }
+
+    // Find highest value in an array
+    function arrayMax(arrayName) {
+        var len = arrayName.length;
+        var max = -Infinity;
+        while (len--) {
+          if (aarrayNamerr[len] > max) {
+            max = arrayName[len];
+          }
+        }
+        return max;
+      }
+
+    // Find lowest value in an array
+        arrayName.sort(function(a, b) {return a - b}); // sorts ascending
+        arrayName[0];
+
+    // Find lowest value in an array
+        function arrayMin(arrayName) {
+            return Math.min.apply(null, arrayName);
+        }
+
+    // Find lowest value in an array
+    function arrayMin(arrayName) {
+        var len = arrayName.length;
+        var min = Infinity;
+        while (len--) {
+          if (arrayName[len] < min) {
+            min = arrayName[len];
+          }
+        }
+        return min;
+      }
+    
+    // Sorting Object Arrays
+        arrayName.sort(function(a, b){return a.objectName - b.objectName});
+
+    // Comparying string properties
+        arrayName.sort(function(a, b){
+            var x = a.objectName.toLowerCase();
+            var y = b.objectName.toLowerCase();
+            if (x < y) {return -1;}
+            if (x > y) {return 1;}
+            return 0;
+        });
+
 
     // LIFO & FILO - adds to end, pulls from end
         arrayName.push("newElement")
@@ -296,7 +447,6 @@
         section.appendChild(list);
 
     // Searching for a name
-    
         let name = 'Mustafa';
         let para = document.createElement('p');
         let phonebook = ['Chris:1549', 'Li Kang:9634', 'Anne:9065', 'Francesca:3001', 'Mustafa:6888', 'Tina:4312', 'Bert:7780', 'Jada:2282']
@@ -323,7 +473,7 @@
             } while (i < phoneBook.length);
         });
 
-    // 
+    // Print numbers based on a math calculation
         let i = 500;
         let para = document.createElement('p');
 
@@ -336,7 +486,6 @@
         return true;
         }
 
-        // 
         while (i > 1) {
 
             if (i.isPrime() === false) {
@@ -347,7 +496,6 @@
 
             i--;
         }
-        //
          
         let section = document.querySelector('section');
         section.appendChild(para);
@@ -358,8 +506,119 @@
 
 // String Manipulation
 
+    // Convert a string to an array using a specified separator 
+    stringName.split(",");
+        // If the separator is omitted, the returned array will contain the whole string in index[0]
+        // If the separator is '', the returned array will be an array of single characters
+
+    // Make a string ALL CAPS
+    stringName.toUpperCase();
+
+    // Make a string lowercase
+    stringName.toLowerCase();
+
     // Capitalize the first letter of a string
-    txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    stringName.charAt(0).toUpperCase() + stringName.substr(1).toLowerCase();
+
+    // Remove whitespace
+    stringName.trim();
+        // If trim() is no supported, use replace()
+
+
+    // Get the length of a string
+    let stringName = 'string';
+    stringName.length;
+
+    // Return a character inside a string
+    let stringName = 'string';
+    stringName[x];
+
+    // Return the last character in a string
+    let stringName = 'string';
+    stringName[stringName.length - 1];
+
+
+    // Identifying a substring start point
+    stringName.indexOf('substring');
+
+        // Do x is substring doesn't exist
+        if (stringName.indexOf('substring') !== -1){
+            // code if substring doesn't exist
+        }
+
+    // Identifies the start point of the last occurance of a substring and searches backward
+    stringName.lastIndexOf('substring');
+
+        // A starting point can be added to either indexOf() or lastIndexOf()
+        stringName.indexOf('substring', starting-index-value);
+        stringName.lastIndexOf('substring', starting-index-value);
+            // lastIndexOf() searches backward
+
+    // Locate the index of a string
+    stringName.search('substring-to-find');
+        // Search does NOT take a start point
+
+
+    // Concatenating strings
+    stringName.concat('', stringName2);
+        // Can be used instead of a + operator
+        stringName + '' + stringName2;
+
+
+    // Extracting a substring
+        // * slices up to, but not including, the index-end value
+    stringName.slice(index-start, index-end);
+        // Extract a substring starting at
+        stringName.slice(index-start);
+            // If a negative value, position is counted from the end
+            // If no second value the rest of the string is sliced 
+
+    // Extracting a substring
+        // * slices up to, but not including, the index-end value
+    stringName.substring(index-start, index-end);
+        // Does NOT accept negative values
+
+    // Extracting a substring
+    stringName.substr(index-start, length);
+        // If negative, position counts from the end
+
+
+    // Replace a substring
+    stringName.replace('substring-to-replace', 'replacing-substring');
+        // By default, only the fist match is replaced. To replace ALL matches:
+        stringName.replace(/substring-to-replace/g, 'replacing-substring');
+        // It is CASE SENSITIVE. To make case insensitive
+        stringName.replace(/substring-to-replace/i, 'replacing-substring');
+        // The above creates a new string. To replace the original stringName use the following:
+        let stringName = stringName.replace('substring-to-replace', 'replacing-substring');
+
+
+    // Extract string characters from a specific position
+    stringName.charAt(x);
+
+    // Return the Unicode of a character from a specific position
+    stringName.charCodeAt(x);
+
+    // 
+    
+    
 
 
 
+
+// Applied Coding
+    
+    // Simple calculator
+    let sum = o;
+    while (true) {
+        let value = +prompt("Enter a number", '');
+        if (!value) break;
+        sum += value;
+    }
+    alert( 'Sum: ' + sum);
+
+    // Flag an occurance
+    for (let i = 0; i < 10; i++);{}
+        if (i % 2 == 0) continue;
+        alert(i);
+    }

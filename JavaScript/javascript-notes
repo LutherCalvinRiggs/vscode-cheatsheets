@@ -712,7 +712,7 @@
                         let str = "Apple, Banana, Kiwi";
                         let res = str.slice(-12);           // Banana, Kiwi 
 
-            The substring() Method: `substring(start,end)`
+            The substring() Method: `substring(start, end)`
 
                 Similar to slice(), however, substring() cannot accept negative indexes.
 
@@ -2445,6 +2445,28 @@
         * All JS objects have a `toString()` method.
 
         There are no built-in functions for finding the highest or lowest value in a JS array. 
+
+    - The spread operator (...)
+
+        Useful and quick syntax for adding items to arrays, combining arrays or objects, and spreading an array out into a function's arguments.
+
+        When `...arr` is used in the funtion call, it 'expands' an iterable object `arr` into the list of arguments.
+
+        Trying to pass an array [x, y, z] to a JS funnction expecting separat arguments does not work. The spread syntax "spreads" the array into separate arguments.
+
+        Also useful for:
+            copying an array
+            concatenating or combining arrays
+            using Math functions
+            using an array as arguments
+            adding an item to a list
+            adding to state in React
+            combining objects 
+            converting NodeList to an array 
+
+        Can also be used on a string.
+
+    - Rest parameters???
 
 
 
