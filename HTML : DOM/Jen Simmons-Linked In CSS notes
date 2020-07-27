@@ -1,0 +1,212 @@
+Jen Simmons-Linked In CSS notes
+
+
+Headlines
+    <h1></h1>    <h2></h2>    <h3></h3>    <h4></h4>    <h5></h5>    <h6></h6>
+
+Bold / Italic               (all are inline)
+    <i></i>                 Visual italic font
+    <em></em>               Emphasis read by a screen reader
+    <b></b>                 Visual bold font
+    <strong></strong>       Importance read by a screen reader
+
+Lists
+    <ul>
+        <li></li>           Will be marked with a dot
+    </ul>
+
+    <0l>
+        <li></li>           Will be marked with a number
+    </0l>
+
+    <dl>                'Definition List' 
+        <dt>            'Definition Term'
+        <dd></dd>       'Definition Description'
+        </dt>
+    </dl>
+
+Quotes
+    <blockquote>                    creates a block 
+        <p> What was said </p>
+        <cite> Who said it <cite>
+    </blockquote>
+
+    <q></q>     Inline quotes. Broswers picks the quote marks based on the language.
+
+Dates & Times
+    <time> Can write a date however you want. This is what we see. </time>
+
+    <time datetime="YYYY-MM-DD"> </time>
+        Machine readable attribute to be included with <time>
+
+    <time datetime="17:30"> Time of day written in military time </time>
+
+    Other time formats 
+        datetime="14:15:28.5"       hh-mm-ss.ddd
+        datetime="15:45-05:00"      hh-mm-ss.ddd(+ || -)hh:mm hour diff from GMT
+
+Code 
+    <code> </code>      (inline) shows symantic code
+
+HTML Character Entities  (full list can be found on W3C website)
+    - Used when you want an &, <, or > to show up on the screen
+
+    &copy = 'copyright symbol'
+    &trade = 'trademark symbol'
+    &star = 'star symbol'
+    &nbsp; = 'non-breaking space' - browser will know to never break the line there when wrapping
+    &lt; = '<'          
+    &gt; = '>'
+
+    <br>                    Markes a line break. No closing tag needed
+    <pre></pre>             Makes the browser pay attention to line breaks and spacing.
+
+                        <pre>
+                            <code>
+                                &lt; ul &gt;
+                                    &lt; li &gt; item1 &lt; li &gt;
+                                    &lt; li &gt; item2 &lt; li &gt;
+                                &lt; /ul &gt;
+
+                                ul {
+                                    color: teal;
+                                }
+                                li {
+                                    list-style-type: square;
+                                }
+                            </code>
+                        </pre>
+
+Subscripts (like in chemistry)
+    <p>H<sub>2</sub>0</p>           // H2O
+
+Superscripts (like math)
+    <p>x<sup>^y</sup></p>           // x^y
+
+    Math ML is a more powerful language for writing math equations
+
+Subtext (for fine print like copyright info)
+    <small></small>     To convey something with little importance, like a footer
+
+Class
+    class=''        .clase-name
+
+ID 
+    id=''           #id-name
+
+Language
+    lang=''
+
+Text Flow Direction
+    dir='ltr'       left to right
+    dir='rtl'       right to left 
+
+ARIA Roles
+    - HTML attributes that provide accessible information about that specific element
+    aria-label='how you want something read by a screen reader'
+    aria-hidden='true'  // removes something from the accessibility tree so a sreen reader skips it. Put the element you want to hide in a <div aria-hidden='true'> to hide it.
+
+Links
+    <a href='url of where to go'>Words that will contain the hyperlink</a>
+
+    <p> This is a sentence <a href=''>with a link</a> in the middle.</p>
+
+    <p><a href=''><img src=''></a></p>      // img link
+
+    - Absolute urls link to a specific place on the web. They require the full https://www.url.com 
+    - Relative urls link files used by the local webpage = /about or /images
+        - file names have endings such as .html .jpg or .css 
+    * You can put files such as your web-resume.html in a folder, rename the file index.html and then use the URL https://www.luthercalvinriggs.com/web-resume/ as the link and the system will auto load the index.html for the web-resume folder.
+
+Navigaion Menu or Bar
+    <nav role='navigation' aria-label='main menu'>
+        <ul class='navbar'>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/people'>People</a></li>
+            <li><a href='/prices'>Prices</a></li>
+            <li><a href='/contact'>Contact</a></li>
+        </ul>
+    </nav>
+
+    <footer>
+        <a href=''></a>
+        <a href=''></a>
+    </footer>
+
+Images  
+    <img src='image-to-load' alt='text-when-not-seen' width='' height=''>
+
+    File formats  - goal is high quality with low file size
+        GIF - 256 colors, good at compressing large areas of a single color 
+        SVG - logo, icons, etc - vector file  VERY SMALL FILE: should use if you can 
+        JPG - compressing photos -> don't put a large pixel size jpg on your sight, it will slow down
+        PNG - good for transparency. good at compression. 
+    Try various options to see which compresses to the smallest size and still looks good
+
+Responsive Images
+    Responsive resolutions - pixel density
+        Can create different images and let the browser choose
+        Put multiple images in your HTML with different width/height 
+        Use a srcset='' - lists the images offered to the browser as choices (comma separated). The browser will swap out images based on resolution.
+           
+            <img src='image-to-load' alt='text-when-not-seen' width='' height=''
+            
+            srcset='img-url/width-size.jpg 2x, 
+                    img-url/width-size.jpg 3x, 
+                    img-url/width-size.jpg 4x'
+            >
+
+    Responsive sizes
+        Can tell the browser how wide the image is. 480w = 480px, 960w = 960px
+        Assumes you need 100% of the viewport width 
+
+            <img src='image-to-load' 
+                 alt='text-when-not-seen' 
+                 width='' height=''
+                 srcset='img-url/width-size.jpg 480w, 
+                         img-url/width-size.jpg 960w, 
+                         img-url/width-size.jpg 1440w'
+            >
+
+        If the image is part of the layout and doesn't need the 100vw:
+            The `sizes` attribute lists what size image to use at which media query. 
+            The `srcset` attribute allows you to specify multiple files to be used based on either viewport width or image pixel width. 
+
+                <img src='image-to-load' 
+                    alt='text-when-not-seen' 
+                    width='' height=''
+                    srcset='img-url/width-size.jpg 480w, 
+                            img-url/width-size.jpg 960w, 
+                            img-url/width-size.jpg 1440w'
+                    sizes='(max-width: 480px) 240px,
+                            (max-width: 960px) 480px,
+                            (max-width: 1440px) 960px,
+                            1920px'
+                >
+
+    Responsive pictures 
+        <img> element is still needed but is wrapped in a <picture>
+        Use the <source> element to provide multiple options 
+
+            <picture> 
+                <source media='(min-width:600px)'
+                        srcset='computer-option'>
+                <source srcset='mobile-option'>
+                <img src='image-to-load' 
+                    alt='text-when-not-seen' 
+                    width='' height=''
+                >
+            </picture>
+
+Figure and Figcaption 
+    <figure> is for anything that appears as a figure, illustrating something 
+    <figcaption> is for demonstration of a concept which needs a caption 
+
+        <figure>
+            <img src='image-to-load' alt='text-when-not-seen' width='' height=''>
+
+            <figcaption>Write your caption here.</figcaption>
+        </figure>
+
+Audio 
+    
