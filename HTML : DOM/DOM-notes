@@ -1,3 +1,224 @@
+
+                                     ***  The Odin Project Notes  ***
+
+The DOM ( or Document Object Model) is a tree-like representation of the contents of a webpage - a tree of "nodes" with different relationships depending on how they're arrannged in the HTML document 
+
+        <div id="container">
+            <div class="display"></div>
+            <div class="controls"></div>
+        </div>
+
+    In the above example, the `<div class='display'></div>` is a child of `<div id='container'></div>` and a sibling to `<div class='controls'></div>`. Think of it like a family tree. `<div id='container'></div>` is a parent, with its children on the next level, each on their own "branch".
+
+Targeting Nodes with Selectors
+
+    "Selectors" target the nodes you want to work with. You can use a combination of CSS-style selectors and relationship properties to target the nodes you want. 
+
+    - CSS-style Selectors
+
+        Using the above example, the following selectors will refer to `<div class='display'></div>`
+
+            div.display
+            .display 
+            #container > .display 
+            div#container > div.display 
+
+        You can also use relational selectors (i.e., `firstElementChild` or `lastElementChild` etc.) with special properties owned by the nodes. 
+
+            const container = document.querySelector('#container');
+            // select the #container div 
+
+            console.dir(container.firstElementChild);                      
+            // select the first child of #container => .display
+
+            const controls = document.querySelector('.controls');   
+            // select the .controls div
+
+            console.dir(controls.previousElementSibling);                  
+            // selects the prior sibling => .display
+
+        You're identifying a certain node based on its relationships to the nodes around it.
+
+DOM Methods 
+
+    When your HTML code is parsed by a web browser, it is converted to the DOM as was mentioned above. One of the primary differences is that these nodes are objects that have many properties and methods attached to them. These properties and methods are the primary tools we are going to use to manipulate our webpage with JavaScript.
+
+    - Query Selectors can be used to target nodes
+
+        // Return reference to the first match of `selector`
+        element.querySelector(selector);
+
+        // Return a "nodelist" containing references to all of the matches of the `selectors`
+        element.querySelectorAll(selectors)
+
+    * When using querySelectorAll, the return value is not an array. It looks like an array, and it somewhat acts like an array, but it's really a "nodelist". The big distinction is that several array methods are missing from nodelists. One solution, if problems arise, is to convert the nodelist into an array. To do this, use `arrayName.from()` or the spread operator (...).
+
+    - Element Creation 
+
+        // Create a new element of tag type tagName. 
+        const div = document.createElement('div');
+            // `[options]` in this case means you can add some optional parameters to the function. 
+
+        This funnction does NOT put your new element into the DOM, it simply creates it in memory. This is so that you can nmanipulate the element( by adding styles, classes, ides, text, etc) before placing it on the page. You can place the element into the DOM with one of the following methods.
+
+    - Append Elements 
+
+        // Appends `childNode` as the last child of `parentNode`
+        parentNode.appendChild(childNode);
+
+        // Inserts `newNode` into `parentNode` before `referenceNode`
+        parentNode.insertBefore(newNode, referenceNode);
+
+    - Removing Elements 
+
+        // Removes `child` from `parentNode` on the DOM and returns reference to `child`
+        parentNode.removeChild(child);
+
+    - Altering Elements 
+
+        When you have a reference to an element, you can use that reference to alter the element's own properties. This allows you to do many useful alterations, like adding/removing and altering attributes, changing classes, adding inline style information and more. 
+
+            const div = document.createElement('div');                     
+            // create a new div referenced in the variable 'div'
+
+    - Adding Inline Style 
+
+            div.style.color = 'blue';                                      
+            // adds the indicated style rule
+
+            div.style.cssText = 'color: blue; background: white';          
+            // adds several style rules
+
+            div.setAttribute('style', 'color: blue; background: white');    
+            // adds several style rules
+
+        Getting, setting, & removing individual inline CSS properties 
+
+                let divStyle = document.querySelector('div').style;
+                
+                //set
+                divStyle.backgroundColor = 'red';
+                divStyle.border = '1px solid black';
+                divStyle.width = '100px';
+                divStyle.height = '100px';
+
+                //get
+                console.log(divStyle.backgroundColor);
+                console.log(divStyle.border);
+                console.log(divStyle.width);
+                console.log(divStyle.height);
+
+                //remove
+                divStyle.backgroundColor = '';
+                divStyle.border = '';
+                divStyle.width = '';
+                divStyle.height = '';
+
+            * The property names contained in the style object do not contain the normal hyphen that is used in CSS property names. The translation is pretty simple. Remove the hyphen and use camel case. (e.g. `font-size` = `fontSize` or `background-image` = `backgroundImage`). In the case where a css property name is a JavaScript keyword the javascript css property name is prefixed with "css" (e.g. `float` = `cssFloat`).
+
+            * Short hand properties are available as properties as well. So you can not only set `margin`, but also `marginTop`.
+
+            * Remember to include for any css property value that requires a unit of measure the appropriate unit  (e.g. `style.width = '300px';` not style.width = '300';). When a document is rendered in standards mode the unit of measure is require or it will be ignored. In quirksmode assumptions are made if not unit of measure is included.
+
+            For a full list of css properties: http://domenlightenment.com/#6.2
+
+            The style object is a `CSSStyleDeclaration` object and it provides not only access to individual CSS properties, but also the `setPropertyValue(propertyName)`, `getPropertyValue(propertyName, value)`, and `removeProperty()` methods used to manipulate individual CSS properties on an element node. In the code below we set, get and remove individual CSS properties on a `<div>` using these methods. 
+
+                <div style="background-color:green;border:1px solid purple;"></div>
+
+                var divStyle = document.querySelector('div').style;
+
+                // set
+                divStyle.setProperty('background-color','red');
+                divStyle.setProperty('border','1px solid black');
+                divStyle.setProperty('width','100px');
+                divStyle.setProperty('height','100px');
+
+                // get
+                console.log(divStyle.getPropertyValue('background-color'));
+                console.log(divStyle.getPropertyValue('border','1px solid black'));
+                console.log(divStyle.getPropertyValue('width','100px'));
+                console.log(divStyle.getPropertyValue('height','100px'));
+
+                // remove
+                divStyle.removeProperty('background-color');
+                divStyle.removeProperty('border');
+                divStyle.removeProperty('width');
+                divStyle.removeProperty('height');
+    
+            * Take notice that the property name is passed to the `setProperty()` and `getPropertyValue()` method using the css property name including a hyphen (e.g. `background-color` not `backgroundColor`).
+
+            * For more detailed information about the `setProperty()`, `getPropertyValue()`, and `removeProperty()` as well as additional properties and methods have a look the documentation provided by Mozilla: https://developer.mozilla.org/en/DOM/CSSStyleDeclaration
+
+        As just mentioned, if you're accessing a kebab-cased css rule from JS, you'll either need to use camelCase or you'll need to use a bracket notation instead of dot notation.
+
+            div.style.background-color // doesn't work - attempts to subtract color from div.style.background
+            div.style.backgroundColor // accesses the divs background-color style
+            div.style['background-color'] // also works
+            div.style.cssText = "background-color: white" // ok in a string
+
+    - Editing Attributes 
+
+            div.setAttribute('id', 'theDiv');                              
+            // if id exists update it to 'theDiv' else create an id
+            // with value "theDiv"
+
+            div.getAttribute('id');                                        
+            // returns value of specified attribute, in this case
+            // "theDiv"
+
+            div.removeAttribute('id');                                     
+            // removes specified attribute
+
+        Elements in HTML have attributes; these are additional values that configure the elements or adjust their behavior in various ways to meet the criteria the users want. 
+
+        - Content vs IDL Attributes 
+
+            In HTML, most attributes have two faces: the content attribute and the IDL (Interface Definnition Language) attribute. 
+
+            The content attribute is the attribute as you set it from the content (the HTML code) and you can set it or get it via `element.setAttribute()` or `element.getAttribute()`. The content attribute is always a string even when the expected value should be an integer. For example, to set an `<input>` element's `maxlength` to 42 using the content attribute, you have to call `setAttribute("maslength", "42")` on that element. 
+
+            The IDL attribute is also known as a JS property, These are the attributes you can read or set using JS properties like `element.foo`. The IDL attribute is always going to use (but might transfrom) the underlying content attribute to return a value when you get it and is going to save something in the content attribute when you set it. In other words, the IDL attributes, in essence, reflect the content attributes. 
+
+            Most of the time, IDL attributes will return their values as they are really used. FOr example, the default `type` for `<input>` elements is "text", so if you set `input.type="foobar"`, the `<input>` element will be of type text (in the appearance and the behavior) but the "type" content attribute's value will be "foobar". However, the `type` IDL attribute will return the string "text". 
+
+            IDL attributes are not always strings; for example, `input.maxlength` is a nnumber (a signed long). When using IDL attributes, you read or set values of the desired type, so `input.maxlength` is always going to return a number and when you set `input.maxlength`, it wants a number. If you pass another type, it is automatically converted to a number as specified by the standard JS rules for type conversion. 
+
+            IDL attributes can reflect other types such as unsigned long, URLs, booleans, etc. Unfortunately, there are no clear rules and the way IDL attributes behave in conjunction with their corresponding content attributes depends on the attribute. Most of the time, it will follow the rules laid out in the specification, but sometimes it doesn't. HTML specifications try to make this as developer-friendly as possible, but for various reasons (mostly historical), some attributes behave oddly (`select.size`, for example) and you should read the specifications to understand how exactly they behave.
+
+        - Boolean Attributes 
+
+            Some content attributes (eg, `required`, `readonly`, `disabled`) are called boolean attributes. If a boolean attribute is present, its value is true, and if it's absent, its value is false. 
+
+            HTML5 defines restrictions on the allowed values of boolean attributes: If the attribute is present, its value must either be the empty string (equivalently, the attribute may have an unassigned value), or a value that is an ASCII case-insenitive match for the attribute's canonical name, with no leading or trailing whitespace. The following examples are valid ways to mark up a boolean attribute: 
+
+                <div itemscope> This is valid HTML but invalid XML. </div>
+                <div itemscope=itemscope> This is also valid HTML but invalid XML. </div>
+                <div itemscope=""> This is valid HTML and also valid XML. </div>
+                <div itemscope="itemscope"> This is also valid HTML and XML, but perhaps a bit verbose. </div>
+
+            To be clear, the values `true` and `false` are not allowed on boolean attributes. To represent a false value, the attribute has to be omitted altogether. This restriction clears up some common misunderstandings: With `check="false"` for example, the element's `checked` attribute would be interpreted as true because the attribute is present. 
+
+    - Working with Classes
+
+                div.classList.add('new');                                      
+                // adds class "new" to your new div
+
+                div.classList.remove('new');                                   
+                // remove "new" class from div
+
+                div.classList.toggle('active');                                
+                // if div doesn't have class "active" then add it, or if
+                // it does, then remove it
+
+        It is often 
+
+    
+
+
+
+
+
 https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction
 
     - Because the vast majority of code that uses the DOM revolves around manipulating HTML documents, it's common to refer to the noeds in the DOM as elements, although strictly speaking not every node is an element.

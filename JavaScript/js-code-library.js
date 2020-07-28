@@ -54,7 +54,7 @@ value.isNaN();
 
     // Rest parameters???
 
-// Arrays
+// Array Methods
 
     // Accessing FIRST array element
         let first = arrayName[0];
@@ -135,20 +135,20 @@ value.isNaN();
         let newArrayName = arrayName[x].split(':');
         // This creates a new array with new elements based on what was split. To recall the items that were split, use newArrayName[0] for the elemennt before the separator and newArrayName[n] for the element after the separator
 
-
-    // Sorting an array alphabetically
+    // Sorting an array alphabetically AS STRINGS
         arrayName.sort();
             // By default, sorts values as strings
 
-    // Reversing an array 
+    // Reversing elements in an array 
         arrayName.reverse();
 
         // Sort Descending
-            arrayName.sort();
+            arrayName.sort();   // then
             arrayName.reverse();
             // or use the Sort Numerically method
 
-    // Compare - define an alternative sort order
+    // Sort an array numerically
+    // The 'Compare Function' - define an alternative sort order
         function(a, b) {return a-b};
         // Sends the values to the compare function and sorts the values according to the returned value (negative, zero, positive). If negative, a is sorted before b. If positive, b before a. If 0, no sort.
 
@@ -168,15 +168,14 @@ value.isNaN();
                 points[i] = points [j];
                 points[j] = k;
             }
-
+        
     // Find highest value in an array
-        arrayName.sort(function(a, b) {return a - b}); // sorts ascending
-        arrayName[arrayName.length - 1];
+        arrayName.sort(function(a, b) {return a - b});  // sorts ascending
+        arrayName[arrayName.length - 1];                // returns the highest value
 
-    // Find highest value in an array
-    function arrayMax(arrayName) {
-        return Math.max.apply(null, arrayName);
-    }
+    // Find the highest value in an array
+    Math.max.apply(null, arraryName);
+      // `Math.max.apply(null, [1, 2, 3])` is equivalent to `Math.max(1, 2, 3)`
 
     // Find highest value in an array
     function arrayMax(arrayName) {
@@ -191,13 +190,12 @@ value.isNaN();
       }
 
     // Find lowest value in an array
-        arrayName.sort(function(a, b) {return a - b}); // sorts ascending
-        arrayName[0];
+        arrayName.sort(function(a, b) {return a - b});  // sorts ascending
+        arrayName[0];                                   // returns the lowest value
 
-    // Find lowest value in an array
-        function arrayMin(arrayName) {
-            return Math.min.apply(null, arrayName);
-        }
+    // Find the highest value in an array
+    Math.min.apply(null, arraryName);
+      // `Math.min.apply(null, [1, 2, 3])` is equivalent to `Math.min(1, 2, 3)`
 
     // Find lowest value in an array
     function arrayMin(arrayName) {
@@ -222,6 +220,10 @@ value.isNaN();
             if (x > y) {return 1;}
             return 0;
         });
+
+    
+
+        
 
 
     // LIFO & FILO - adds to end, pulls from end
@@ -279,7 +281,87 @@ value.isNaN();
 
         arrayName instanceof Array;   // returns true if an object is created by a given constructor
 
-    // 
+
+
+
+        
+// Array Iterations
+    // Array iterations methods operate on every array item
+
+    // Call a function nonce for each array element
+    arrayName.forEach(myFunction);
+    function myfunction (value) {
+        txt = txt + value + "<br>";
+    }
+
+    // Create a new array by performing a function on each array element
+    // Does not execute the function for array elements without values
+    // Does not change the original array
+    arrayName.map(myFunction);
+    function myfunction(value) {
+        return value * 2;
+    }
+
+    // Create a new array with array elements that passes a test
+    arrayName.filter(myFunction);
+    function myfunction(value) {
+        return value > x;
+    }
+
+    // Run a function on each array element to produce (reduce it to) a single value
+    // Works from left-to-right in the array - see also `reduceRight()`
+    // Does not reduce the original array
+    arrayName.reduce(myFunction);
+    function myFunction(total, value) {
+        return total + value;
+    }
+
+        // .reduce() can accept an initial value
+        arrayName.reduce(myFunction, 100);
+        function myFunction(total, value) {
+            return total + value;
+        }
+
+    // Runs a function on each array element to produce (reduce it to) a single value
+    // Works from right-to-left in the array - see also `reduce()`
+    // Does not reduce the original array
+    arrayName.reduceRight(myFunction);
+    function myFunction(total, value) {
+        return total + value;
+    }
+
+    // Check if all array values pass a test
+    arrayName.every(myFunction);
+    function myFunction(value) {
+        return value < x;
+    }
+
+    // Check if some array values pass a test
+    arrayName.some(myFunction);
+    function myFunction(value) {
+        return value > x;
+    }
+
+    // Search an array for an element value and return its position
+    arrayName.indexOf();
+        // Returns -1 if the item is not found
+        // If the item is present more than once it returns the position of the first
+
+    // Return the position of the last occurance of the specified element
+    arrayName.lastIndexOf();
+        // Returns -1 if the item is not found
+
+    // Returns the value of the first array element that passes a test function
+    arrayName.find(myFunction);
+    function myFunction(value) {
+        return value > x;
+    }
+
+    // Return the index of the first array element that passes a test function
+    arrayName.findIndex();
+    function myFunction(value) {
+        return value < x;
+    }
 
 
 
