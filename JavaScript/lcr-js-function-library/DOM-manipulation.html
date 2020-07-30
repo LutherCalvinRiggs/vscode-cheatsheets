@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Manipulation Exercise</title>
+</head>
+
+<body>
+    <h1>THE TITLE OF YOUR WEBPAGE</h1>
+    <div id="container">
+    </div>
+</body>
+
+<script>
+    const container = document.querySelector('#container');
+    
+    const para = document.createElement('p');
+    para.textContent = 'Hey, I\'m red!';
+    para.setAttribute('style', 'color: red');
+    container.appendChild(para);
+
+    const h3 = document.createElement('h3');
+    h3.textContent = 'I\'m a blue h3!';
+    h3.setAttribute('style', 'color: blue');
+    container.appendChild(h3);
+
+    const divBox = document.createElement('div');
+    // divBox.setAttribute('id', 'divBox');
+    divBox.setAttribute('style', 'background-color: pink; border: 2px solid black');
+    
+        const divH1 = document.createElement('h1');
+        divH1.textContent = 'I\'m in a div';
+        divBox.appendChild(divH1);
+
+        const divPara = document.createElement('p');
+        divPara.textContent = 'ME TOO!';
+        divBox.appendChild(divPara);
+
+    container.appendChild(divBox);
+
+    
+
+
+
+
+</script>
+
+</html>

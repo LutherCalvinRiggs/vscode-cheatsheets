@@ -1,3 +1,51 @@
+// DOM APIs
+
+    // Create and element and give it a class name
+    const div = document.createElement('div');
+    div.className = 'foo';
+
+    // console.log a class name
+    console.log(div.outerHTML);
+
+    // remove the class name and add another
+    div.classList.remove('foo');
+    div.classList.add('anotherclass');
+
+    // Toggle between class name
+    // if 'visible' then remove, if not then add
+    div.classList.toggle('vissible');
+
+    // Toggle depending on a test conditional
+    div.classList.toggle('visible', i < 10);
+
+    // Console.log if <div> contains a class
+    // Returns true if elemennt contains the class 
+    console.log(div.classList.contains('foo'));
+
+    // Add or remove multiple classes
+    div.classList.add('foo', 'bar', 'baz');
+    div.classList.remove('foo', 'bar', 'baz');
+
+    // Add or remove multiple classes using spread syntax
+    const cls = ['foo', 'bar'];
+    div.classList.add(...cls);
+    div.classList.remove(...cls);
+
+    // Replace class 'foo' with class 'bar'
+    div.classList.replace('foo', 'bar');
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Determin if value is NaN
 value.isNaN();
 
@@ -53,6 +101,14 @@ value.isNaN();
 
 
     // Rest parameters???
+
+
+
+
+
+
+
+
 
 // Array Methods
 
@@ -221,11 +277,6 @@ value.isNaN();
             return 0;
         });
 
-    
-
-        
-
-
     // LIFO & FILO - adds to end, pulls from end
         arrayName.push("newElement")
         arrayName.pop();    
@@ -280,6 +331,12 @@ value.isNaN();
             // or
 
         arrayName instanceof Array;   // returns true if an object is created by a given constructor
+
+
+
+
+
+
 
 
 
@@ -362,6 +419,13 @@ value.isNaN();
     function myFunction(value) {
         return value < x;
     }
+
+
+
+
+
+
+
 
 
 
@@ -582,6 +646,34 @@ value.isNaN();
         let section = document.querySelector('section');
         section.appendChild(para);
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+// String Literals 
+
+    //
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

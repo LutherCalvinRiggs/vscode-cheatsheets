@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+    function template(strings, ...keys) {
+                                                console.log(strings);   // ['', '', '', '!']
+                                                console.log(keys);      // [0, 1, 0]
+        return (function(...values) {
+                                                console.log(values)     // ['Y', 'A']
+            let dict = values[values.length -1] || {};
+                                                console.log(dict);      // 'A'
+            let result = [strings[0]];
+                                                console.log(result);    // ['']
+            keys.forEach( function(key, i) {
+                let value = Number.isInteger(key) ? values[key] : dict[key];
+                result.push(value, strings[i + 1]);
+                
+                                                // the following if for the first pass of forEach()
+                                                console.log(keys);      // [0, 1, 0]
+                                                console.log(key);       // 0
+                                                console.log(i);         // 0
+                                                console.log(value);     // Y 
+                                                console.log(result);    // ['', Y, '']
+            });
+            return result.join('');
+        });
+    }
+
+                // strings is the array of strings deteremined by tag``
+                // keys is array of expressions (${}) passed to tag``
+                // values is array of parameters passed from t1Closure('Y', 'A'); 
+                // dict becomes the last element of values[]
+                // result[] is initialized with strings[0] => ("")
+                // forEach() checks each key of keys[] to see if it's an integer, if so it returns the element of values[] to value
+                // value + strings[i + 1] (aka the next string) are appended to result[]
+                // after all keys are checked and appended, result[] is joined into a string and returned
+
+    let t1Closure = template`${0}${1}${0}!`;
+        // let t1Closure = template(["","","","!"],0,1,0);
+    t1Closure('Y', 'A');       
+    // "YAY!"
+
+    // let t2Closure = template`${0} ${'foo'}!`;
+    //     // let t2Closure = template([""," ","!"],0,"foo");
+    // t2Closure('Hello', {foo: 'World'});     // "Hello World!"
+
+    // let t3Closure = template`I'm ${'name'}. I'm almost ${'age'} years old.`;
+    // //let t3Closure = template(["I'm ", ". I'm almost ", " years old."], "name", "age");
+    // t3Closure('foo', {name: 'MDN', age: 30}); //"I'm MDN. I'm almost 30 years old."
+    // t3Closure({name: 'MDN', age: 30}); //"I'm MDN. I'm almost 30 years old."
+
+</script>
+
+</html>

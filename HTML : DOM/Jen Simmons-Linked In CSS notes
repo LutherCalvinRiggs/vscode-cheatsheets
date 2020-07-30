@@ -209,4 +209,229 @@ Figure and Figcaption
         </figure>
 
 Audio 
+    <audio controls loop autoplay>
+        <source src='audio.ogg' type='audio/ogg'>
+        <source src='audio.mp3' type='audio/mpeg'>
+        Sorry your browser doesn't support this audio.      <!-- Fallback text -->
+    </audio>
+
+    controls: tells the HTML to show it's default audio control bar 
+    loop: tells the auto to play again when it finishes
+    autoplay: tells the file to play immediately when the page is landed on. Most people don't like this.
+    <source>: allows you to list different audio files to be used by different supporting browsers. The browser will use the first file format that it understands
+        mp3: supported in most browsers 
+        ogg: was used but never caught momentum 
+    The fallback text will be displayed if the browser cannot play any of the audio files. 
+
+Video
+    <video controls>
+        <source src='video.480p.vp9.webm' type='video/webm'>
+        <source src='video.480p.h264.mp4' type='video/mp4'>
+
+        <p>This would be a video of ____, if your device supported playing this video</p>
+    </video>
+
+    The H.264 codec currently has the widest support across browsers. 
+        Widely used - Not open source - Fees to use 
+    AV1 is a free alternative
+
+    Adaptive Bitrate Streaming allows a browser to constantly switch between resolutions while a video is playing. 
+
+Captions annd subtitles
+    WebVTT is the tech used for captions.
+    Captions are saved in another file with time-coding so they know when to be displayed. 
+
+    <video controls>
+        <source src='video.480p.vp9.webm' type='video/webm'>
+        <source src='video.480p.h264.mp4' type='video/mp4'>
+
+        <track src='english-subtitles.vtt'          <!-- Names the track file -->
+                        kind='caption'              <!-- Tells the browser this is a caption -->
+                        label='english'             <!-- Shows up as a label for this choice -->
+                        srclang='en'                <!-- Specifies the language -->
+                        default>                    <!-- Specifies the default file when caption on -->
+
+        <track src='english-subtitles.vtt'          <!-- Spanish subtitles -->
+                        kind='subtitles'
+                        label='espanol'
+                        srclang='es'>
+
+        <track src='description.en.vtt'     <!-- Descriptive file, tells what's happening on screen -->
+                        kind='descriptions'
+                        label='descriptions'
+                        srclang='en'>
+
+        <track src='chapters.vtt'       <!-- List chapters of the video, users can jump to chapters -->
+                        kind='chapter'>
+
+        <p>This would be a video of ____, if your device supported playing this video</p>
+    </video>
+
+<iframes> to embed media 
+    It's common to embedd something complex from a services that specializes in doing that thing
+    Usually the code is found with an Embed option from the service 
+
+    CMS's don't usually let you just embed code from a website.
+    Security is very important with <iframe>
+
+Supporting languages
+    You want computers to know which language your site is in.
+    Also used for scripting, spelling and dictionary.
+    If you have more than one language on a site, you need to specify the language for each section.
+    The `lang` attribute is a universal attribute and can be place on any element.
+
+        <p lang='es-mx'> Text text text <span lang='nah'> text text text.</span></p>
+
+    <html lang='en-US'>
+        ...
+    </html>
+
+    Options include:
+        lang='en-US'    <!-- American English -->
+        lang='en-GB'    <!-- UK English -->
+        lang='es-MX'    <!-- Mexican Spanish -->
+        lang='ar'       <!-- Arabic -->
+
+Language Direction 
+    Specifies if words are written left-to-right or right-to-left 
+    Can be defined once on the outter HTML or can be defined for different sections
+
+        <html lang='en-gb' dir='ltr'>
+        <html lang='ar' dir='rtl'>
+
+`charset` Attribute
+    Defines the alphabet or set of characters for the script (alphabet) language
+    ASCII - an encoding standard limited to 128 characters, focused on the needs of certain European languages
+    Unicode - A universal encoding standard for characters encompassing many languages 
+        Usually, `utf-8` is used. 
+        Has over 137,000 characters.
+
+    <meta charset='utf-8'>
+        This is included on every page of the site, in the <head> </head> element. 
+
+Generic elements
+    These are simply placeholders used to point CSS or JS at them 
+    Can take all of the global attributes. 
+        class
+        id
+        lang
+        aria roles 
+    Use these as a last resort when there are no other elements to do the job.
+
+    <div>
+        Block-level element
+        Used to group things into a visual format
+
+    <span>
+        Inline element  
+        Used to change something inline, such as a language 
+
+The HTML page 
+    The <!doctype html> Declaration
+        Declares which era this HTML file is from 
+
+    <html> Tags
+        Declares that all of the stuff in between is html. 
+        Put an opening one at the top and a closing one at the bottom. 
+        Everything else goes in bewteen. 
+
+        The <head> element 
+            Contains information the browser needs to know, through it won't be displayed on the page 
+
+        The <body> element
+            Contains the information and content that will be displayed on the page 
+
+        The <meta> element
+            Only used inside the head
+            Conveys metadata about the page 
+                Character Set 
+                Viewport: without <meta name='viewport' .....> the browser things it is a desktop website that needs to be shrunk down to fit a phone screen 
+                Description: will show up in search engine results 
+                The following are used to create the card that is displayed when a webpage is posted to #Slack, LinkedIn or Twitter
+                    Application-name: used to give a name when site is saved to a homescreen.
+                    MSApplication-TileImage: 
+                    Theme-Color: 
+
+
+        The <title> element 
+            The title of the webpage as used by the broswer 
+            Shows up as the name on a browser tag, as a bookmark title when bookmarked, or the name of the page when seen on a list of sites in a Google search 
+
+        The <link> element 
+            Used to link to external files that you would like to load: CSS, fonts, favicons, JS, etc 
+            
+            The `rel` attribute tells the browser which kind of asset it is 
+            The `href` attribute provides the URL to the asset 
+
+        The <script> element 
+            This is the last element that goes into the document's <head>
+            Tells the browser to load a JavaScript file 
+
+            The <script> tag can also be added at the end of an HTML document so that everything loads before the JS script
+            
+    <body> tags 
+        This is where the content that you want displayed is listed. 
+        There are 6 primary tags used in the <body>
+
+        The <main> element 
+            Wraps around the main content of the page. 
+            Only used once per webpage and tells the browser, this is where the main content is. 
+
+        The <header> element 
+            Used to mark places on the page where the content is a header. 
+                Commonly holds a logo, site name or navigation. 
+
+        The <footer> element 
+            Used to mark places on the page where the content is a footer. 
+                Commonly holds a list of links, copyright info, extra company info, social media links.
+                Conveys that the site has a few extra things to say about something.   
+            Footers don't need to be at the bottom. They can go right under the title of an <article> and provide the name of the author publication date, and social sharing links (ie, news articles).
+
+        The <article> element 
+            Wrapped around any instance of an article.
+            Simply conveys that an item is a stand-alone piece of content. 
+                Might be a long blog post, a short snippet, a teaser card, or a social media post/tweet.
+
+        The <section> element 
+            Wraps around sections of content. 
+            Usually each section has a new headline marking the name of that new section. 
+                If a long essay is broken up into chunks, you can use this tag to make the sections. 
+                Can be used to mark zones on a website. 
+
+        The <aside> element 
+            Marks content that is off to the side or not the main attraction.
+                Could be an inset panel that goes with a main article and give additional info. 
+                Could be advertisements. 
+
+    Example:
+    
+            <!doctype html>
+            <html lang='en-US' dir='ltr'>
+                <head>
+                    <!-- The browser will load files in the order listed -->
+                    <meta charset='utf-8'>
+                    <meta name='viewport' content='width=devide-width, initial-scale=1'>
+                    <meta name='description' content='Description to show up in search results.'>
+                    <meta name='application-name' content='Name of app when saved to homescreen.'>
+                    <meta name='msapplication-TileImage' content='/images/tile-image.png'>
+                    <meta name='theme-color' content='#000000'>
+
+                    <link rel='manifest' href='/webappmanifest.json'>
+                    <link href=/styles/reset.css' rel='stylesheet'>
+                    <link href=/styles/main.css' rel='stylesheet'>
+                    <link rel='icon' href='favicon.ico'>
+                    <link rel='preload' href='myFont.woff2' as='font' type='font/woff2' crossorigin='anonymous'>
+
+                    <title>Title of Website</title>
+
+                    <script src='my-javascript-file.js'></script> 
+                </head>
+                <body>
+                    ...
+                </body>
+            </html>
+
+        The 'right way' of doing thins depends on the content of the page. If you're not sure what how to markup a page, find a page already on the web and see how they did theirs.
+
+Form basics
     

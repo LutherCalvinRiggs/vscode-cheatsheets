@@ -201,20 +201,182 @@ DOM Methods
 
     - Working with Classes
 
-                div.classList.add('new');                                      
-                // adds class "new" to your new div
+            div.classList.add('new');                                      
+            // adds class "new" to your new div
 
-                div.classList.remove('new');                                   
-                // remove "new" class from div
+            div.classList.remove('new');                                   
+            // remove "new" class from div
 
-                div.classList.toggle('active');                                
-                // if div doesn't have class "active" then add it, or if
-                // it does, then remove it
+            div.classList.toggle('active');                                
+            // if div doesn't have class "active" then add it, or if it does, then remove it
 
-        It is often 
+        It is often stanndard (and more clean) to toggle a CSS style rather than adding and removing incline CSS. 
 
-    
+    - Adding text content 
 
+        div.textContent = 'Hello World!'                               
+        // creates a text node containing "Hello World!" and inserts it in div
+
+    - Adding HTML content 
+
+        div.innerHTML = '<span>Hello World!</span>';                   
+        // renders the html inside div
+
+        * Note that textContent is prefereable for adding text, and innerHTML should be used sparingly as it can create security risks if misused.
+
+    - Application 
+
+            <!-- your html file: -->
+            <body>
+            <h1>
+                THE TITLE OF YOUR WEBPAGE
+            </h1>
+            <div id="container"></div>
+            </body>
+
+            // your javascript file
+            const container = document.querySelector('#container');
+
+            const content = document.createElement('div');
+            content.classList.add('content');
+            content.textContent = 'This is the glorious text-content!';
+
+            container.appendChild(content);
+
+        In the above JS file, first we get a reference to the `container` div that already exists in our HTML. THen we create a new div and store it in the variable `content`. We add a class and some text to the `content` div and finally append that div to `container`. 
+
+        After the JS code is run, our DOM tree will look like this: 
+
+            <!-- The DOM tree after the JS is run -->
+            <body>
+            <h1>
+                THE TITLE OF YOUR WEBPAGE
+            </h1>
+            <div id="container">
+                <div class="content">
+                This is the glorious text-content!
+                </div>
+            </div>
+            </body>
+
+        Keep in mind that the JS does NOT alter your HTML, but the DOM - your HTML file will look the same, but the JS changes what the browser renders.
+
+        * Your JS, for the most part, is run whenever the JS file is run, or when the script tag is encountered in the HTML. If you are including your JavaScript at the top of your file, many of these DOM manipulation nmethods will not work becaues the JS code is being run BEFORE the nodes are created in the DOM. The simplest way to fix this is to include your JS at the bottom of your HTML file so that it gets run after the DOM nodes are arsed and created.
+
+DOM Events
+
+    Events are actiosn that occur on your webpage such as mouse-clicks or keypresses. 
+
+    There are 3 primary ways to go about this. Below we create 3 buttons that all alert "BUTTON" when clicked:
+
+        1) You can attach functions attributes directly on your HTML elements
+        
+                <!-- the html file -->
+                <button onclick="alert('Hello World')">Click Me</button>
+            
+            The above solution is less than ideal because we're cluttering our HTML with JavaScript. Also, we can nonly have 1 'onclick' event per element.
+
+        2) You can set the 'on_event_' property on the DOM object in your JS
+
+                <!-- the html file -->
+                <button id="btn">Click Me</button>
+
+                // the JavaScript file
+                const btn = document.querySelector('#btn');
+                btn.onclick = () => alert("Hello World");
+
+            This is a little better. We've moved the JS out of the HTML and into a JS file, but we still have the problem that a DOM element can only have 1 'onclick' property. 
+
+                To review arrow functions: http://javascript.info/arrow-functions-basics
+
+        3) You can attach event listeners to the nodes in your JS 
+
+                <!-- the html file -->
+                <button id="btn">Click Me Too</button>
+
+                // the JavaScript file
+                const btn = document.querySelector('#btn');
+                btn.addEventListener('click', () => {
+                    alert("Hello World");
+                });
+
+            Now, we maintain separation of concers, AND we also allow multiple event listeners if the need arises. Method 3 is much more flexible and powerful, though it is a bit more complex.
+
+    Event listeners are definitely the preferred method, but you will refularly see the others in use.
+
+    All 3 of the same methods can also be named functions like below: 
+
+        <!-- METHOD 1 -->
+        <button onclick="alertFunction()">CLICK ME BABY</button>
+
+        function alertFunction() {
+            alert("YAY! YOU DID IT!");
+        }
+
+        // METHOD 2
+        btn.onclick = alertFunction;                            // Note no ()
+
+        // METHOD 3
+        btn.addEventListener('click', alertFunction);           // Note no ()
+
+    Using named functions can clean up your code considerably, and is a really good idea if the function is something that you are going to want to do in multiple places. 
+
+    With all three methods we can access more information about the event by passing a parameter to the function that we are calling:
+
+        btn.addEventListener('click', function (e) {
+            console.log(e); 
+        });                                                     // Note closing });
+
+    The `e` in the function above is an object that references the event itself. Within that object you have access to many useful properties and functions such as which mouse button or key was pressed, of information about the event's target - the DOM node that was clicked. 
+
+            // returns the HTML code that the Event Listener target
+            btn.addEventListener('click', function (e) {
+                console.log(e.target);
+            });
+
+            // changes a style attribute of the Event Listener target
+            btn.addEventListener('click', function (e) {
+                e.target.style.background = 'blue';
+            });
+
+    - Attaching Listenders to a Group of Nodes 
+
+        It might seem like a lot of code if you're attaching lots of similar event listeneres to many elements. There's a few ways to go about doing that more efficitently. We learned above that we can get a nodelist of all of the items matching a specific selector with `querySelectorAll('selector')`. In order to add a listener to each of them we simply need to itereate through the whole list like so:
+
+            <!-- HTML code -->
+            <div id="container">
+                <button id="1">Click Me</button>
+                <button id="2">Click Me</button>
+                <button id="3">Click Me</button>
+            </div>
+
+            // JS code 
+            // buttons is a node list. It looks and acts much like an array.
+            const buttons = document.querySelectorAll('button');
+
+            // we use the .forEach method to iterate through each button
+            buttons.forEach((button) => {
+
+            // and for each one we add a 'click' listener
+            button.addEventListener('click', () => {
+                alert(button.id);
+            });
+            });
+
+
+        This is just the tip of the iceberg when it comes to DOM manipulation and event handling. 
+
+        There are more useful event that can be used:
+
+            click 
+            dbclick 
+            keypress
+            keydown 
+            keyup 
+
+        You can find a more complete list of event here: https://www.w3schools.com/jsref/dom_obj_event.asp
+
+        
 
 
 
@@ -330,10 +492,6 @@ https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduct
     Node.removeChild()
     
         DOM API fucntion used to specify that we want to remove a specific child element of the HTML element.
-
-
-
-
 
 /* Testing the DOM API */
     This provides samples for every interface that you can use in your own web development. In some cases, the samples are completely HTML pages, with the DOM access in a <script> element, the interface (eg buttons) necessary to fire up the script in a form, and the HTML elements upon wich the DOM operates listed as well. These samples can be copied and pasted to a new HTML document to run the example from the browser.

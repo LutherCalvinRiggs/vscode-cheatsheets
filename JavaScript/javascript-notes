@@ -2645,4 +2645,545 @@
 
         
         
+/* JS Transitionend Events */
 
+    The `transitionend` even is fired whe na CSS transition has completed. In the case where transition is removed before completion, such as if the `transition-property` is removed or `display` is set to `none`, then the even will not be generated. 
+
+    The `transitionend` even is fired in both directions - as it finishes transitioning to the transitioned state, and when it fully reverts to the default or non-transitioned state. If there is no transition delay or duration, if both are 0s or neither is declared, there is no transition, and none of the transition events are fired. If the `transitioncancel` event is fired, the `transitionend` event will not fire.
+
+    The original target for thie even is the `Element` that has the transition applied. You can listen for this even on the `Document` interface to handle it in the capture or bubbling phases. 
+
+    This code adds a listener to the `transitionend` event:
+
+        document.addEventListener('transitionend', () =>
+            console.log('Transition ended');
+        });
+
+    The code below is the same as above, but using the `ontransitionend` property instead of `addEventListener()`:
+
+        document.ontransitionend = () => {
+            console.log('Transition ended');
+        };
+
+    This code gets an element that has a transition defined and adds a listener to the `transitionend` event (the transition is defined in the CSS): 
+
+        const transition = document.querySelector('.transition');
+
+        transition.addEventListener('transitionend', () => {
+            console.log('Transition ended');
+        });
+
+    The below function is the same as the above, but using the `ontransitioned`:
+
+        const transition = document.querySelector('transition');
+
+        transition.ontransitionend = () => {
+            console.log('Transition ended');
+        };
+
+    The following is a like example using a simple <div> element, styled with a transiton that includes a delay:
+
+            <!-- html code -->
+            <div class="transition">Hover over me</div>
+            <div class="message"></div>
+
+            /* CSS code */
+            .transition {
+                width: 100px;
+                height: 100px;
+                background: rgba(255,0,0,1);
+                transition-property: transform background;
+                transition-duration: 2s;
+                transition-delay: 1s;
+            }
+
+            .transition:hover {
+                transform: rotate(90deg);
+                background: rgba(255,0,0,0);
+            }
+
+                * To this, we'll add some JavaScript to indicate that the `transitionstart`, `transitionrun`, `transitioncancel` and `transitionend` events fire. In this example, to cancel the transition, stop hoverinng over the transitioning box before the transition ends. For the transition end event to fire, stay hovered over the transition until the transition ends. 
+
+            const message = document.querySelector('.message');
+            const el = document.querySelector('.transition');
+
+            el.addEventListener('transitionrun', function() {
+            message.textContent = 'transitionrun fired';
+            });
+
+            el.addEventListener('transitionstart', function() {
+            message.textContent = 'transitionstart fired';
+            });
+
+            el.addEventListener('transitioncancel', function() {
+            message.textContent = 'transitioncancel fired'; 
+            }); 
+
+            el.addEventListener('transitionend', function() {
+            message.textContent = 'transitionend fired'; 
+            });
+
+        The `transitionend` event is fired in both directions: when the box finishes turning and the opacity hits 0 or 1, depending on the direction. 
+
+        If there is no transition delay or duration, if both are 0s or neither is declared, there is no transiton, and none of the transiton events are fired. 
+
+        If the `transitioncancel` event is fired, the `transitionend` even will not fire. 
+
+
+
+/* JS Element.classList */
+
+    The `Element.classList` is a read-only property that returns a live `DOMTokenList` collection of the `class` attributes of the element. This can then be used to manipulate the class list. 
+
+    Using `classList` is a convenient alternative to accessing an element's list of classes as a space-delimited string via `element.className`.
+
+    Syntax 
+
+        const elementClasses = elementNodeReference.classList;
+
+    - Returns 
+
+        A `DOMTokenList` representing the contents of the element's `class` attribute. If the `class` attribute is not set or empty, it returns an empty `DOMTokenList`, ie, a `DOMTokenList` with the `length` property equal to 0. 
+
+        The `DOMTokenList` itself is read-only, although you can modify it using the `add()` and `remove()` methods 
+
+    - Examples 
+
+        const div = document.createElement('div');
+        div.className = 'foo';
+
+        // our starting state: <div class="foo"></div>
+        console.log(div.outerHTML);
+
+        // use the classList API to remove and add classes
+        div.classList.remove("foo");
+        div.classList.add("anotherclass");
+
+        // <div class="anotherclass"></div>
+        console.log(div.outerHTML);
+
+        // if visible is set remove it, otherwise add it
+        div.classList.toggle("visible");
+
+        // add/remove visible, depending on test conditional, i less than 10
+        div.classList.toggle("visible", i < 10 );
+
+        // will return true if the elemennt contains the class 
+        console.log(div.classList.contains("foo"));
+
+        // add or remove multiple classes
+        div.classList.add("foo", "bar", "baz");
+        div.classList.remove("foo", "bar", "baz");
+
+        // add or remove multiple classes using spread syntax
+        const cls = ["foo", "bar"];
+        div.classList.add(...cls); 
+        div.classList.remove(...cls);
+
+        // replace class "foo" with class "bar"
+        div.classList.replace("foo", "bar");
+
+
+
+/* The Audio() Constructor */
+
+    The `Audio()` constructor creates and returns a new `HTMLAudioElement` which an be either attached to a documennt for the usuer to interact with and/or listen to, or can be used offscreen to manage and play audio. 
+
+    - Syntax 
+
+        audioObj = new Audio(url);
+
+    - Parameters 
+
+        An optional `DOMString` containing the URL of an audio file to be associated with the new audio element. 
+
+    - Return value 
+
+        A new `HTMLAudioElement` object, configured to be used for playing back the audio from the file specified by `url`. The new object's `preload` property is set to `auto` annd its `src` property is set to the specified URL or `null` if no URL is given. If a URL is specified, the browser begins to asynchronously load the media resource before returning the new object. 
+
+    You can also use other element-creation methods, such as the `document` object's `createElement()` method, to construct a new `HTMLAudioElement`.
+
+    - Determining when playback can begin 
+
+        There are three ways you can tell when enough of the audio file has loaded to allow playback to begin: 
+
+            1. Check the value of the `readyState` property. If it's `HTMLMediaElement.HAVE_FUTURE_DATA`, there's enough data available to begin playback and play for at least a short time. If it's `HTMLMediaElement.HAVE_ENOUGH_DATA`, then there's enough data availale that, given the current download rate, you should be able to play the audio through to the end without interruption.
+
+            2. Listen for the `canplay` event. It is sent to the <audio> element when there's enough audio available to begin playback, although interruptions may occur. 
+
+            3. Listen for the `canplaythrough` event. It is sent when it's estimated that the audio should be able to play to the end without interruption. 
+
+        The event-based approach is best: 
+
+            myAudioElement.addEventListener("canplaythrough", event => {
+                /* the audio is now playable; play it if permissions allow */
+                myAudioElement.play();
+            });
+
+    - Memory usage and management 
+
+        If all references to an audio element created useing the `Audio()` constructor are deleted, the element itself won't be removed from memory by the JS runtime's garbage collection mechanism if playback is currently underway. instead, the audio will keep playing and the object will remain in memory until playback ends or is paused (such as by calling `pause()`). At that time, the object becomes subject to gargabe collection. 
+
+    * Properties and Methods are inherited from the parent, `HTMLMediaElement`
+
+    - Examples 
+
+        You can create a `HTMLAudioElement` entirely with JS using the `Audio()` constructor.
+
+            let audioElemennt = new Audio('car_horn.wav');
+
+        then you can invoke the `play()` method on the element 
+
+            audioElement.play();
+
+                * Modern browser's default autoplay policy will block play-on-page-load from happening. 
+        
+        Some of the more commonly used properties of the audio element include `src`, `currentTime`, `duration`, `paused`, `muted`, and `volume`. This snippet copies the audio file's duration to a variable: 
+
+            let audioElement = new Audio('car_horn.wav');
+            audioElement.addEventListener('loadeddata', () => {
+                let duration = audioElement.duration;
+                // The duration variable now holds the duration (in seconds) of the audio clip 
+            })
+
+    - Events 
+
+        Inherits methods from its parent, `HTMLMediaElement`, and from its ancestor `HTMLElement`. Listen to events using `addEventListener()` or by assigning an event listener to the `oneventname` property of this interface. 
+
+
+
+/* Template Literals ${} */
+
+    Template literals are string literals allowing embedded expressions. You cann use multi-lin strings and string interpolation features with them. 
+
+    - Syntax 
+
+        `string text`
+
+        `string text line 1
+        string text line 2`
+
+        `string text ${expression} string text`
+
+        tag`string text ${expression} string text`
+
+    - Description
+
+        Temlate literals are enclosed by the backtick (``) character instead of double or single quotes.
+
+        Template literals can contain placeholders. These are indicated by the dollar sign and curly braces (${expression}). The expressions in the placeholders and the text between the backtick (``) get passed to a function. 
+
+        The default function just concatenates the parts into a single string. If there is an expression preceding the template literal ( tag`string text ${expression} string text` ), this is called a tagged template. In that case, the tag expression (usually a function) gets called with the template literal, which you can then maipulate before outputting.
+
+        To escape a backtick in a template literal, put a backslash (\) before the backtick.
+
+            ` \` ` === '`' // --> true
+
+    - Basic usage: 
+
+        let newString = `A string`;
+
+    - Multi-line strings 
+
+        Any newline characters inserted in the source are part of the template literal.
+
+        Using normal strings, you would have to use the `\n`, or new line character, if we wanted a string to be on multiple lines: 
+
+            // the old way
+            let myMultiString = 'Some text that I want\nOn two line!';
+
+            console.log('string text line 1\n' + 
+            'string text line 2');
+            // "string text line 1
+            // string text line 2"
+
+        Using template literals, you can go ahead and add the new line into the string as we write it: 
+
+            let myMultiString = `This well be
+            on two lines!`;
+
+            console.log(`string text line 1
+            string text line 2`);
+            // 'string text line 1
+            // string text line 2'
+
+        This will produce a string with a new line in it. The ability to do this with expressions makes Template Literals a really nice templating language for buillding of bits of HTML. But what about conncatenation? 
+
+    - Expression interpolation 
+
+        In order to embed expressions within normal strings, you would use the following syntax: 
+
+            let a = 5;
+            let b = 10;
+            console.log('Fifteen is ' + (a + b) + ' and\nnot ' + (2 * a + b) + '.');
+            // "Fiften is 15 and
+            // not 20."
+
+        Now, with template literals, you are able to make use of the syntactic sugar, making substitutions like this more readable: 
+
+            let a = 5;
+            let b = 10;
+            console.log('Fifteen is ${a + b} and
+            not ${2 * a + b}.`);
+            // "Fifteen is 15 and 
+            // not 20.
+
+        ** Notice how ${expression} removes the need for all of the + and "" or ''. 
+
+            let name = `Ryan`;
+
+            console.log(`Hi my nname is ${name}`);
+
+        The ${} syntax allows us to put an expression in it and it will produce the value (which in the case above is just a variable that holds a string). There is something to note here: if you wanted to add in values, like above, you do not need to use a Template LIteral for the `name` variable. It could just be a regular sting.
+
+            console.log(`Hi my name is ${'Ryan'}`);
+
+        This will produce the same output. These expressions do more than just let us put in variables that contain strings in them. We can evaluate any sort of expressions that we would like.
+
+            let price = 19.99;
+            let tax = 1.13;
+
+            let total = `The total prices is ${price * tax}`;
+
+        We can also use this with a more complex object:
+
+            let person = {
+                firstName: `Ryan`,
+                lastName: `Christiani`,
+                sayName() {
+                    return `Hi my name is ${this.firstName} ${this.lastName}`;
+                }
+            };
+
+        Here we have a `person` object with a `sayName()` method on it. We can access the properties from an object inside of the `${}` syntax. 
+
+    - HTML Templates 
+
+        With the ability to have multi-line strings and use Template Expressions to add content into our string, this makes it really nice to use for HTML templates in our code.
+
+        Let's imagine that we get some data from an API that looks something like this:
+
+            {
+                "id": 1,
+                "name": "Bulbasaur",
+                "base_experience": 64,
+                "height": 7,
+                "is_default": true,
+                "order": 1, 
+                "weight": 69,
+                ...
+            }
+
+                * This "imaginary" API is of course the pokeapi (Pokeman API). 
+
+        With this data structure in mind, let's create the markup that would show this Pokeman:
+
+            function createMarkup(data) {
+                return `
+                    <article class="pokemon">
+                        <h3>${data.name}</h3>
+                        <p>The Pokemon ${data.name} has a base experience of ${data.base_experience}, they also weigh ${data.weight}</p>
+                    </article>
+                `
+            }
+
+                * The Template Literal allows you to write the exact HTML code with formating using backticks (``). It also allows you to use the Template Expressions ${} to callback data usingthe property names contained in the data that is recieved from the API. 
+
+        Without having to use a library like Handlebars or Mustache we can create nice and easy-to-use templates in our JavaScript!
+
+    - Nesting Templates 
+
+        In certain cases, nesting a template is the easiest (and perhaps more readable) way to have configurable strings.  Within a backticked template, it is simple to allow inner backticks simply by using them inside a placeholder ${} within the template.
+
+        For instance, if condition a is 'true', the 'return' this templated literal.
+
+            In ES5:
+
+                let classes = 'header';
+                classes += (isLargeScreen() ?
+                    '' : item.isCollapsed ?
+                        ' icon-expander' : ' icon-collapser');
+
+                    // classes = 'hearder'
+                    // If it is a large screen, add nothing to 'classes'
+                    // If it is not a large screen, if item is collapsed, add ' icon-expander' to 'classes'
+                        // if item is not collapsed, add ' icon-collapser' to 'classes' 
+            
+            In ES2015 with template literals and without nesting:
+
+                const classes = 'header ${ isLargeScreen() ? '' :
+                    (item.isCollapsed ? 'icon-expander' : 'icon-collapser') }`;
+
+            In ES2015 with nested template literals:
+
+                const classes = `header ${ isLargeScreen() ? '' :
+                    `icon-${item.isCollapsed ? 'expander' : 'collapser'}`}`;
+
+    - Tagged Templates 
+
+        Another feature of Template Literals is the ability to create Tagged Template Literals. Tags allow you to parse template literals with a function. The first argument of a tag function contains an array of string values. The remaining arguments are related to the expressions. You create a function and this function will look like any other function, however it looks different when you call in: 
+
+            function myTaggedLiteral(strings) {
+                console.log(strings);
+            }
+
+            myTaggedLiteral`test`;
+            // ["test"]                     // returns an array of the string in our literal ``
+
+        Notice that there are no perentheses () when we call the function! We apply a Template Literal where the parentheses would be. As a parameter to our function we get an array of the strings in our literal. 
+        
+        Let's expand on the string we send to the function and we will have it include an expression, and we will include a new parameter in our function as well. 
+
+            function myTaggedLiteral(strings, value) {
+                console.log(strings, value);
+            }
+
+            let someText = 'Neat';
+            myTaggedLiteral`test ${ someText }`;
+            // ["test ", ""]                             // array of the strings 
+            // "Neat"
+
+        When we use an expression we can access that from the next parameters and this keeps going. Say we added another expression:
+
+            function myTaggedLiteral(strings, value1, value2) {
+                console.log(strings, value);
+            }
+
+            let someText = 'Neat";
+            myTaggedLiteral`test ${someText} ${2 + 3}`;
+            // ["test ", ""]
+            // "Neat"
+            // 5
+
+        This is pretty powerful: it allows you to take the data used in a string and manipulate it to your liking. 
+
+        The tag function can then perform whatever operations you like on its arguments, and return the manipulated string.
+
+        The name of the function used for the tag can be whatever you want.
+
+            let person = 'Mike';
+            let age = 28;
+
+            function myTag(strings, personExp, ageExp) {
+                let str0 = strings[0];      // "That "
+                let str1 = strings[1];      // " is a "
+            
+                    // There is technically a string after the final expression (in our example), but it is empty (""), so disregard.
+                    // let str2 = strings[2]; 
+
+                let ageStr;
+                if (ageExp > 99) {
+                    ageStr = 'centenarian';
+                } else {
+                    ageStr = 'youngster';
+                }
+
+                // We can even return a string built using a template literal 
+                return `${str0}${personExp}${str1}${ageStr}`;
+            }
+
+            let output = myTag`That ${ person } is a ${ age }`;
+                // When myTag`` is called, it reads the strings and values in order, passing those parameters into the function.  
+
+            console.log(output);
+            // That Mike is a youngster
+
+        Tag functions don't even need to return a string. It can return something completely different:
+
+            function template(strings, ...keys) {
+                return (function(...values) {
+                    let dict = values[values.length -1] || {};
+                    let result = [strings[0]];
+                    keys.forEach( function(key, i) {
+                        let value = Number.isInteger(key) ? values[key] : dict[key];
+                        result.push(value, strings[i + 1]);
+                    });
+                    return result.join('');
+                });
+            }
+
+                    // strings is the array of strings deteremined by tag``
+                    // keys is array of expressions (${}) passed to tag``
+                    // values is array of parameters passed from t1Closure('Y', 'A'); 
+                    // dict becomes the last element of values[]
+                    // result[] is initialized with strings[0] => ("")
+                    // forEach() checks each key of keys[] to see if it's an integer, if so it returns the element of values[] to value
+                    // value + strings[i + 1] (aka the next string) are appended to result[]
+                    // after all keys are checked and appended, result[] is joined into a string and returned
+
+
+            let t1Closure = template`${0}${1}${0}!`;
+                // let t1Closure = template(["","","","!"],0,1,0);
+            t1Closure('Y', 'A');        // "YAY!"
+
+            let t2Closure = template`${0} ${'foo'}!`;
+                // let t2Closure = template([""," ","!"],0,"foo");
+            t2Closure('Hello', {foo: 'World'});     // "Hello World!"
+
+            let t3Closure = template`I'm ${'name'}. I'm almost ${'age'} years old.`;
+                // let t3Closure = template(["I'm ", ". I'm almost ", " years old."], "name", "age");
+            t3Closure('foo', {name: 'MDN', age: 30});   // "I'm MDN. I'm almost 30 years old."
+            t3Closure({name: 'MDN', age: 30})
+
+        ** to see the above code in action, check out lcr-coding-files/vscode-cheatsheets/JavaScript/lcr-js-function-library/template-literals.html
+            
+    - Raw Strings 
+
+    
+
+
+        
+        
+
+    - Reusable Templates 
+
+        Let's look at a simple use case for Template Literals. If you remember from above, we saw how Template LIterals work really great for making templates! Let's take that a step further and create a function that would allow us to create reusable templates. The idea here is that we can create the initial template and then pass in data for it to use later. 
+
+            const student = {
+                name: 'Ryan Christiani',
+                blogUrl: 'http://ryanchristiani.com'
+            }
+
+            const studentTemplate = templater`<article>
+                    <h3>${'name'} is a student at HackerYou</h3>
+                    <p>You can find their work at ${'blogUrl'}.</p>
+                </article>`;
+
+            const myTemplate = studentTemplate(student);    // passes 'student' object to 'templater'
+            console.log(myTemplate);
+
+            // Output will look like this!
+            //  <article>
+            //      <h3>Ryan Christiani is a student at HackerYou</h3>
+            //      <p>You can find their work at http://ryanchristiani.com.</p>
+            //  </article>
+
+        Let's look at implementing our `templater` function:
+
+            const templater = function(strings, ...keys) {
+
+            }
+
+        The first thing you will notice is the `...keys` parameter. The `...` syntax is what's called Rest Parameters; it will gather any parameters the function has and create an array keys[] for us. 
+
+        The next thing we want to do is return a function that is going to access our object. The returning of the function is what allows us to call and pass in our student data, like this: `studentTemplate(student)`. 
+
+            const templater = function(strings, ...keys) {
+                return function(data) {
+
+                }
+            }
+
+        With this data now available to us we need to perform some manipulation. The process is as follows. First, we need to create a copy of the `strings` array. We make a copy in case we want to reference the original later. Then we need to loop through the array of `keys`, and for each one of those, grab the data from the object that matches the key (notice how in theis example we pass in a string in the `${}`) and place it in our array where needed. Finally, we need to join it all back together as a string and return it from the function. 
+
+            function templater(string, ...keys) {
+                return function(data) {             // returns a function that passes 'data'
+                    let temp = strings.slice();     // creates/copies a new array 
+                    keys.forEach((key,i) => {       // loops thru keys and adds data[key] to each temp[i]
+                        temp[i] = temp[i] + data[key];
+                    });
+                    return temp.join('');           // returns joined array as a string with no separator
+                }
+            };
+
+        You will notice that this is not an exhaustive example. We have no way to accommodate nested data or array values; it is simply just strings. But this example helps illustrate what you can start doing with Tagged Template Literals. 
