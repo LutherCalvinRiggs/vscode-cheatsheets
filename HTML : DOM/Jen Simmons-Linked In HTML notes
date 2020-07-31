@@ -435,3 +435,179 @@ The HTML page
 
 Form basics
     
+    Used to get things done: logins, searches, passwords, etc.
+
+        * Don't use "get" method. Very insecure. 
+
+        `name=''` allows the browser to understand what data is being submitted (think column heading)
+        
+        `for=''` on the <label> links with the `id=''` on the <input>
+                You could also wrap the <label> around the entire <input>
+                Once this is done, you should be able to click on the <label> name on the browser and the cursor will jump to the input box
+
+        `type=''` specifies what is allowed to be submitted in an <input>. This allows the browser to double check the email and asks user to fix if it's not. The default is 'text'. Other options include:
+            'email'
+            'submit' (for <button>)
+            'password'
+            'search'
+            'tel'
+            'date' - accepts a date and provides a calendar to do so
+            'color' - provides a color picker to select a color 
+            'file' - attributes `accept=''` will limit what types of files can be submitted. You can add the keyword 'multiple' to the <input> element to accept multiple files. 
+            'checkbox' - include the attribute 'checked' on one of the inputs if you want to browser to load with that option already checked. The checkbox needs a `value=''` so that it can pass a long a value when it is checked. 
+
+                <fieldset> is used to set up a list of options for a 'checkbox' or 'radio' button. The field set should also have a <legend> to explain what the group of opetions is for. 
+
+            'radio' - similar to 'checkbox'
+                 
+
+        Adding 'required' to an <input> element will make the broswer insist that a field is filled before submitting.  
+
+        `placeholder=''` puts a placeholder into the <input> so that the user can see a suggested input. Placeholders will disappear when the user clicks on or enters text into the field. The user doesn't have to delete it.
+
+        `value=''` puts pre-written text into the <input> field. The difference between `value` and `placeholder` is that the user will have to delete the `value` text because it is real text. `value` is used when you want to autofill a form with what you think will be the write answers for a user (name, address, shipping info, credit card info).
+
+        <textarea> allows you to collect a block of written text. You can put a size on the <textarea> using the `cols=''` and `rows=''` attributes but you don't have to. 
+
+
+
+
+
+    <form action='success.html' method='get'>
+        <label for='name'>Name</label>
+        <input id='name' name='name' type='text'>
+
+        <label for='email'>Email</label>
+        <input id='email' name='email' 
+               type='email' required 
+               placeholder='email@example.com'>
+
+        <label for='password'>Password</label>
+        <input id='password' name='password' type='password'>
+
+        <label for='search'>Search</label>
+        <input id='search' name='search' type='search' placeholder='&#1234567>
+
+        <label for='phone'>Phone Number</label>
+        <input id='phone' name='phone' type='tele'>
+
+        <label for='textarea'>Phone Number</label>
+        <textarea id='textarea' name='textarea' cols='30' rows='15'</textarea>
+
+        <label for='date'>Date</label>
+        <input id='date' name='date' type='date'>
+
+        <label for='color'>Color</label>
+        <input id='color' name='color' type='color'>
+
+        <label for='file'>File</label>
+        <input id='file' name='file' type='file'
+               accept='image/*' multiple>
+
+        <fieldset>
+            <legend>Checkboxes in a fieldset</legend>
+            
+            <input id='thischeck' name='checkboxlist' 
+                    type='checkbox' value='This' checked>
+            <label for='thischeck'>This</label>
+
+            <input id='orcheck' name='checkboxlist' 
+                    type='checkbox' value='And Or'>
+            <label for='orcheck'>And/Or</label>
+
+            <input id='thatcheck' name='checkboxlist' 
+                    type='checkbox' value='That'>
+            <label for='thatcheck'>That</label>
+        
+        </fieldset>
+
+        <fieldset>
+            <legend>Radio buttons in a fieldset</legend>
+            
+            <input id='thisradio' name='radiobutton' 
+                    type='radio' value='This' checked>
+            <label for='thischeck'>This</label>
+
+            <input id='orradio' name='radiobutton' 
+                    type='radio' value='And Or'>
+            <label for='orcheck'>And/Or</label>
+
+            <input id='thatradio' name='radiobutton' 
+                    type='radio' value='That'>
+            <label for='thatcheck'>That</label>
+        
+        </fieldset>
+
+        <button type='submit'>Sign up</button>
+
+    </form>
+
+
+HTML Table
+
+    Used for tabular data. Like a research project. Use anytime you might use an excel sheet in a word document. 
+
+    As long as there is a symantic reason to use a table. 
+
+    Element_________        Name_________           Purpose______                   Attributes_______
+    <table></table>         Table                   Wraps the whole table
+
+    <tr></tr>               TR = table row          Wraps around a set of           colspan, rowspan,
+                                                    elements, defining them as      headers
+                                                    belonging to the same row
+
+    <th></th>               TH = table header       Defines a header for a          colspan, rowspan,
+                                                    column                          scope
+
+    <td></td>               TD = table data         Marks the actual bits 
+                                                    of data 
+
+
+    <table class='styled'>      <!-- the class will link to a stylesheet for custom styling -->
+        <tr>
+            <th>Bird</th>
+            <th>Color</th>
+            <th>Diet</th>
+            <th>Image</th>
+        </tr>
+        
+        <tr>
+            <td>American Goldfinch</td>
+            <td>yellow</td>
+            <td>Mostly seeds.</td>
+            <td><img src='.jpg' alt='american-goldfinch' width='360' height='261'></td>
+        </tr>
+
+        <tr>
+            <td>Bluejay</td>
+            <td>blue</td>
+            <td>Omnivorous.</td>
+            <td><img src='.jpg' alt='bluejay' width='360' height='261'></td>
+        </tr>
+
+        <tr>
+            <td>Indigo Bunting</td>
+            <td>blue</td>
+            <td>Mostly seeds and insects.</td>
+            <td><img src='.jpg' alt='indigo-bunting' width='360' height='261'></td>
+        </tr>
+
+        <tr>
+            <td>Northern Cardinal</td>
+            <td>red</td>
+            <td>Seeds, insects, berries.</td>
+            <td><img src='.jpg' alt='northern-cardinal' width='360' height='261'></td>
+        </tr>
+
+        <tr>
+            <td>Tufted Titmouse</td>
+            <td>grey</td>
+            <td>Mostly insects.</td>
+            <td><img src='.jpg' alt='tufted titmouse' width='360' height='261'></td>
+        </tr>
+
+    </table>
+
+    Tables can also have content span multiple rows or multiple columns. You can define a header, body or footer for the table. You can also add a caption. 
+    
+     
