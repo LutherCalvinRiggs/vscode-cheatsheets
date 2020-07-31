@@ -121,6 +121,10 @@ value.isNaN();
     // Converts an array to a comma separated string
         arrayName.toString();
 
+    // Create a new, shallow-copied Array instance from an array-like or iterable object
+        arrayName.from('foo');
+        // array['f', 'o', 'o']
+
     // Join all array elements into a string, also allows you to specify a separator
         arrayName.join(" * ");
 
