@@ -2691,6 +2691,7 @@
         [attr operator value s] - Adding an s (or S) before the closing bracket causes the value to be compared case-sensitively (for characters within the ASCII range).
 
         
+        
 /* JS Transitionend Events */
 
     The `transitionend` even is fired whe na CSS transition has completed. In the case where transition is removed before completion, such as if the `transition-property` is removed or `display` is set to `none`, then the even will not be generated. 
