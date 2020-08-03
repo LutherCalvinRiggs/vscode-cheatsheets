@@ -3248,3 +3248,48 @@
             };
 
         You will notice that this is not an exhaustive example. We have no way to accommodate nested data or array values; it is simply just strings. But this example helps illustrate what you can start doing with Tagged Template Literals. 
+
+
+
+/* JS DOM Methods */ 
+
+    - Finding Elements
+
+        `document.NODE.getElementsByTagName` - colects all elements with the given tag name that are descendants (direct or indirect children) of that node and returns them as an array-like object.
+
+            Example: let link = document.body.getElementsByTagName('a')[0];
+                    console.log(link.href);
+
+        `document.getElementById` - finds a specific SINGLE node given it's id attribute.
+
+            Example: let ostrich = document.getElementById('gertrude');
+                    console.log(ostrich.src);
+
+        `document.NODE.getElementsByClassName` - searches through the contents of an element node and retrieves all elements that have the given string in their 'class' attribute. 
+
+            Example: let birds = document.body.getElementsByClassName('birds');
+
+    - Changing the Document 
+
+        Almost everything about the Dom data structure can be changed. 
+
+        `document.NODE.remove` - removes a node from it's current parent node.
+
+        `document.NODE.appendChild` - adds a child node to an element node and puts it at the end of the list of children.
+
+        `document.NODE.insertBefore` - inserts the node given as the first argument before the node given as the second argument. 
+
+            Example: let paragraphs = document.body.getElementsByTagName('p');
+                     document.body.insertBefore(paragraphs[2], paragraphs[0]);
+
+        `document.NODE.replaceChild` - replaces a child node with another one. It takes as arguments two nodes: a new node and the node to be replaced. The replaced node must be a child of the element the method is called on. NOTE THAT both `replaceChild` and `insertBefore` expect the new node as their first argument. 
+
+            document.body.replaceChild( 'newNode', 'replacedNode' );
+        
+        ** A node can exist in the document in only one place. All operations that insert a node somewhere will, as a side effect, cause it to be removed from its current position (if it has one).
+
+    - Creating Nodes 
+
+        `document.createTextNode` - given a string, creates a text node that we can insert into the document to make it appear on screen. 
+
+        ``

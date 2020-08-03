@@ -39,6 +39,18 @@ Targeting Nodes with Selectors
 
         You're identifying a certain node based on its relationships to the nodes around it.
 
+    - The 'root' or <html> tag can be reached with the `document.documentElement` property
+
+    - Elemets can usually be found or inserted more efficiently in a tree than in a flat array. 
+
+    - Application nodes may have children, whereas identifies and values are 'leaves', or nodes without children.
+
+    - Nodes for elements, which represent HTML tags, detereine the structure of the document. 
+
+    - Each DOM node object has a `nodeType` property, which contains a code (number) that identifies the type of node. Elements have code 1, which is also defined as the constant property Node.ELEMENT_NODE. Text nodes, representing a section of text in the document, get code 3 (Node.TEXT_NODE). comments have code 8 (Node.COMMENT_NODE). 
+
+    - Every node has a `parentNode` property that points to the node it is part of, if any. Likewise, every element node (node type 1) has a `childNode` property that points to an array-like object hodling its children. 
+
 DOM Methods 
 
     When your HTML code is parsed by a web browser, it is converted to the DOM as was mentioned above. One of the primary differences is that these nodes are objects that have many properties and methods attached to them. These properties and methods are the primary tools we are going to use to manipulate our webpage with JavaScript.
