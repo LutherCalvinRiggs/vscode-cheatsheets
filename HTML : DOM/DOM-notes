@@ -351,7 +351,7 @@ DOM Events
                 e.target.style.background = 'blue';
             });
 
-    - Attaching Listenders to a Group of Nodes 
+    - Attaching Listeners to a Group of Nodes 
 
         It might seem like a lot of code if you're attaching lots of similar event listeneres to many elements. There's a few ways to go about doing that more efficitently. We learned above that we can get a nodelist of all of the items matching a specific selector with `querySelectorAll('selector')`. In order to add a listener to each of them we simply need to itereate through the whole list like so:
 
@@ -388,7 +388,7 @@ DOM Events
 
         You can find a more complete list of event here: https://www.w3schools.com/jsref/dom_obj_event.asp
 
-        
+    
 
 
 

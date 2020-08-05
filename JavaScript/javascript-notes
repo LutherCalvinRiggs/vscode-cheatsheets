@@ -3292,4 +3292,712 @@
 
         `document.createTextNode` - given a string, creates a text node that we can insert into the document to make it appear on screen. 
 
-        ``
+            Example: Remove images from document and add new text nodes to replace them.
+
+                <p>The <img src="img/cat.png" alt="Cat"> in the
+                <img src="img/hat.png" alt="Hat">.</p>
+
+                <p><button onclick="replaceImages()">Replace</button></p>
+
+                <script>
+                function replaceImages() {
+                    let images = document.body.getElementsByTagName("img");
+                    for (let i = images.length - 1; i >= 0; i--) {
+                    let image = images[i];
+                    if (image.alt) {
+                        let text = document.createTextNode(image.alt);
+                        image.parentNode.replaceChild(text, image);
+                    }
+                    }
+                }
+                </script>
+            
+            The node list returned by a method like 'getElementsByTagName' (or a property like 'childNodes') is live, meaning that it is updated as the document changes. The loop in the example above goes over the images starting at the end of the list. If we started from the front, removing the first image would case the list to lose its first element so that the second time the loop repeats, where i = 1, it would stop because the length of the collection is now also 1.
+
+            If you want a want a solid collection of nodes, as opposed to a live one, you can convert the collection to a real array by calling 'Array.from':
+
+                let arrayish = {0: "one", 1: "two", length: 2};
+                let array = Array.from(arrayish);
+                console.log(array.map(s => s.toUpperCase()));
+                // → ["ONE", "TWO"]
+
+            
+
+        `document.createElement(type)` - creates element nodes by taking a tag name and returning a new empty node of the given type.
+
+            Example: Creates an element node and treats the rest of its arguments as children to that node. This function is then used to add an attribution to a quote.
+
+                <blockquote id="quote">
+                    No book can ever be finished. While working on it we learn just enough to find it immature the moment we turn away from it.
+                </blockquote>
+
+                <script>
+                function elt(type, ...children) {
+                    let node = document.createElement(type);
+                    for (let child of children) {
+                    if (typeof child != "string") node.appendChild(child);
+                    else node.appendChild(document.createTextNode(child));
+                    }
+                    return node;
+                }
+
+                document.getElementById("quote").appendChild(
+                    elt("footer", "—",
+                        elt("strong", "Karl Popper"),
+                        ", preface to the second edition of ",
+                        elt("em", "The Open Society and Its Enemies"),
+                        ", 1950"));
+                </script>
+
+    - Attributes 
+
+        HTML allows you to set any attribute you wannt on nodes. Useful for storing extra info in a documnent. 
+
+        Some element attributes, such as `href` for links, can be accessed through a property of the same name on nthe element's DOM object. This is the case for most commonly used standard attributes. 
+
+        `element.getAttribute` - used to locate an element by its Attribute Name
+
+        `elemennt.setAttribute` - used to give and element an Attribute Name
+
+            Example:    <p data-classified="secret">The launch code is 00000000.</p>
+                        <p data-classified="unclassified">I have two feet.</p>
+
+                        <script>
+                        let paras = document.body.getElementsByTagName("p");
+                        for (let para of Array.from(paras)) {
+                            if (para.getAttribute("data-classified") == "secret") {
+                            para.remove();
+                            }
+                        }
+                        </script>
+
+        * It is recommended to prefix the names of such made-up attributes with `data-` to ensure they do not conflict with any other attributes.
+
+        `className` - used to access the 'class' attribute. 
+
+        `element.getAttribute('class')` && `element.setAttribute('class')` - another way to access and elements classes.
+
+    - Layout
+
+        For any given doument, browsers are able to compute a layout, which gives each element a size and position based on its type and content. This layout is then used to actually draw the document. 
+
+        `element.offsetWidth` - gives you the space the element takes up in pixels. 
+
+        `element.offsetHeight` - gives you the space the element takes up in pixels. 
+
+        `element.clientWidth` - gives you the size of the space inside the element, ignoring border width.
+
+        `element.clientHeight` - gives you the size of the space inside the element, ignoring the border height.
+
+            <p style="border: 3px solid red">
+                I'm boxed in
+            </p>
+
+            <script>
+                let para = document.body.getElementsByTagName("p")[0];
+                console.log("clientHeight:", para.clientHeight);
+                console.log("offsetHeight:", para.offsetHeight);
+            </script>
+
+        `getBoundingClientRect` - the most effective way to find the precise position nof an element on nthe screen. It returns an object with top, bottom, left and right properties, indicating the pixel positions of the sides of the element relative to the top left of the screen. 
+
+        `pageXOffset` - Returns the X-axis pixel position of the element relative to the top of the document. . 
+
+        `pageYOffset` - Returns the Y-axis pixel position of the element relative to the top of the document. 
+
+        * Browser engines do not immediately re-layout a document every time you change it but wait as long as they can. When a JS program that changed the document finishes running, the browser will have to compute a new layout to draw the changed document to the screen. When a program asks for the position or size of something by reading properties such as `offsetHeight` of calling `getBoundingClientRect`, providing corret information also requires computing a layout.  
+
+        * A program that repeatedly alternates between reading DOM layout information and channging the DOM forces a lot of layout computations to happen and will consequently run very slowly. The following code is an example of this. It contains two different programs that build up a line of X characters 2000 pixels wide and measures the time each one takes. 
+
+            <p><span id="one"></span></p>
+            <p><span id="two"></span></p>
+
+            <script>
+            function time(name, action) {
+                let start = Date.now(); // Current time in milliseconds
+                action();
+                console.log(name, "took", Date.now() - start, "ms");
+            }
+
+            time("naive", () => {
+                let target = document.getElementById("one");
+                while (target.offsetWidth < 2000) {
+                target.appendChild(document.createTextNode("X"));
+                }
+            });
+            // → naive took 32 ms
+
+            time("clever", function() {
+                let target = document.getElementById("two");
+                target.appendChild(document.createTextNode("XXXXX"));
+                let total = Math.ceil(2000 / (target.offsetWidth / 5));
+                target.firstChild.nodeValue = "X".repeat(total);
+            });
+            // → clever took 1 ms
+            </script>
+
+
+    - Styling 
+
+        A style attribute may contains one or more declarations, which are a property followed by a colon and a value. A semicolon is used to separate properties when there is more than one (`property1: value; property2: value`).
+
+            <p><a href='.' style='color: green'>Green link</a></p>
+
+        JS code can directly manipulate the style of an element through the it's `style` property. This property holds an object that has properties for all possible style properties. The values of these properties are stings, which we can write to in order to change a particular aspect of the element's style. 
+
+            <p id="para" style="color: purple">
+                Nice text
+            </p>
+
+            <script>
+                let para = document.getElementById("para");
+                console.log(para.style.color);
+                para.style.color = "magenta";
+            </script>
+
+        Inn JS, style property names are written without hyphens and using camelCase: 
+
+            style.fontFamily('');
+
+        They can aslo be reached with: 
+
+            style["font-family"]
+        
+    - Cascading Styles 
+
+        It is possible to target things other than tag names in CSS rules. A rule for `.abc` applies to all elements with 'abc' in their `class` attribute. A rule for `#xyz` applies to the element with an 'id' attribute of 'xyz'.
+
+        The precedence rule favoring the most recently defined rule applies only when the rules have the same specificity. A rule's specificity is a measure of how precisely it describes matching elements, determined by the number and king of element aspects it requires. Example, a rule that targets `p.a` is more specific than rules that target `p` or just `.a` and would thus take precedence over them. 
+
+        The notation `p > a {...}` applies to the given styles of all <a> tags that are direct children of <p> tags. Similarly, `p a {...}` applies to all <a> tags inside <p> tags, whether they are direct or indirect children. 
+
+    - Query Selectors 
+
+        `document.querySelectorAll('') || element.querySelectorAll('')` - takes a selector string and returns a 'NodeList' containing all the elements that it matches. 
+
+            function count(selector) {
+                return document.querySelectorAll(selector).length;
+            }
+            console.log(count("p"));           // All <p> elements
+            // → 4
+            console.log(count(".animal"));     // Class animal
+            // → 2
+            console.log(count("p .animal"));   // Animal inside of <p>
+            // → 2
+            console.log(count("p > .animal")); // Direct child of <p>
+            // → 1
+
+        The object returned by `querySelectorAll('')` is not live. It won't change when you change the document. It is still not a real array, though, so you still need to call `Array.from` if you want to treat it like one. 
+
+        `querySelector('')` - Will return only the first matching element or null when no element matches. When you want a specific, single element.
+
+    - Positioning and Animating 
+
+        The `position` style property influences layout:
+        
+            `static` - (Default) it has a value of , meaning the element sits in its normal place in the document. 
+
+            `relative` - the element takes up space in the document, but now the `top` and `left` style properties can be used to move it relative to that normal place. 
+
+            `absolute` - the element is removed from the normal document flow, it no longer takes up space and may overlap with other element. It's `top` and `left` style properties used to absolutely position it relative to the top-left corner of the nearsest enclosing element whose `position` property isn't `static`, or relative to the document if no such enclosing element exists.
+
+        We can use this to create an animation. The following document displays a picture of a cat that moves around in an ellipse. 
+
+            <p style="text-align: center">
+                <img src="img/cat.png" style="position: relative">
+            </p>
+            <script>
+                let cat = document.querySelector("img");
+                let angle = Math.PI / 2;
+                function animate(time, lastTime) {
+                    if (lastTime != null) {
+                    angle += (time - lastTime) * 0.001;         // Roughly 60fps (frames per second)
+                    }
+                    cat.style.top = (Math.sin(angle) * 20) + "px";      // oscillates up and down 
+                    cat.style.left = (Math.cos(angle) * 200) + "px";    // oscillates side to side
+                    requestAnimationFrame(newTime => animate(newTime, time));
+                            // keeps the animation going after the function finishes an iteration
+                }
+                requestAnimationFrame(animate);                 // Initiates the animation
+            </script>
+
+        The picture is centered on nthe page and given a `position` of `relative`. We'll repeatedly update that picture's `top` and `left` styles to move it. 
+
+        The script uses `requestAnimationFrame` to schedule the `animate` function to run whenever the browser is ready to repaint the screen. The `animate` function itself again calls `requestAnimationFrame` to schedule the next update. When the browser window (or tab) is active, this will cause updates to happen at a rate of about 60 per second, which tends to produce a good-looking animation. 
+
+        If we just updated the DOM in a loop, the page would freeze, and nothing would show up on the screen. Browsers do not update their display while a JS program is running, nor do they allow any interaction with the page. This is why we need `requestAnimationFrame`, it lets the browser know that we are done for now, and it can go ahead and do thte things that browsers do, such as updating the screen and responding to user action. 
+
+        The animation function is passed the current time as an argument. To ensure that the mostion of the cat per millisecond is stable, it bases the speed at which the angle changes on the difference between the current time and the last time the function ran. If it just moved the angle by a fixed amount per step, the mot ion would stutter if another heavy task running on the same computer were to prevent the function from running for a fraction of a second. 
+
+        Moving in circles is done using the trigonometry functions `Math.cos` and `Math.sine`. `Math.cos` and `Math.sin` are useful for finding points that lie on a circle around point (0,0) with a radius of one. Both functions interpret their argument as the position on this circle, with zero denoting the point on the far right of the circle. `Math.cos` tells you the x-coordinate of the point that corresponds to the given position, and `Math.sin` tells you the y-coordinate. Positions (or angles) greater than '2Pi' or less than 0 are valid - the rotation repeats so that 'a + 2Pi' refers to the same angle as 'a'. 
+
+            This unit for measuring angles is called radians - a full circle is 2Pi radians, similar to how it is 360 degrees. The constant Pi is available using `Math.PI`. 
+
+        The cat animationn code keeps a counter, `angle`, for the current angle of the animation and increments it every time the `animate` function is called. It can then use this angle to compute the current position of the image element. The `top` style is computed with `Math.sin` and multiplied by 20, which is the vertical radius of our ellipse. The `left` style is based on `Math.cos` and multiplied by 200 so that the ellipse is much wider than it is high.
+
+        Note that styles usually need units. In this case, we have to append "px" to the number to tell the browser that we are counting in pixels (as opposed to centimeters, "ems", or other units). This is easy to forget. Using numbers without units will result in your style being ignored, unnless that number is 0 (zero is always zero).
+
+
+
+/* Handling Events JS */
+
+    - Event Handlebars
+
+        The system actively notifies the code when an event occurs. Browsers do this by allowing us to register functionns as 'handlers' for specific events. 
+
+        The `window` binding refers to a built-in object provided by the browser. It represents the browser window that contains the document. Calling its `addEventListener` method registers the second argument to be called whenever the even described by its first argment occurs. 
+
+            window.addEventListener("click", () => {
+                console.log("You knocked?");
+            });
+
+    - Events and DOM Nodes
+
+        Each browser event handler is registered in a context. You can also call an event listener on a DOM element. Event listeners are called only when the event happens in the context of the object they are registered on. 
+
+        `variable.addEventListener( 'listerName', 'functionName' );` - adds an event handler to a node variable 
+
+        "click" - used to listen for a 'click' anywhere on the node ('window', 'document', etc)
+
+                <button>Click me</button>
+                <p>No handler here.</p>
+                <script>
+                    let button = document.querySelector("button");
+                    button.addEventListener("click", () => {
+                        console.log("Button clicked.");
+                    });
+                </script>
+
+            The example attaches a handler to the button node. Clicks on the button cause that handler to run, but clicks on the rest of the document do not. 
+
+        "onclick" - used to listen for a 'click' on an attribute whose name is the event name
+
+                function initElement() {
+                    var p = document.getElementById("foo");
+                    // NOTE: showAlert(); or showAlert(param); will NOT work here.
+                    // Must be a reference to a function name, not a function call.
+                    p.onclick = showAlert;
+                };
+
+            Giving a node an `onclick` attribute has a similar effect to "click". This works for most types of events - you can attach a handler through the attribute whose name is the event name with `onclick`.
+
+            A node can have only one `onclick` attribute, so you can register only one handler per node in this way. 
+            
+            You can have any number of `addEventListener` methods so that it is safe to add handlers even if there is already another handler on the element. 
+
+        `variable.removeEventListener( 'listenerName', 'functionName' )` - removes an event handler from a node variable.
+
+            <button>Act-once button</button>
+            <script>
+            let button = document.querySelector("button");
+            function once() {
+                console.log("Done.");
+                button.removeEventListener("click", once);
+            }
+            button.addEventListener("click", once);
+            </script>
+
+        * The function given to given to `removeEventListener` has to be the same function value that was given to `addEventListener`. To unregister a handler, you must give the functionn a name to be able to pass the same function value to both methods. 
+
+    - Event Objects 
+
+        Event handler functions are passed an argement: the event object (e). This object holds additional information about the event. For example, if we want to know which mouse button was pressed, we can look at the event obect's `button` property. 
+
+            <button>Click me any way you want</button>
+            <script>
+            let button = document.querySelector("button");
+            button.addEventListener("mousedown", event => {
+                if (event.button == 0) {
+                console.log("Left button");
+                } else if (event.button == 1) {
+                console.log("Middle button");
+                } else if (event.button == 2) {
+                console.log("Right button");
+                }
+            });
+            </script>
+        
+        The information stored in an event object differes per type of event. The object's `type` property alwys holds a string identifying the event (such as "click" or "mousedown"). 
+
+    - Propagation 
+
+        For most even types, handlers registered on nnodes with children will also recieve events that happen in the children. If a button inside a paragraph is clicked, event hanndlers on the paragraph will also see the click event. 
+
+        If both the paragraph and the button have a handler, the more specific handler - the one on the button - gets to go first. The even is said to 'propagate' outward from the node where it happened to that node's parent node and on to the root of the document. Finally, after all handlers registered on specific nodes have had their turn, handlers registered on the whole window get a chance to respond to the event. 
+
+        `event.stopPropagation()` 
+        
+            This can be called on the event object by an event handler at any point. This will prevent hanndlers further up from recieving the event. This can be useful when you have a button inside another clickable element and you donn't want clicks on the button to activate the outer element's click behavior. 
+
+                    <p>A paragraph with a <button>button</button>.</p>
+                    <script>
+                        let para = document.querySelector("p");
+                        let button = document.querySelector("button");
+                        para.addEventListener("mousedown", () => {
+                            console.log("Handler for paragraph.");
+                        });
+                        button.addEventListener("mousedown", event => {
+                            console.log("Handler for button.");
+                            if (event.button == 2) event.stopPropagation();
+                        });
+                    </script>
+
+                The script above registers 'mousedown' handlers on both a buttonn and the paragraph around it. When clicked with the right mouse button, the event handler for the button calls `stopPropagation`, which will prevent the handler on the paragraph from running. When the button is clicked with another mouse button, both handlers will run. 
+
+        `event.target.function()` Property 
+
+            Most event objects have a `target` property that refers to the node where they originated. You can use this property to ensure that you're not accidentally hanndling something that propagated up from a node you do not want to handle. 
+
+            It is also possible to use the `target` property to cast a wide net for a specific type of event. For Example, if you have a node containing a long list of buttons, it may be more convenient to register a single click handler on the outer node and have it use the target property to figure out whether a button was clicked, rather than register individual handlers on all of the buttons. 
+
+                <button>A</button>
+                <button>B</button>
+                <button>C</button>
+                <script>
+                document.body.addEventListener("click", event => {
+                    if (event.target.nodeName == "BUTTON") {
+                    console.log("Clicked", event.target.textContent);
+                    }
+                });
+                </script>
+
+    - Default Actions 
+
+        Many events have a default action associated with them. Clinking a link takes you to the link's target. Pressing the down arrow will scroll the page down. Right-clicking will give you a context menu. etc etc. 
+
+        For most types of events, the JS event handlers are called before the default behavior takes place. If the handler doesn't want this normal behavior to happen, typically because it has already taken care of handling the evennt
+
+        `preventDefault` is a method that can be called on the event object to implement your own keyboard shortcuts or context menu. It can also be used to obnoxiously interfere with the behavior that users expect. 
+
+            <a href="https://developer.mozilla.org/">MDN</a>
+            <script>
+            let link = document.querySelector("a");
+            link.addEventListener("click", event => {
+                console.log("Nope.");
+                event.preventDefault();
+            });
+            </script>
+
+        * Try not to do such things unless you ahve a really good reason to. It'll be unpleasant for people who use your page when expected behavior is broken. 
+
+        Depending on the browser, some events can't be intercepted at all. For example, on Chrome, the keyboard shortcut to close the current tab ('control + w' or 'command + w') cannot be handled by JS. 
+
+    - Key Events 
+
+        `keydown` events are fired when a key on the keyboard is processed.
+
+        `keyup` events are fired whenn a key on the keyboad is released.
+
+            <p>This page turns violet when you hold the V key.</p>
+            <script>
+            window.addEventListener("keydown", event => {
+                if (event.key == "v") {
+                document.body.style.background = "violet";
+                }
+            });
+            window.addEventListener("keyup", event => {
+                if (event.key == "v") {
+                document.body.style.background = "";
+                }
+            });
+            </script>
+
+        * `keydown` fires not only when the key is physically pushed down but also when a key is pressed and held, the event fires again every time the key repeats. This needs to be considered, for example, when you add something to the DOM whe na key is pressed and remove it again when the key is released. You might accidentally add hundreds of elements when the key is held down longer. 
+
+        The `key` property holds a string that, for most keys, corresponds to the thing that pressing that key would type. For special keys such as `ENTER`, it holds a string that names the key ("Enter", in this case). If you hold `SHIFT` while pressing a key, that might also influence the name of the key - "v" becomes "V", and "1" may become "!", if that is what pressing `SHIFT-1` produces on your keyboard. 
+
+        Modifier keys such as `SHIFT`, `CONTROL`, `ALT`, and `META` (`COMMAND` on Mac) generate key events just like normal keys, but when looking for key combinations you can also find out whether these keys are held down by looking at the `shiftKey`, `ctrlKey`, `altKey`, and `metaKey` properties of keyboard and mouse events. 
+
+            <p>Press Control-Space to continue.</p>
+            <script>
+            window.addEventListener("keydown", event => {
+                if (event.key == " " && event.ctrlKey) {
+                console.log("Continuing!");
+                }
+            });
+            </script>
+
+        The DOM node where a key event originates depends on the element that has focus when the key is pressed. Most nodes cannot have focus unless you give them a `tabindex` attribute, but things like links, buttons, and form fields can. When nothing in particular has focus, `document.body` acts as the target node of key events. 
+
+        When the user is typing text, using key events to figure out what is being typed is problematic. Some platforms, most notably the virtual keyboard on Android phones, don't fire key events. Even when you have an old-fashioned keyboard, some types of text input don't match key presses in a straightfoward way, such as input method editor (IME) software used by people whose scripts don't fit on a keyboard, where multiple key strokes are combined to creat characters. 
+
+        To notice when something was typed, elemennts that you can type into, such as the <input> and <textarea> tags, fire "input" events whenever the user changes their content. To get the actual content that was typed, it is best to directly read it from the focused field. 
+
+    - Pointer Events 
+
+        There are currently two widely used ways to point at things on a screen: mice (including devices that act like mice, such as touchpads and trackballs) and touchscreens. These produce different kinds of events.
+
+        - Mouse Clicks 
+
+            Pressing the mouse button causes a number of events to fire. The "mousedown" and "mouseup" events are similart to "keydown" and "keyup" and fire when nthe button is pressed and released. These happen on the DOM nodes that are immediately below the mouse pointer when the event occurs. 
+
+            After the "mouseup" event, a "click" event fires on the most specific node that contained both the press and the release of the button. For example, if I press down the mouse button on one paragraph and then move the pointer to another paragraph and release the button, the "click" event will happenn on the element that contains both those paragraphs. 
+
+            If two clicks happen close together, a "dblclick" (double-click) event aslo fires, after the second click event. 
+
+            To get precise information about the place where a mouse event happened, you ca nlook at its `clientX` and `clientY` properties, which contain the event's coordinates (inn pixels) relative to the top-left corner of the window, or `pageX` and `pageY`, which are relative to the top-left corner of the whole document (which may be different when the window has been scrolled). 
+
+            The following implements a primitive drawing program. Every time you click the document, it adds a dot under your mouse pointer. 
+
+                <style>
+                body {
+                    height: 200px;
+                    background: beige;
+                }
+                .dot {
+                    height: 8px; width: 8px;
+                    border-radius: 4px; /* rounds corners */
+                    background: blue;
+                    position: absolute;
+                }
+                </style>
+                <script>
+                    window.addEventListener("click", event => {
+                        let dot = document.createElement("div");
+                        dot.className = "dot";
+                        dot.style.left = (event.pageX - 4) + "px";
+                        dot.style.top = (event.pageY - 4) + "px";
+                        document.body.appendChild(dot);
+                    });
+                </script>
+
+        - Mouse Motion 
+
+            Everytime the mouse pointer moves, a "mousemove" event is fired. This event can be used to track the position of the mouse. A common situation in which this is useful is when implementing some form of mouse-dragging functionality. 
+
+            As an example, the following program displays a bar and sets up event handlers so that dragging to the left or right on this bar makes it narrower or wider: 
+
+                <p>Drag the bar to change its width:</p>
+                <div style="background: orange; width: 60px; height: 20px">
+                </div>
+                <script>
+                    let lastX; // Tracks the last observed mouse X position
+                    let bar = document.querySelector("div");
+                    bar.addEventListener("mousedown", event => {
+                        if (event.button == 0) {
+                        lastX = event.clientX;
+                        window.addEventListener("mousemove", moved);
+                        event.preventDefault(); // Prevent selection
+                        }
+                    });
+
+                    function moved(event) {
+                        if (event.buttons == 0) {
+                        window.removeEventListener("mousemove", moved);
+                        } else {
+                        let dist = event.clientX - lastX;
+                        let newWidth = Math.max(10, bar.offsetWidth + dist);
+                        bar.style.width = newWidth + "px";
+                        lastX = event.clientX;
+                        }
+                    }
+                </script>
+
+            * Note that the "mousemove" handler is registered on the whole window. Even if the mouse goes outside of the bar during resizing, as long as the button is held we still want to update its size. 
+
+            We must stop resizing the bar when the mouse button is released. For that, we can use the `buttons` property (note the plural), which tells us about the buttons that are currently held down. When this is zero, no buttons are downn. When buttons are held, its value is the sum of the codes for those buttons - the left button has code 1, the right button 2, and the middle one 4. That way, you can check whether a given button is pressed by taking the remainder of the value of `buttons` and its code.
+
+            Note that the order of these codes is different from the one used by `button`, wher the middle button came before the right one. As mentioned, consistency isn't really a strong point of the browser's programming interface. 
+
+        - Touch Events 
+
+            The style of graphical browser that we use was designed with mouse interfaces in mind, at a time where touchscreens were rare. To make the Web "work" on early touchscreen phones, browsers for those devices pretended, to a certain extent, that touch events were mouse events. If you tap your screen, you'll get "mousedown", "mouseup", and "click" events. 
+
+            However, this illusion isn't very robust. A touchscreen works differently from a mouse: it doesn't have multiple buttons, you can't track the finger whenn it isn't on the screen(to stimulate "mousemove"), and it allows multiple fingers to be on the screen at the same time. 
+
+            Mouse events cover touch interation only in straightfoward cases - if you add a "click" handler to a button, touch users will still be able to use it, but something like the resizeable bar in the previous example does not work on a touchscreen.
+
+            There are specific even types fired by touch interation. Whe na finger starts touching the scree, you get a "touchstart" event. When it is moved while touching, "touchmove" event fire. Finally, when it stops touching the scree, you'll see a "touchend" event. 
+
+            Because many touchscreens can detect multiple fingers at the same time, these events don't have a single set of coordinates associated with them. Rather, their event objects have a `touches` proplerty, which holds an array-like object of points, each of which has its own `clientX`, `clientY`, `pageX` and `pageY` properties. 
+
+            You could do somethign like this to show red circles around every touching finger:
+
+                <style>
+                dot { position: absolute; display: block;
+                        border: 2px solid red; border-radius: 50px;
+                        height: 100px; width: 100px; }
+                </style>
+                <p>Touch this page</p>
+                <script>
+                    function update(event) {
+                        for (let dot; dot = document.querySelector("dot");) {
+                        dot.remove();
+                        }
+                        for (let i = 0; i < event.touches.length; i++) {
+                        let {pageX, pageY} = event.touches[i];
+                        let dot = document.createElement("dot");
+                        dot.style.left = (pageX - 50) + "px";
+                        dot.style.top = (pageY - 50) + "px";
+                        document.body.appendChild(dot);
+                        }
+                    }
+                    window.addEventListener("touchstart", update);
+                    window.addEventListener("touchmove", update);
+                    window.addEventListener("touchend", update);
+                </script>
+
+            You'll often want to call `preventDefault` in touch event handlers to override the browser's default behavior (which may include scrolling the pad on swiping) and to prevent the mouse events from being fired, for which you may also have a handler. 
+
+    - Scroll Events 
+
+        Whenever an element is scrolled, a "scroll" even is fired on it. This has various uses, such as knowing what the user is currently looking at (for disabling off-screen animations or sending spy reports to your evil headquarters) or showing some indication of progress (by highlighting part of a table of contents or showing a page number). 
+
+        The following example draw a progress bar above the document and updates it to fill up as you scroll down:
+
+            <style>
+            #progress {
+                border-bottom: 2px solid blue;
+                width: 0;
+                position: fixed;
+                top: 0; left: 0;
+            }
+            </style>
+            <div id="progress"></div>
+            <script>
+                // Create some content
+                document.body.appendChild(document.createTextNode(
+                    "supercalifragilisticexpialidocious ".repeat(1000)));
+
+                let bar = document.querySelector("#progress");
+                window.addEventListener("scroll", () => {
+                    let max = document.body.scrollHeight - innerHeight;
+                    bar.style.width = `${(pageYOffset / max) * 100}%`;
+                });
+            </script>
+
+        The width is changed to indicate the current progress. We use %, rather than px, as a unit when setting the width so that the element is sized relative to the page width.
+
+        The global `innerHeight` binding gives us the height of the window, which we have subtracted from the total scrollable height (`document.body.scrollHeight`) - you can't keep scrolling when you hit the bottom fo the document. There's also an `innerWidth` for the window width. By dividing `pageYOffset`, the current scroll position, by the maximum scroll position and multiplying by 100, we get the percentage for the progress bar. 
+
+        Calling `preventDefault` on a scroll event does not prevent the scrolling from happening. In fact, the even handler si called only after the scrolling takes place. 
+
+    - Focus Events 
+
+        When an element gains focus, the browser fires a "focus" event on it. When it loses focus, the element gets a "blur" event. 
+
+        Unlike the events discussed earlier, these two events do not propagate. A handler on a parent element is not notified when a child element gains or loses focus. 
+
+        The following example displays help text for the text field that currently has focus:
+
+            <p>Name: <input type="text" data-help="Your full name"></p>
+            <p>Age: <input type="text" data-help="Your age in years"></p>
+            <p id="help"></p>
+
+            <script>
+                let help = document.querySelector("#help");
+                let fields = document.querySelectorAll("input");
+                for (let field of Array.from(fields)) {
+                    field.addEventListener("focus", event => {
+                    let text = event.target.getAttribute("data-help");
+                    help.textContent = text;
+                    });
+                    field.addEventListener("blur", event => {
+                    help.textContent = "";
+                    });
+                }
+            </script>
+
+        The window object will receive "focus" and "blur" events when the user moves from or to the browser tab or window in which the document is shown. 
+
+    - Load Events 
+
+        When a page finishes loading, the "load" event fires on the window and the document body objects. This is often used to schedule initialization actions that require the whole document to have been built. Rememeber that the content of <script> tags is run immediately when the tag is encountered. This may be too soon, for example when the script nneeds to do something with parts of the document that appear after the <script> tag. 
+
+        Elements such as images and script tags that load an external file also have a "load" event that indicates the files they reference were loaded. Like the focus-related events, loading events do not propagate. 
+
+        When a page is closed or navigated away from (for example, by following a link), a "beforeunload" event fires. The main use of this even is to prevent the user from accidentally losing work by closing a document. If you prevent the default behavior on this event and set the `returnValue` property on the event object to a string, the browser will show the user a dialg asking if they really want to leave the page. That dialog might include your string, but because some malicious sites try to use these dialogs to confuse people into staying on their page to look at dodgy weight loss ads, most browsers no longer display them. 
+
+    - Events and the Event Looping
+
+        In the context of the event loop, browser event handlers behave like other asynchronous notifications. They are scheduled when the event occurs but must wait for other scripts that are running to finish before they get a chance to run. 
+
+        The fact that events can be processed only when nothing else is running means that, if the event loop is tied up with other work, any interaction with the page (which happens through events) will be delayed until there's time to process it. So if you schedule too much work, either with long-running event handlers or with lots of short-running ones, the page will become slow and cumbersome to use. 
+
+        For cases where you really do want to do some time-consuming thing in the background without freezing the page, browsers provide something called web workers. A worker is a JS process that runs alongside the main script, on its own timeline. 
+
+        Imagine that squaring a number is a heavy, long-running computation that we want to perform in a separate thread. We could write a file called `code/squareworkder.js` that responds to messages by computer a square and sending the message back. 
+
+            addEventListener("message", event => {
+                postMessage(event.data * event.data);
+            });
+
+        To avoid the problems of having multiple threads touching the same data, workers do not share their global scope or any other data with the main script's environment. Instead, you have to communicate with them by sending messages back and forth. 
+
+        This code spawns a worker running that script, sends it a few messages, and outputs the responses. 
+
+            let squareWorker = new Worker("code/squareworker.js");
+            squareWorker.addEventListener("message", event => {
+            console.log("The worker responded:", event.data);
+            });
+            squareWorker.postMessage(10);
+            squareWorker.postMessage(24);
+        
+        The `postMessage` function nsends a message, which will cause a "message" event to fire in the receiver. The script that created the worder sends and receives messages through the `Worker` object, whereas the workder talks to the script that created it by sending and listening directly on its global scope. Only values that can be represented as JSON ca be sent as messages - the other side will receive a copy of them, rather than the value itself. 
+
+    - Timers 
+
+        The `setTimeout` function schedules another function to be called later, after a given number of milliseconds.
+
+        Sometimes you need to cancel a function you have scheduled. This is done by storing the value returned by `setTimeout` and calling `clearTimeout` on it. 
+
+            let bombTimer = setTimeout(() => {
+                console.log("BOOM!");
+            }, 500);
+
+            if (Math.random() < 0.5) { // 50% chance
+                console.log("Defused.");
+                clearTimeout(bombTimer);
+            }
+
+        The `cancelAnimationFrame` function nworks in the same way as `clearTimeout` - calling it on a value returned by `requestAnimationFrame` will cancel that frame (assuming it hasn't already been called). 
+
+        A similar set of functions, `setInterval` and `clearInterval`, are used to set timers that should repeat every X milliseconds.
+
+            let ticks = 0;
+            let clock = setInterval(() => {
+                console.log("tick", ticks++);
+                if (ticks == 10) {
+                    clearInterval(clock);
+                    console.log("stop.");
+                }
+            }, 200);
+
+    - Debouncing 
+
+        Some types of events have the potential to fire rapidly, many times in a row (the "mousemove" and "scroll" events, for example). When handling such events, you must be careful not to do anything too time-consuming or your handler will take up so much time that interaction with the document starts to feel slow. 
+
+        If you do need to do something nontrivial in such a handler, you can use `setTimeout` to make sure you are not doing it too often. This is usually called debouncing the event. There are several slightly different approaches to this. 
+
+        In the first example, we want to react when the user has typed something, but we don't want to do it immediately for every input event. When they are typing quickly, we just want to wait until a pause occurs. Instead of immediately performing an action in the event handler, we set a timeout. We also clear the previous timeout (if any) so that when events occur close together (closer than our timeout delay), the timeout from the previous even will be canceled. 
+
+            <textarea>Type something here...</textarea>
+            <script>
+                let textarea = document.querySelector("textarea");
+                let timeout;
+                textarea.addEventListener("input", () => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => console.log("Typed!"), 500);
+                });
+            </script>
+
+        Giving an undefined value to `clearTimeout` or calling it on a timeout that has already fired has no effect. Thus, we don't have to be careful about when to call it, and we simply do so for every event. 
+
+        We can use a slightly different pattern if we want to space responses so that they're separated by at least a certain length of time but want to fire them during a series of events, not just afterward. For example, we might want to respond to "mousemove" events by showing the current coordinates of the mouse but only every 250 milliseconds. 
+
+            <script>
+                let scheduled = null;
+                window.addEventListener("mousemove", event => {
+                    if (!scheduled) {
+                    setTimeout(() => {
+                        document.body.textContent =
+                        `Mouse at ${scheduled.pageX}, ${scheduled.pageY}`;
+                        scheduled = null;
+                    }, 250);
+                    }
+                    scheduled = event;
+                });
+            </script>
+
+    - 
+
