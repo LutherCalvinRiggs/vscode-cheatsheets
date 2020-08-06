@@ -344,13 +344,28 @@ The HTML page
         The <meta> element
             Only used inside the head
             Conveys metadata about the page 
-                Character Set 
-                Viewport: without <meta name='viewport' .....> the browser things it is a desktop website that needs to be shrunk down to fit a phone screen 
-                Description: will show up in search engine results 
-                The following are used to create the card that is displayed when a webpage is posted to #Slack, LinkedIn or Twitter
-                    Application-name: used to give a name when site is saved to a homescreen.
-                    MSApplication-TileImage: 
-                    Theme-Color: 
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta name="description" content="">
+                <meta name="keywords" content="">
+                <meta name="author" content="Luther Calvin Riggs">
+                <title>Title</title>
+
+                <!-- Tiles need transparent background -->
+                <meta name="msapplication-TileImage" content="images/tiles/name-tile-70x70.png">    
+                <meta name="msapplication-TileImage" content="images/tiles/name-tile-150x150.png">    
+                <meta name="msapplication-TileImage" content="images/tiles/name-tile-310x150.png">    
+                <meta name="msapplication-TileImage" content="images/tiles/name-tile-310-310.png">    
+                <meta name="msapplication-TileColor" content="#000000">     <!-- Only hex format -->
+                <meta name="application-name" content="">   <!-- Name when saved to home screen -->                
+
+                    Character Set 
+                    Viewport: without <meta name='viewport' .....> the browser things it is a desktop website that needs to be shrunk down to fit a phone screen 
+                    Description: will show up in search engine results 
+                    The following are used to create the card that is displayed when a webpage is posted to #Slack, LinkedIn or Twitter
+                        Application-name: used to give a name when site is saved to a homescreen.
+                        MSApplication-TileImage: 
+                        Theme-Color: 
 
 
         The <title> element 
