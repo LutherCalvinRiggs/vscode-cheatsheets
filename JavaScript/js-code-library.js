@@ -1,13 +1,81 @@
-// DOM APIs
+// Locating DOM elements
+    // Find an element by element id
+    document.getElementById("id");
 
-    // Create and element and give it a class name
-    const div = document.createElement('div');
-    div.className = 'foo';
+    // Find elements by tag name
+    document.getElementsByTagName('name');
+        // use the [x] syntax to pick a specific tag instance in the nodeList
+        document.getElementsByTagName('name')[x];
 
-    // console.log a class name
-    console.log(div.outerHTML);
+    // Get the <body> element of a document
+    document.getElementsByTagName('BODY')[0];
 
-    // remove the class name and add another
+    // Find elements by class name
+    document.getElementsByClassName('name');
+
+    // Get content of an HTML element (easiest way)
+    document.getElementById("id").innerHTML;
+        // .innerHTML can also be used on <html> and <body>
+
+    // Change the inner HTML of an element
+    document.getElementById("id").innerHTML = "Hello World!";
+    element.innerHTML = 'new html content';
+
+    // Change the attribute value of an HTML element
+    document.getElementById("id").attribute = "value";
+    element.attribute = 'value';
+    element.setAttribute(attribute, value);
+
+    // Change the style of an HTML element
+    document.getElementById("id").style.property = "style";
+    element.style.property = 'style';
+
+    // Find first element to make the CSS selector (id, class names, types, attributes, values of attributes, etc) 
+    document.querySelector('selector');
+
+    // Find all HTML elements that match a CSS selector (id, class names, types, attributes, values of attributes, etc) 
+    document.querySelectorAll('element.selectorName');
+    document.querySelectorAll('p.intro'); // finds all <p> elements with class "intro"
+
+    // Returns all <a> elements that have a name attribute
+    document.anchors;
+
+    // Returns the <body> element
+    document.body;
+
+    // Returns the document's cookies
+    document.cookie
+
+    // Returns document's doctype
+    document.doctype;
+
+    // Returns the <html> element
+    document.documentElement;
+
+    // Returns all <form> elements
+    document.forms;
+
+    // Returns the <head> element
+    document.head;
+
+    // Returns all <area> and <a> elements that have an href attribute
+    document.links;
+
+    // Returns all <script> elements
+    document.scripts;
+
+    // Returns the <title> element 
+    document.title;
+
+
+// Manipulating element class and id
+    // Change an element's id
+    document.element.id = 'name';
+
+    // Return an element's id
+    console.log(element.id);
+
+    // Remove the class name and add another
     div.classList.remove('foo');
     div.classList.add('anotherclass');
 
@@ -31,9 +99,369 @@
     div.classList.add(...cls);
     div.classList.remove(...cls);
 
+    // Remove a class name from a DOM node
+    const nodeName = document.querySelectorAll('class-name');
+    for (let i = 0; i < nodeName.length; i++){
+        nodeName[i].classList.remove('class-name');
+    }
+
     // Replace class 'foo' with class 'bar'
     div.classList.replace('foo', 'bar');
 
+// Creating DOM elements
+    // Create element node
+    const div = document.createElement('div');
+
+    // Create and element and give it a class name
+    const div = document.createElement('div');
+    div.className = 'foo';
+
+    // console.log a class name
+    console.log(div.outerHTML);
+
+    // Create an HTML element
+    document.createElement('element');
+
+    // Remove an HTML element
+    document.removeChild('element');
+
+    // Add an HTML element
+    document.appendChild('element');
+
+    // Replace an HTML element
+    document.replaceChild('new', 'old');
+
+    // Write into the HTML output stream
+    document.write('text');
+
+// Event Handlers
+    // Adding event handler code to an onlick event
+    document.getElementById('id').event = function() {code};
+    element.addEventListener('event', function());
+    element.addEventListener('event', () => {
+        // function code
+    });
+
+    // Event Keywords
+        // When the content of a form element, the selection, or the checked state have changed
+        change
+        onchange
+
+        // When the user clicks on an element
+        click
+        onclick
+
+        // When the user double-clicks on an element
+        dblclick
+        ondblclick 
+
+        // When the user presses a mouse button over an element
+        mousedown
+        onmousedown 
+        // When a user releases a mouse button over an element
+        mouseup
+        onmouseup
+
+        // When the pointer is moved onto an element
+        mouseeenter
+        onmouseenter
+        // When the pointer is moved out of an element
+        mouseleave
+        onmouseleave
+
+        // When the pointer is moved onto an element, or one of its children
+            // Does not bubble / propagate 
+        mouseover
+        onmouseover
+        // When the pointer is moving while it is over an element
+        mousemove
+        onmousemove 
+        // When a user moves the mouse pointer out of an element, or out of one of its children
+        mouseout
+        onmouseout
+
+        // When nthe user presses a key
+        keypress
+        onkeypress
+        // When the user is pressing a key
+        keydown
+        onkeydown 
+        // When the user releaes a key
+        keyup 
+        onkeyup 
+
+        // When the user opens or closes the <details> element
+        toggle
+        ontoggle 
+
+        // When a finger is placed on a touch screen
+        touchstart
+        ontouchstart
+        // When na finger is dragged across the screen
+        touchmove
+        ontouchmove 
+        // When a finger is removed from a touch screen
+        touchend
+        ontouchend
+        // When the touch is interrupted
+        touchcancel
+        ontouchcancel
+
+        // When nan element gets user input
+        input 
+        oninput 
+
+        // When an element gets focus
+        focus
+        onfocus 
+        // When an element is about to get focus
+        focusin 
+        onfocusin 
+        // When an element is about to lose focus
+        focusout 
+        onfocusout 
+
+        // When an nobject has loaded 
+        load
+        onload
+
+        // When media data is loaded
+        loadeddata
+        onloadeddata 
+
+        // When a message is received through the event source
+        message 
+        onmessage 
+
+        // When the media has been started or is no longer paused
+        play 
+        onplay 
+
+        // When the media is playing after having been paused or stopped for buffering
+        playing
+        onplaying 
+
+        // When the media is paused either by the user or programmatically
+        pause 
+        onpause 
+
+        // When the browser can start playing the media (when it has buffered enough to begin)
+        canplay
+        oncanplay
+        
+        // When the media has reached the end (useful for messages like "thanks for listening")
+        ended 
+        onended 
+
+        // When a CSS transition has completed
+        transitionend
+        ontransitionend
+
+        // When the duration of the media has changed
+        durationchange
+        ondurationchange
+
+        // More events can be found here: https://www.w3schools.com/jsref/dom_obj_event.asp
+
+
+
+
+
+
+
+
+// JS Object Methods
+
+    // Create an object 
+    let objectName = new Object();      // 'object constructor' syntax
+    let objectName = {};                // 'object literal' syntax
+
+    // Create an object and add properties
+    let objectName = {
+        property: value, 
+        property: value
+    };
+
+    // Get property values from an object
+    objectName.property 
+    alert (objectName.property);
+
+    // Add a property
+    objectName.property = value;
+
+    // Remove a property
+    delete objectName.property 
+
+    // Use a multiword property name
+    let objectName = {
+        property: value,
+        "multiword property": value     // multiword properties must be quoted
+    };
+
+    // OBJECTS DECLARED WITH A `CONST` CAN BE MODIFIED
+        // The `const` fixes the value of the object but not its contents
+        // This will only give an error if you try to reset the object as a whole
+    const objectName = {
+        property: value,
+    };
+    objectName.property = "value";
+    alert( objectName.property );       // "value"
+
+    // Call multiword properties using square bracket notation
+    objectName["multiword property"] = value;       // sets 'value'
+    alert( objectName["multiword property"] );      // returns 'value'
+    delete objectName["multiword property"];        // deletes 'value'
+
+    // Obtain the property name as the result of any expression like from a variable - as opposed to a literal string
+    let key = 'likes birds';
+    // same as user['likes birds'] = true;
+    user[key] = true;
+        // The variable `key` can be calculated at run-time or depend on the user input. Then we use it to access the property. This allows us to call specific properties from an object in realtime.
+            
+            // Example
+            let user = {name: "John", age: 30};
+            let key = 'prompt('What would you like to know about the user?', `userInput`)';
+            // access the object by the variable
+            alert( user[key] );         // John (if `userInput` enters 'name' when prompted) 
+            alert( user.key );          // Same concept using dot notation 
+
+    // Use square brakets in an object literal when creating an object (aka computed properties)
+        // Bracket is used to declare a property name instead of a value
+    let fruit = prompt('Which fruit to buy?', "apple");
+    let bag ={ [fruit]: 5, };       // the name of the property is take from the variable fruit
+    alert( bag.apple );             // 5 if `fruit="apple"`
+
+            // The above is the same as below
+                let fruit = prompt('Which fruit to buy?', 'apple');
+                let bag = {};
+                // take property name from the fruit variable and assign a value
+                bag [fruit] = 5;
+
+            // This concept can be used for more complex expressions inside square brackets
+            let fruit = 'apple';
+            let bag = {[fruit + 'Computers']: 5}; // bag.appleComputers = 5
+        // Squre brackets are much more powerful than the dot notation and allow any property name and variable
+        // When the property names are known and simple, use the dot notation. When you need something more comples, use the square bracket notation
+
+    // Use existing variables as values for property names
+    function makeUser(name, age) {
+        return {
+            name,       // same as `name: name`
+            age,        // same as `age: age`
+            // ...
+        };
+    }
+        // The above is Property Value Shorthand for the following code
+        function makeUser(name, age) {
+            return {
+                name: name,       // same as `name: name`
+                age: age,        // same as `age: age`
+                // ...
+            };
+        }
+        let user = makeUser("John", 30);
+        alert( user.name );     // John
+
+        // You can combine normal properties and shorthands in the same object
+        let user = {
+            name,       // same as name: name
+            age: 30
+        };
+          
+    // There are no name restrictions for object properties. 
+    let obj = {
+        for: 1,
+        let: 2,
+        return: 3
+    };
+    alert( obj.for + obj.let + obj.return );        // 6
+        // other types are automatically converted to strings - 0 becomes '0'
+        let obj = { 0: 'test' };        // same as "0": "test"
+        // both alerts access the same property 
+        alert( obj["0"] );      // test
+        alert( obj[0] );        // test (same property)
+
+    // Check to see if a property exists withint an object. Can access any property within an object. There is no error is the property doesn't exist.
+    'key' in object 
+    'property-name' in object   // 'key' and 'property-name' are usually quoted strings
+            // Example
+            let user = {};
+            alert (user.noSuchProperty === undefined );     // true means "no such property"
+            // Example
+            let user = { name: "John", age: 30 };
+            alert( "age" in user );             // true, user.age exists
+            alert( "blabla" in user);           // fale, user.blabla doesn't exist
+    key in object   // without quotes `key` is a variable containing the actual name to be tested 
+            // Example
+            let user = { age: 30 };
+            let key = "age";
+            alert( key in user );       // true, property "age" exists
+        // It is best to use `in` because an obj.property can exist but hold the value 'undefined'
+        // This should happen rarely as you should use 'null' for unknown or empty values.
+
+    // Check for emptiness in an object
+    function isEmpty(obj) {
+        for (let key in obj) {
+            // if the loop has started, there is a property
+            return false;
+        }
+        return true;
+    }
+
+    // Walk over all keys in an object
+    for (key in object) {
+        // executes the body for each key among object properties
+    }
+            // Example
+            let user = { name: "John", age: 30, isAdmin: true };
+            for (let key in user) {
+                // keys
+                alert( key );           // name, age, isAdmin
+                // values fro the keys
+                alert( user[key] );     // John, 30, true
+            }
+        // All 'for' constructs allow us to declare the looping variable inside the loop (`let key`)
+        // Could also use `for (let prop in obj)` 
+
+    // Sum values of object properties
+    let sum = 0;
+    for (let key in obj) {
+        sum += obj[key];
+    }
+
+    // Multiply all interger values by 2
+    function multiplyNumeric(obj) {
+        for ( let key in obj ){
+            if (typeof obj[key] == "number"){
+                obj[key] *= 2
+            };
+        };
+    }
+
+        // When looping over an object, integer properties are sorted while others appear in creation order
+            // Example - Integer properties
+            let codes = {
+                '49': 'Germany',
+                '41': 'Switzerland',
+                '44': 'Great Britain',
+                // ...,
+                '1': 'USA'
+            };
+            for (let code in codes) {
+                alert(code);        // 1, 41, 44, 49
+            }
+            // To make the phone codes non-integer, add a '+' before each code
+                // Integer properties are strings that can be converted to-and-from an integer without a change. "41" is an integer property name, but "+49" and "1.2" are not
+            // Example - Non-Integer Properties
+            let user = {
+                name: "John",
+                surname: "Smith"
+            };
+            user.age = 25;  // add on more
+            // non-integer properties are listed in nthe creation order
+            for (let prop in user) {
+                alert( prop );      // name, surname, age
+            }
 
 
 

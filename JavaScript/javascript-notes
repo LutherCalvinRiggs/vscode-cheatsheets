@@ -4001,3 +4001,27 @@
 
     - 
 
+
+/* Basic JS Objects */
+    
+    There are eight data types in JS. Seven of them are called 'primitive', because their values contain only a single thing (be it a string or a number or whatever).
+
+    Objects are used to store keyed collections of various data and more comples entities. In JS, objects penetrate almost every aspect of the language. 
+
+    An object can be created with figure brackets {...} with an optional list of properties. A property is a `key: value` pair, where the `key` is a string (also called a "property name"), and `value` can be anything. 
+
+        We can imagine an object as a cabinet with signed files. Every piece of data is stored in its file by the key. It's easy to find a file by it's name or add/remove a file. 
+    
+    Ann empty object ('empty cabinet') can be created using one of two syntaxes:
+
+        let user = new Object();    // "object constructor" syntax
+        let user = {};              // "object literal" syntax 
+
+        Usually, the figure brackets {...} are used. That declaration is called an object literal.
+
+    - Literals and properties 
+
+        
+
+
+

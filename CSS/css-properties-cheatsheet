@@ -300,13 +300,108 @@
                 unset;      1
 
 
-    PROPERTY 
+    TRANSFORM
 
-        property-name:
+        transform: - modifies the coordinate space of the CSS visual formatting model 
 
-            - Note | Keyword value: | Global value:
-                 
-                keyword; | <value>;     explanation.
+            none;
 
+            - Matrix Transformation
+
+                matrix(a, b, c, d, tx, ty); - defines a homogenous 2D trannsformation matrix 
+
+                    a, b, c, d - numbers describing the linear transformation
+
+                    tx, ty - numbers describing the translation to apply
+
+                matrix3d(a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3, a4, b4, c4, d4); - defines a 3D transformation as a 4x4 homogeneous matrix 
+
+                    a1, b1, c1, d1, a2, b2, c2, d2, a3, b3, c3, d3, d4 - numbers describing the linear transformation
+
+                    a4, b4, c4 - numbers describing the translation to apply 
+
+            - Skewing / Distortion
+
+                skew(ax) || skew(ax, ay); - skews an element on the 2D plane. Distorts each point within an element by a certain angle in the horizontal and vertical direction. The coordinates of each point are modified by a value proportionate to the specified angle and the distance to the origin; thus, the farther from the origin a point is, the greater will be the value added. 
+
+                    ax - represents the angle to use to distrot the element on the x-axis. Takes values in `deg`, `turn`, and `rad`.
+
+                    ay - represents the angle to use to distrot the element on the y-axis. Takes values in `deg`, `turn`, and `rad`.
+
+                skewX( a ); - skews an element in the horizontal direction of the 2D plane
+                
+                    a - represents the angle to use to distrot the element on the x-axis. Takes values in `deg`, `turn`, and `rad`.
+
+                skewY( a ); - skews an element in the vertical direction of the 2D plane
+                
+                    a - represents the angle to use to distrot the element on the y-axis. Takes values in `deg`, `turn`, and `rad`.
+
+            - Translation / Moving
+
+                translate( tx ) || translate(tx, ty); - repositions the element in the horizontal and/or vertical directions. Uses `px`, `%`, or `em`.
+
+                    tx - represents the x-coordinate of the translating vector. 
+
+                    ty - represents the y-coordinte of the translating vector. 
+
+                translate3d(tx, ty, tz); - repositions an element in 3D space. Uses `px`, `%`, or `em`.
+
+                    tx - represennts the x-component of the translating vector.
+
+                    ty - represennts the y-component of the translating vector.
+
+                    tz - represennts the z-component of the translating vector. It cannot be a % value.
+
+                translateX( t ); - repositions an element horizontally on the 2D plane. 
+
+                translateY( t ); - repositionns an element vertically on the 2D plane.
+
+                translateZ( t ); - repositions an element along the z-axis in the 3D space. A positive value moves the element towards the viewer, negative farther away. 
+
+            - Scale / Resizing
+
+                scale(x); || scale(x, y); - resizes an element on the 2D plane. It can resize the horizontal and vertical dimensions at different scales. If < 1.0, the size will be diminished. Negative values result in point reflection. 
+
+                scale3d(x, y, z); - resizes an element in 3D space. It cann resize different dimesions at different scales. If < 1.0, the size will be diminished. Negative values result in point reflection.
+
+                scaleX( s ); - resizes an element along the x-axis. 
+
+                    s - scaling factor to apply on the x-axis of each point of the element. 
+
+                scaleY( s ); - resizes an element along the y-axis. 
+
+                    s - scaling factor to apply on the y-axis of each point of the element. 
+
+                scaleZ( s ); - resizes an element along the z-axis. 
+
+                    s - scaling factor to apply on the z-axis of each point of the element. 
+
+            - Rotation
+
+                rotate( <angle> ); - rotates an element around a fixed point (the transform origin) on the 2D plane, without deforming it. The transform origin defaults to the center of the element, but you can set your own custom origin using the `transform-origin` property.
+
+                    <angle> - The angle of rotation. If positive, the movement will be clockwise; if negative, it will be counter-clockwise. A rotation of 180deg is called point reflection. 
+
+                rotate3d(x, y, z, <angle> ); - rotates an element around a fixed axis in 3D space, without deforming it. In 3D space, rotations have three degrees of liberty, which together describe a single axis of rotation. The axis of rotation is defined by an [x,y,z] vector and pass by the origin (the `transform-origin`). If, as specified, the vector is not normalized (ie, if the sum of the square of its three coordinates is not 1), the user agent will normalize it internally. A non-normalizable vector, such as the null vector, [0,0,0], will cause the rotation to be ignored, but without invalidating the whole CSS property. 
+
+                    x - x-coordinate of the vector denoting the asix of rotation which could be 0-1. 
+
+                    y - y-coordinate of the vector denoting the asix of rotation which could be 0-1. 
+
+                    z - z-coordinate of the vector denoting the asix of rotation which could be 0-1. 
+                    
+                    a - angle of the rotation. Positive denotes clockwise, negative counter-clockwise.
+                
+                rotateX( <angle> ); - rotates an element around the horizontal axis without deforming. Can be in `deg`, `turn`, or `rad`. Positive values denote clockwise, negative counter-clockwise. 
+
+                rotateY( <angle> ); - rotates an element around the vertical axis without deforming. Can be in `deg`, `turn`, or `rad`. Positive values denote clockwise, negative counter-clockwise. 
+
+                rotateZ( <angle> ); - rotates an element around the z-axis without deforming. Can be in `deg`, `turn`, or `rad`. Positive values denote clockwise, negative counter-clockwise. 
+
+            - Perscpective
+
+                perspective( <length> ); - Sets the distance between the user and the z=0 plane. A positive value makes the element appear closer to the user, a negative value farther. If 0, no perspective transform applied. 
+
+                    <length> - number value of type px, rem, cm 
 
 
