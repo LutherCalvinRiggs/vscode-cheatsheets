@@ -3541,7 +3541,7 @@
 
 /* Handling Events JS */
 
-    - Event Handlebars
+    - Event Handlers
 
         The system actively notifies the code when an event occurs. Browsers do this by allowing us to register functionns as 'handlers' for specific events. 
 
@@ -4021,7 +4021,38 @@
 
     - Literals and properties 
 
+        We can immediately put some properties into {...} as `key: value` pairs: 
+
+            let user = {                    // an object
+                name: "John",               // by key "name" store value "John"
+                age: 30                     // by key "age" 
+            };
+
+        A property has a key (also know as "name" or "identifier") bevore the colon ":" and a value to the right of it. 
+
+        In the `user` object above, there are two properties:
+
+            1. The first property has the name "name" and the value "John"
+
+            2. The second one has the name "age" and the value `30`
+
+            The resulting `user` object can be imagined as a cabinet with two signed files labeled "name" and "age".
+
+        We can add, remove and read files from it any time.
+
+        Property values are accessible using the dot notation:
+
+            // get property values from the object:
+            alert( user.name );         // John
+            alert( user.age );          // 30
+
+        The value can be of any type. Let's add a boolean one:
+
+            user.isAdmin = true;
+
+        To remove a property, we can use the `delete` operator:
+
+            delete user.age;
+
         
-
-
 

@@ -54,9 +54,9 @@ HTML Character Entities  (full list can be found on W3C website)
     &copy = 'copyright symbol'
     &trade = 'trademark symbol'
     &star = 'star symbol'
-    &nbsp; = 'non-breaking space' - browser will know to never break the line there when wrapping
-    &lt; = '<'          
-    &gt; = '>'
+    &nbsp = 'non-breaking space' - browser will know to never break the line there when wrapping
+    &lt = '<'          
+    &gt = '>'
 
     <br>                    Markes a line break. No closing tag needed
     <pre></pre>             Makes the browser pay attention to line breaks and spacing.

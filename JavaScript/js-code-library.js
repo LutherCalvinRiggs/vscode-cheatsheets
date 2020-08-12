@@ -67,6 +67,12 @@
     // Returns the <title> element 
     document.title;
 
+    // 
+    element.scrollHeight
+
+    //
+    element.maxHeight
+
 
 // Manipulating element class and id
     // Change an element's id
@@ -550,7 +556,7 @@ value.isNaN();
         arrayName.toString();
 
     // Create a new, shallow-copied Array instance from an array-like or iterable object
-        arrayName.from('foo');
+        Array.from('foo');
         // array['f', 'o', 'o']
 
     // Join all array elements into a string, also allows you to specify a separator
@@ -764,8 +770,55 @@ value.isNaN();
 
         arrayName instanceof Array;   // returns true if an object is created by a given constructor
 
+    // Create a new array with all elements that pass the function test
+    const result = arrayName.filter(function(arg) {
+        if(arg.property > x){
+            return true;                // return true = keep, or pass through filter
+        }
+    });
+                // As an arrow function
+                const result = arrayName.filter(arg => (arg.property > x));
 
+    // Create a new array populated with the results of calling a provided function on every element in the calling array
+    const result = arrayName.map(function(arg) {
+        return arg * x;
+    });
+                // As an arrow function
+                const result = arrayName.map(arg => arg * 2);
 
+    // Sort the elements of an array in place and return the sorted array
+        // Sorts by comparing two items and returning 1 or -1
+    const result = arrayName.sort(function(firstArg, secondArg){
+        if (firstArg.property > secondArg.property) {
+            return 1;
+        } else {
+            return -1;
+        }
+    });
+                // As an arrow function
+                const result = arrayName.sort((a, b) => a.property > b.property ? 1 : -1);
+
+    // Execute a reducer function (that you provide) on each element of the array, resulting in single output value
+    const result = arrayName.reduce((total, arg) => {
+        return total + arg;
+    }, 0);                                              // The 0 initiates `total` with a 0
+
+            // Another way of writing a reducer 
+            let total = 0;
+            for(let i = 0; i < arrayName.length; i++) {
+                total += arrayName[i].property;
+            }
+
+    // Find the number of instance of an item in an array, when you don't know the what the items are
+    const variable = arrayName.reduce(function(obj, item){
+        if (!obj[item]) {               // if there are items in the object,
+          obj[item] = 0;                // set the count to zero for each item
+        }
+        obj[item]++;                    // iterate through the items in the object, tally instances
+        return obj;
+      }, {});
+  
+      console.log(variable);
 
 
 
