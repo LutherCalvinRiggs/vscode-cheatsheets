@@ -568,23 +568,79 @@ value.isNaN();
         // To reverse a string and have it print backwards
             stringName.split('').reverse().join('');
 
+        // Remove punctuation from an string
+            const punctuation = '!"#$%&\'() *+,-./:;<=>?@[\\]^_`{|}~';
+            const rawString = string;
+            const rawLetters = rawString.split('');
+            const cleanLetters = rawLetters.filter(function(letter) {
+                return punctuation.indexOf(letter) === -1;
+            });
+            const cleanString = cleanLetters.join('');
+
+            // Regular Expression
+                // Match all strings that contain a digit
+                /[0123456789]/.test('sting');   // true if the string contains a digit
+                /[0-9]/.test('string');
+                /\d/.test('string');  // tests for any digit
+                /\w/.test('string');  // tests for an alphanumeric character ('word character')
+                /\s/.test('string');  // tests for any whitespace character (space, tab, newline, etc)
+                /\D/.test('string');  // tests for any character NOT a digit
+                /\W/.test('string');  // tests for a non alphanumeric character
+                /\S/.test('string');  // tests for a non whitespace character
+                /./.test('string');   // tests for any character except for newline
+            // This is not a complete list of Regular Expressions
+
+        // Palindrome function -> check if a string is a palindrome
+            const palindromes = function(string) {
+                const punctuation = '!"#$%&\'() *+,-./:;<=>?@[\\]^_`{|}~';
+            
+                const rawString = string.toLowerCase();
+                const rawLetters = rawString.split('');
+                const cleanLetters = rawLetters.filter(function(letter) {
+                    return punctuation.indexOf(letter) === -1;
+                });
+                const cleanString = cleanLetters.join('');
+                    console.log(cleanString);
+                const reverseString = cleanLetters.reverse().join('');
+                    console.log(reverseString);
+            
+                if (cleanString === reverseString) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            // The following code does the same thing
+            const palindromes = function(string) {
+                processedString = string.toLowerCase().replace(/[^A-Za-z]/g, "");
+                return (
+                  processedString
+                    .split("")
+                    .reverse()
+                    .join("") == processedString
+                );
+              };
+
     // Returns the LAST element from an array
         let x = arrayName.pop();
 
     // Returns the new array length after adding a value
         let x = arrayName.push("newElement");
 
+    // Adds a new element to an array (AT THE BEGINNING) and "unshifts" older elements
+        arrayName.unshift("newElement");
+
     // Returns the new array length
         arrayName.unshift("newElement");
+
+    // Removes the FIRST array element and "shift" all other elements to a lower index
+        arrayName.shift();
 
     // Returns the string that was "shifted out"
         let x = arrayName.shift();
 
     // Adds a new element to an array (AT THE END)
         arrayName.push("newElement");
-    
-    // Adds a new element to an array (AT THE BEGINNING) and "unshifts" older elements
-        arrayName.unshift("newElement");
 
     // Appends a new element to an array
         arrayName[arrayName.length] = "newElement";
@@ -595,9 +651,6 @@ value.isNaN();
 
     // Removes the LAST element from an array
         arrayName.pop();
-
-    // Removes the FIRST array element and "shift" all other elements to a lower index
-        arrayName.shift();
 
     // Deletes an element from an array
         delete arrayName[x];
@@ -1246,29 +1299,113 @@ value.isNaN();
     stringName.replace('substring-to-replace', 'replacing-substring');
         // By default, only the fist match is replaced. To replace ALL matches:
         stringName.replace(/substring-to-replace/g, 'replacing-substring');
+            string.replace(/[^A-Za-z]/g, "");
         // It is CASE SENSITIVE. To make case insensitive
         stringName.replace(/substring-to-replace/i, 'replacing-substring');
         // The above creates a new string. To replace the original stringName use the following:
         let stringName = stringName.replace('substring-to-replace', 'replacing-substring');
 
+    // To reverse the contents of an array
+    stringName.reverse();
+    
+    // To reverse a string and have it print backwards
+        stringName.split('').reverse().join('');
 
+    // Remove punctuation from an string
+        const punctuation = '!"#$%&\'() *+,-./:;<=>?@[\\]^_`{|}~';
+        const rawString = string;
+        const rawLetters = rawString.split('');
+        const cleanLetters = rawLetters.filter(function(letter) {
+            return punctuation.indexOf(letter) === -1;
+        });
+        const cleanString = cleanLetters.join('');
+
+        // Regular Expression
+            // Match all strings that contain a digit
+            /[0123456789]/.test('sting');   // true if the string contains a digit
+            /[0-9]/.test('string');
+            /\d/.test('string');  // tests for any digit
+            /\w/.test('string');  // tests for an alphanumeric character ('word character')
+            /\s/.test('string');  // tests for any whitespace character (space, tab, newline, etc)
+            /\D/.test('string');  // tests for any character NOT a digit
+            /\W/.test('string');  // tests for a non alphanumeric character
+            /\S/.test('string');  // tests for a non whitespace character
+            /./.test('string');   // tests for any character except for newline
+        // This is not a complete list of Regular Expressions
+
+    // Palindrome function -> check if a string is a palindrome
+        const palindromes = function(string) {
+            const punctuation = '!"#$%&\'() *+,-./:;<=>?@[\\]^_`{|}~';
+        
+            const rawString = string.toLowerCase();
+            const rawLetters = rawString.split('');
+            const cleanLetters = rawLetters.filter(function(letter) {
+                return punctuation.indexOf(letter) === -1;
+            });
+            const cleanString = cleanLetters.join('');
+                console.log(cleanString);
+            const reverseString = cleanLetters.reverse().join('');
+                console.log(reverseString);
+        
+            if (cleanString === reverseString) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // The following code does the same thing
+        const palindromes = function(string) {
+            processedString = string.toLowerCase().replace(/[^A-Za-z]/g, "");
+            return (
+              processedString
+                .split("")
+                .reverse()
+                .join("") == processedString
+            );
+          };
+    
     // Extract string characters from a specific position
-    stringName.charAt(x);
+    stringName.charAt(index)
+    ${stringName.charAt(index)}
 
-    // Return the Unicode of a character from a specific position
-    stringName.charCodeAt(x);
+    // Return an integer between 0 and 65535 representing the UTF-16 code unit at the given index
+    stringName.charCodeAt(index)
+    ${stringName.charCodeAt(index)}
 
-    // 
-    
-    
+    // Return a string created from the specified sequence of UTF-16 code units
+    stringName.fromCharCode(x,y,z)      // will output the characters in a string like a word
 
+        // Caesar Cypher
+        const caesar = function(string, shift) {
+            return string
+            .split('')
+            .map(letter => shiftChar(letter + shift))
+            .join('');
+        }
+        
+        const codeSet = code => (code < 97 ? 65 : 97);
+        
+        const mod = (n, m) => (n % m + m) % m;
+        
+        shiftChar(letter, shift) {
+            const code = charCodeAt();
+        
+            if (code >= 65 && code <= 90 || code >= 97 && code <= 122) {
+                return string.fromCharCode(
+                    mod(code + shift - codeSet(code), 26) + codeSet(code)
+                );
+            }
+            return char;
+        };
+
+    //
 
 
 
 // Applied Coding
     
     // Simple calculator
-    let sum = o;
+    let sum = 0;
     while (true) {
         let value = +prompt("Enter a number", '');
         if (!value) break;
@@ -1281,3 +1418,39 @@ value.isNaN();
         if (i % 2 == 0) continue;
         alert(i);
     }
+
+    // Calculator Functions for Arrays
+        // Add
+        function add(array) {return array.reduce((total,arg) => total + arg, 0)};
+
+        // Subtract
+        function subtract(array) {return array.reduce((total,arg) => total - arg, 0)};
+
+        // Sum
+        function sum(array) {return array.reduce((total,arg) => total + arg, 0)};
+
+        // Multiply
+        function multiply(array) {
+            let total = 1;
+            for (i = 0; i < array.length; i++){
+                total *= array[i];
+            }
+            return total;
+        };
+            // or
+        function multiply (array) { return array.reduce((total,args) => total * args, 1)};
+
+        // Power
+        function power(a, b) {
+            return Math.pow(a, b);
+        };
+
+        // Factorial
+        function factorial (num) {
+            if (num === 0) return 1;
+            let total = 1;
+            for(let i = num; i > 0; i--) {
+                total *= i;
+            }
+            return total;
+        }
