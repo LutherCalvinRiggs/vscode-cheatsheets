@@ -1,14 +1,34 @@
-/* CSS DOCUMENT */
+:root {
 
-/* @import url("reset.css"); */
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+    font-family: 'font name', 'back up 1 font name', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1.5;
+}
+
+@font-face {        /* Adds a Web Font to the CSS */
+    font-family: 'font name';
+    src: url(my-font.woff); /* relative path - file located in a folder on the server */
+    src: url(http://example.com/font/my-font.woff); /* absolute path */
+}
+
+body {
+
+}
 
 
 
 
 
 
-
-/* Media Queries for Apple Products 
 
     @media screen and (max-width: 1375px){
         
@@ -45,5 +65,3 @@
     @media screen and (max-width: 350px){
         
     }
-    
-*/

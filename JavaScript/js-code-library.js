@@ -506,7 +506,7 @@ value.isNaN();
     Math.min(...arrayName);
 
     // Using an array as arguments
-    let arraName = [a, b, c];
+    let arrayName = [a, b, c];
     functionName(...arrayName);
     let functionName = (x, y, z){};
 
@@ -678,9 +678,11 @@ value.isNaN();
         let newArray = arrayName1.concat("string");
 
     // Splits the contents of an array using a designator seperator
-        arrayName[x].split(':');
-        let newArrayName = arrayName[x].split(':');
-        // This creates a new array with new elements based on what was split. To recall the items that were split, use newArrayName[0] for the elemennt before the separator and newArrayName[n] for the element after the separator
+        // split() is a string method so this only woks if the contents of the array are strings that contain ':'
+        // if the contents of the array are a 'property : value', then use arrayName[i].propety to access the value
+        arrayName.split(':');
+        let newArrayName = arrayName.split(':');
+        // This creates a new array with new elements based on what was split. To recall the items that were split, use newArrayName[0] for the element before the separator and newArrayName[n] for the element after the separator
 
     // Sorting an array alphabetically AS STRINGS
         arrayName.sort();
@@ -701,9 +703,11 @@ value.isNaN();
 
         // Sort numerically ascending
             arrayName.sort(function(a, b) {return a - b});
+            people.sort(function(personA, personB) {return personA.age - personB.age});
 
         // Sort numerically descending
             arrayName.sort(function(a, b) {return b - a});
+            people.sort(function(personA, personB) {return personB.age - personA.age});
 
         // Sorting in random order
             arrayName.sort(function(a, b) {return 0.5 - Math.random()});
@@ -1454,3 +1458,20 @@ value.isNaN();
             }
             return total;
         }
+
+    // Fibonacci Sequence Calculator
+    const fibonacci = function(n) {
+        let fibArray = [0, 1];
+        if (n > 0){
+            for (i = 2; i <= n; i++){
+                fibArray[i] = (fibArray[i-2] + fibArray[i-1]);
+                fibArray.push(fibArray[i]);
+            }
+            return fibArray[n]; 
+        } else {
+            return 'OOPS';
+        }  
+    }
+
+
+    
