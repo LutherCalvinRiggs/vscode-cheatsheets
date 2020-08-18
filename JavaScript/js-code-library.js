@@ -1473,5 +1473,53 @@ value.isNaN();
         }  
     }
 
+    // Removing / filtering vowels from a string
+    function disemvowel(str) {
+        const regex = 'aeiouAEIOU';
+        
+        return str.split('')
+                  .filter(function(letter) {return regex.indexOf(letter) === -1})
+                  .join('');
+      }
+            // Other solution
+            function disemvowel(str) {
+                return str.replace(/[aeiou]/gi, '');
+              }
+            
+    // Remove first and last characters from a string
+    function removeChar(str){
+        return str.split('')
+                  .slice(1,str.length-1)    // returns everything from [1] to [length-1]
+                  .join('');
+        };
+            // Other solution
+            function removeChar(str){return str.slice(1, -1);};
+            // OR
+            const removeChar = str =>  str.slice(1, -1)
 
-    
+
+
+
+
+
+
+
+
+
+// Does this anagram function even work?
+function stringAnagram(dictionary, query) {
+    for (let q = 0; q < query.length-1; q++){
+        const quer = query[q].split('').sort().join('');       
+
+        for (let d = 0; d < dictionary.length-1; d++){
+            const dict = dictionary[d].split('').sort().join('');
+            let count = 0;
+            if (dict === quer) {
+                count++;
+            }
+        }
+        let tally = [];
+        tally[q] = count;
+    }
+    console.log( tally );
+}
