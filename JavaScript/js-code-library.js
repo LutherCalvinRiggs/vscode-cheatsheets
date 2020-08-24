@@ -37,35 +37,7 @@
     document.querySelectorAll('element.selectorName');
     document.querySelectorAll('p.intro'); // finds all <p> elements with class "intro"
 
-// Working with forms in JS
-    // Return the value of the ID-selected element
-    document.getElementById('').value
-    document.querySelector('').value
 
-    // Returns 'true' if a checkbox is checked, 'false' if not
-    // USE FOR CHECKBOXES INSTEAD OF USING .value
-    document.getElementById('').checked
-    document.querySelector('').checked
-
-    // Returns an array of the selection options availble to an ID-selected element
-    document.getElementById('').option
-    document.querySelector('').option
-
-    // Returns the array position of the selected value of the ID-selected element
-    document.getElementById('').selectedIndex
-    document.querySelector('').selectedIndex
-
-    // Return an array/NodeList of all checkbox elements that are checked
-    document.querySelectorAll('.class-name input[type=checkbox]:checked')
-
-    // Return the radio button element option that is checked
-    document.querySelector('input[name=radio-button-name]:checked')
-    // Return the value of the checked radio button 
-    document.querySelector('input[name=radio-button-name]:checked').value
-    // Can set the value of a radio button
-    document.getElementById('id').checked = true
-    document.getElementById('id').checked = false
-        // This also works with check boxes, but keep in mind multiple checkboxes can be selected at one time
 
 // Accessing elements within the DOM
     // Returns all <a> elements that have a name attribute
@@ -310,6 +282,230 @@
 
 
 
+
+
+
+
+
+
+
+    // Working with forms in JS
+        // Return the value of the ID-selected element
+        document.getElementById('').value
+        document.querySelector('').value
+
+        // Returns 'true' if a checkbox is checked, 'false' if not
+        // USE FOR CHECKBOXES INSTEAD OF USING .value
+        document.getElementById('').checked
+        document.querySelector('').checked
+
+        // Returns an array of the selection options availble to an ID-selected element
+        document.getElementById('').option
+        document.querySelector('').option
+
+        // Returns the array position of the selected value of the ID-selected element
+        document.getElementById('').selectedIndex
+        document.querySelector('').selectedIndex
+
+        // Return an array/NodeList of all checkbox elements that are checked
+        document.querySelectorAll('.class-name input[type=checkbox]:checked')
+
+        // Return the radio button element option that is checked
+        document.querySelector('input[name=radio-button-name]:checked')
+        // Return the value of the checked radio button 
+        document.querySelector('input[name=radio-button-name]:checked').value
+        // Can set the value of a radio button
+        document.getElementById('id').checked = true    // option is checked
+        document.getElementById('id').checked = false   // option is not checked
+            // This also works with check boxes, but keep in mind multiple checkboxes can be selected at one time
+
+
+        // Disabling a button when the page loads and enabling it when the field values are set
+            // Called when the page has loaded sufficiently that the DOM is ready for the user
+        document.addEventListener('DOMContentLoad', (e) => {
+            let field = document.getElementById('field-id');    // Set as many as you want
+            let field2 = document.getElementById('field2-id');
+            let field3 = document.getElementById('field3-id');
+
+            // Reference to the submit button
+            let button = document.getElementById('button-id');
+            // Disable the button until the fields are filled out
+            button.disabled = true; 
+
+            // Make the submit button inactive until all required fields are filled out
+            toggleSubmit(); // checks if fields have values in case of page reload
+            document.addEventListener('change', toggleSubmit());
+
+            function toggleSubmit() {
+                if (field.value === '' || field2.value === '' || field3.value === '' || `etc`) {
+                    button.disabled = true;
+                    // alert('Please enter a value for ____');
+                    // field.focus();   // places keyboard focus on the field that was left empty
+                } else {
+                    button.disabled = false;
+                };
+            }
+
+            // Add an event listener to a form submit button
+            document.getElementById('form-name').addEventListener('submit', (e) => {
+                // prevents the page from reloading when you submit the form
+                event.preventDefault(); 
+                
+                // if (field.value === '' || field2.value === '' || field3.value === '' || etc) {
+                //     button.disabled = true;
+                //     alert('Please enter a value for ____');
+                //     field.focus();   // places keyboard focus on the field that was left empty
+                // } else {
+                //     button.disabled = false;
+                // };
+
+                alert('Your form has been submitted.\nThank you!');
+            });
+
+        });
+
+        // Sanitizing User Input
+            // parseInt takes a number string and a radix (the base of the calculation, usually 10 for decimals)
+        parseInt('number string', 10); 
+        let itemQuant = parseInt(document.getElementById('id').value, 10); 
+            // Can also set a default value if the element value returns NaN
+            let itemQuant = parseInt(document.getElementById('id').value, 10) || 0; 
+            // Can also set a default value for checkboxes and radio buttons
+            let checkBox = parseInt(document.querySelector('[name=checkbox]:checked').value) || ''; 
+
+        // Convert a nubmer to a string with a certain number of decimal points
+        let price = '$' + (totalItemPrice * taxFactor + shippingCost).toFixed(2);
+            // .toFixed(2) will show a number with two decimal points (ie, currency)
+
+    // Date and Time in JS
+        // To add a current date and time when DOM content loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarDate = document.getElementByID('date');
+            const clock = document.getElementById('clock');
+            
+            // update the clock every minute
+            setInterval(updateTime, 1000);
+
+            function updateTime(){
+                // gets the current time from the web browser
+                let date = new Date(); 
+                // get the hours
+                let hours = date.getHours();
+                // get the minutes
+                let minutes = date.getMinutes();
+                // get the seconds
+                let seconds = date.getSeconds();
+                // set AM / PM
+                let ampm = 'AM';
+                // get the month
+                let month = formatMonth(date.getMonth());
+                // get the date 
+                let day = date.getDate();
+
+                // convert to non-military time
+                if (hours > 12) {
+                    hours -= 12;
+                    ampm = 'PM'
+                } else if (hours === 0) {
+                    hours = 12;
+                }
+
+                // format minutes to always display two integers
+                if (minutes < 10) {
+                    minutes = '0' + minutes;
+                }
+                
+                // To make the colons flash like a digital clock
+                const separatorClass = '';
+                if (seconds % 2 === 1) separatorClass = 'transparent';
+                const separator = "<span class='" + separatorClass + "'>:</span>";
+                
+                calendarDate.textContent = month + ' ' + day;
+                clock.innerHTML = hours + separator + minutes + separator + seconds + ' '  + ampm;
+            };
+
+            function formatMonth(m) {
+                // make sure that m is an integer and not a string
+                m = parseInt(m, 10);
+
+                if (m < 0) {
+                    m = 0;
+                } else if (m >11) {
+                    m = 11;
+                }
+
+                const monthNames = [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                    'July',
+                    'August',
+                    'September',
+                    'October',
+                    'November',
+                    'December'
+                ];
+
+                return monthNames[m];
+            };
+
+        });
+
+            // JS Date() Methods
+                // JS Date Object
+                Date();
+                const date = Date();
+
+                // Return the time string => xx:xx:xx GMT -xxxx (Time Zone)
+                const date = Date();
+                date.toTimeString();
+
+                // Returns a string representing the date
+                const date = Date();
+                date.toDateString();
+
+                // Return the hour of the day
+                const date = Date();
+                date.getHours();
+
+                // Return the minutes of the day
+                const date = Date();
+                date.getMinutes();
+
+                // Return the month
+                const date = Date();
+                date.getMonth();    // will return a number
+
+                // Return the day of the month
+                const date = Date();
+                date.getDate();
+
+                // Return the day of the week
+                const date = Date();
+                date.getDay();  // will return a number. 0 = sunday?
+
+            // Updating a JS clock in your browser
+            setTimeout(function(), 'delay-time-in-ms');
+                // Downside: you would need to keep calling this function with longer and longer delays to keep the clock updated
+
+            // Updating a JS clock continuosly
+            setInterval(function(), 'delay-time-in-ms');
+
+
+
+
+
+
+
+
+
+
+
+
+
 // JS Object Methods
 
     // Create an object 
@@ -421,7 +617,7 @@
         alert( obj["0"] );      // test
         alert( obj[0] );        // test (same property)
 
-    // Check to see if a property exists withint an object. Can access any property within an object. There is no error is the property doesn't exist.
+    // Check to see if a property exists withint an object. Can access any property within an object. There is no error if the property doesn't exist.
     'key' in object 
     'property-name' in object   // 'key' and 'property-name' are usually quoted strings
             // Example
@@ -514,6 +710,11 @@
 
 
 
+
+
+
+
+
 // Determin if value is NaN
 value.isNaN();
 
@@ -569,6 +770,15 @@ value.isNaN();
 
 
     // Rest parameters???
+
+
+
+
+
+
+
+
+
 
 
 
@@ -712,7 +922,7 @@ value.isNaN();
         let newArray = arrayName1.concat("string");
 
     // Splits the contents of an array using a designator seperator
-        // split() is a string method so this only woks if the contents of the array are strings that contain ':'
+        // split() is a string method so this only works if the contents of the array are strings that contain ':'
         // if the contents of the array are a 'property : value', then use arrayName[i].propety to access the value
         arrayName.split(':');
         let newArrayName = arrayName.split(':');
@@ -917,6 +1127,16 @@ value.isNaN();
 
 
 
+
+
+
+
+
+
+
+
+
+
         
 // Array Iterations
     // Array iterations methods operate on every array item
@@ -995,6 +1215,10 @@ value.isNaN();
     function myFunction(value) {
         return value < x;
     }
+
+
+
+
 
 
 
@@ -1235,23 +1459,6 @@ value.isNaN();
 
 
 
-// String Literals 
-
-    //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // String Manipulation
@@ -1379,7 +1586,7 @@ value.isNaN();
                 // Character Classes - used to match a single character
                     // Enclosed in [] - specify what you want your expression to match ex [a-z]
                     // Predefined - backslash (\) character followed by a letter
-                        . // matches any single charager, except line terminators (ie, newline)
+                        . // matches any single character, except line terminators (ie, newline)
                         \d // matches a single digit character (ie, [0-9])
                         \D // matches a single non-digit character (ie, [^0-9])
                         \w // matches a single alphanumeric word character, including underscore (ie, [A-Za-z0-9_])
@@ -1554,6 +1761,15 @@ value.isNaN();
         };
 
     //
+
+
+
+
+
+
+
+
+
 
 
 
