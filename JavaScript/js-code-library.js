@@ -494,7 +494,10 @@
             // Updating a JS clock continuosly
             setInterval(function(), 'delay-time-in-ms');
 
+        // 
 
+
+        
 
 
 
@@ -508,15 +511,60 @@
 
 // JS Object Methods
 
-    // Create an object 
-    let objectName = new Object();      // 'object constructor' syntax
-    let objectName = {};                // 'object literal' syntax
-
     // Create an object and add properties
     let objectName = {
-        property: value, 
-        property: value
+        property1: value, 
+        property2: value
     };
+    // Create an object with a Constructor
+    function ObjConstName(prop1, prop2, propN) = {
+        this.property1 = prop1;
+        this.property2 = prop2;
+        this.propertyN = propN;
+    }
+    // Create an instance of that Object using the constructor and `new` operator
+    let objectName = new ObjConstName(prop1, prop2, propN);    
+    // Verify an object's constructor, 
+    objectName instanceof ObjConstName; // returns 'true' or 'false'
+
+    // `own` properties are defined directly on the object instance itself
+    function Object(prop) {
+        this.property = prop; // own property
+    }
+    // Add the `own` properties of an Object to the array `ownProps`
+    let ownProps = [];
+    for (let property in Object) {
+        if (Object.hasOwnProperty(property)) {
+            ownProps.push(property);
+        }
+    }
+    
+    // Prototype Properties are shared among all instances automatically
+        // The prototype is part of the object constructor. It can be written anywhere.
+        // Nearly every JS object has a prototype property which is part of the constructor function that created it.
+    Object.prototype.property = value; // prototype property
+    // Add and Object's `own` properties to the array `ownProps` and `prototype` properties to the array `prototypeProps`
+    let ownProps = [];
+    let prototypeProps = [];
+    for (let property in objName) {
+        if (objName.hasOwnProperty(property)) {
+            ownProps.push(property);
+        } else {
+            prototypeProps.push(property);
+        }
+    }
+
+    // Check what kind of an Object it is using the constructor property
+    console.log(objName.constructor === Object); // will be true if objName is of the kind Object
+        // Example of how it can be used
+        function (objName) {
+            if (objName.constructor === Object) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    // 
 
     // Get property values from an object
     objectName.property 
