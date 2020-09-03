@@ -772,7 +772,7 @@
             
             // Example
             let user = {name: "John", age: 30};
-            let key = 'prompt('What would you like to know about the user?', `userInput`)';
+            let key = prompt('What would you like to know about the user?', userInput);
             // access the object by the variable
             alert( user[key] );         // John (if `userInput` enters 'name' when prompted) 
             alert( user.key );          // Same concept using dot notation 
@@ -915,6 +915,43 @@
                 alert( prop );      // name, surname, age
             }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Functional Programming
+    // Simple, isolated functions, without any side effects outside of the function scope
+        // Callbacks - functions that are passed into another function nto decide the invocation of that function
+        // First class function - functions that can be assigned to a variable, passed into another function, or returned from another function just like any other normal value. All JS functions are first class functions
+        // Higher order function - functions that take a function nas an argument, or returnn a function as a return value
+        // Lamnbda - functions that are passed into another funnction or returned from another function
+    // Imperative Code
+        // An imperative style in programming is one that gives the computer a stet of statements to perform a task. Often these statemsnt change the state of the program, like updating global variables. A classic example is writing a `for` loop that gives exact directions to iterate over the indices of an array. 
+        // Functional programming is a form of declarative programming. You tell the computer what you want done by calling a method or function
+    // Avoid Mutations and Side Effects
+        // Mutations occur whenn changing or altering things. The outcome is called a Side Effect. Functionns should not cause any side effects.
+        // One of the core principles of function programming is to not change things. Changes lead to bugs. It's easier to prevennt bugs knowing tha tyour functions donn't change anything, including the function arguments or any global variables
+    // Pass Arguments to avoid External Dependence
+        // Always declare your dependencies explicitly. This means if a function depends on a variable or object being present, then pass that variable or object directly into the function as an argument.
+            // The function will be easier to test, it won't depend on anything else in your program, and you will know exactly what input it takes.
+        // This will give you more confidence when you alter, remove, or add new code. You will know what you ca nor cannot change and you can see where the potential traps are. 
+        // The function should always produce the same output for the same set of inputs, no matter what part of the code executes it.
+    // Refactoring Global Variables out of functions
+        // When passing an argument to a function, you may have to make a copy of that argument to be used and returned within the function
+            numbers = [1,2,3];
+            numbersCopy = [...numbers];
+            numbersCopy.push(4);
+            console.log(numbers, numbersCopy); // [1,2,3] and [1,2,3,4]  - numbers is left alone
+        // The above is simply one way of handling copy an array. The code will depend on what the function needs to accomplish. 
 
 
 
@@ -1107,7 +1144,7 @@ value.isNaN();
 
     // Adds new items to an array
         arrayName.splice(x, y, "newElement1", "newElement2");
-        // The first parameter (x) defines the position where new elelements should be ADDED (spliced in). The second parameter (y) defines how many elements should be REMOVED). The rest of the parameters ("newElement1", "newElement2") define the new elemennts to be added.
+        // The first parameter (x) defines the position where new elements should be ADDED (spliced in). The second parameter (y) defines how many elements should be REMOVED). The rest of the parameters ("newElement1", "newElement2") define the new elements to be added.
 
     // Removes the LAST element from an array
         arrayName.pop();
@@ -1297,11 +1334,19 @@ value.isNaN();
                 const result = arrayName.filter(arg => (arg.property > x));
 
     // Create a new array populated with the results of calling a provided function on every element in the calling array
+        // map() takes three arguments: the currennt element being processed, the index of that element, and the array upon which the map method is called
     const result = arrayName.map(function(arg) {
         return arg * x;
     });
                 // As an arrow function
                 const result = arrayName.map(arg => arg * 2);
+        // .map() is basically the shorthand of a `for` loop passing data into an array. It handles all of the iteration aspects.
+        // Create a new array by removing elements from an array of objects
+            let ratings = watchList.map(film => ({      // film is the arg name used within the function
+                title: film["Title"],                   // use barckets to select the property name if 
+                rating: film["imdbRating"]              // the property is a string
+            }));
+
 
     // Sort the elements of an array in place and return the sorted array
         // Sorts by comparing two items and returning 1 or -1
