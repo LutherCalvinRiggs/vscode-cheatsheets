@@ -930,7 +930,7 @@
 
 // Functional Programming
     // Simple, isolated functions, without any side effects outside of the function scope
-        // Callbacks - functions that are passed into another function nto decide the invocation of that function
+        // Callbacks - functions that are passed into another function to decide the invocation of that function
         // First class function - functions that can be assigned to a variable, passed into another function, or returned from another function just like any other normal value. All JS functions are first class functions
         // Higher order function - functions that take a function nas an argument, or returnn a function as a return value
         // Lamnbda - functions that are passed into another funnction or returned from another function
@@ -1153,18 +1153,17 @@ value.isNaN();
         delete arrayName[x];
         // * Using `delete` may leave undefined holes in the array. You should use `pop()` or `shift()` instead.
 
-    // Cuts out a piece of an array into a new array, starting at 'index-number'
-        let newArray = arrayName.slice(index-number);
+    // Cut a piece of an array and add it into a new array, starting at 'index-number'
         // * The `slice()` method creates a new array. It does not remove any elements from the source array
-
-    // Cuts out a piece of an array into a new array from the starting argument up to, but not including, the end argument 
+        let newArray = arrayName.slice(index-number);
+    // Cuts out a piece of an array into a new array from the starting argument up to, but not including, the end argument. If the end argument is omitted, slice() will cut out the rest of the array. If no arguments are provided, the default is to start at the beginning of the array and go through to the end. This is an easy way to make a copy of the entire array. 
         let newArray = arrayName.slice(start-argument, end-argument);
-        // If the end argument is omitted, slice() will cut out the rest of the array
 
-    // Removes elements without leaving "holes"
-        arrayName.splice(0, 1);
-        arrayName.splice(x, y);
-        // The first parameter (x) defines the position where new elements should be ADDED (spliced in). The second parameter (y) defines how many elemennts should be REMOVED. The rest of the parameters are omitted. No new elemennts will be added.
+    // Change the contents of an array by removing exisiting elements and/or adding new elements. 
+        // splice() will return the item selected by the parameters and then delete those items from the original array
+        // ** splice() WILL MUTATE THE ORIGINAL ARRAY it is called upon
+        arrayName.splice(x, y, item1, item2, itemN);
+        // The first parameter (x) defines the position where new elements should be ADDED (spliced in). The second parameter (y) defines how many elements should be REMOVED. If the second parameter (y) is not provided, the default is to remove items through the end. If the rest of the parameters are omitted, no new elemennts will be added.
 
     // Creates a new array by merging (concatenating) existing arrays
         let newArray = arrayName1.concat(arrayName2);
@@ -1324,7 +1323,8 @@ value.isNaN();
 
         arrayName instanceof Array;   // returns true if an object is created by a given constructor
 
-    // Create a new array with all elements that pass the function test
+    // Create a new array with all elements that pass the function test - filters an array based on a callback (a function passed to it)
+        // Accepts three elements - the first is the current element being processed, the second is the index of that element, the third is the array upon which the filter method is called
     const result = arrayName.filter(function(arg) {
         if(arg.property > x){
             return true;                // return true = keep, or pass through filter
@@ -1332,6 +1332,33 @@ value.isNaN();
     });
                 // As an arrow function
                 const result = arrayName.filter(arg => (arg.property > x));
+    // Filter films by 'imdbRating' and then map the "Title" and "imdbRating" to a new array
+        let filteredList = watchList
+                            .filter(film => (parseInt(film["imdbRating"],10) >= 8.0))
+                            .map(film => ({title: film["Title"], rating: film["imdbRating"]}));
+    // The following is the equivalent of the .filter() method but using a for loop
+        let s = [23, 65, 98, 5];
+        Array.prototype.myFilter = function(callback) {
+            let newArray = [];
+            for (let i = 0; i < this.length; i++) {
+                if (callback(this[i]) === true) {
+                  newArray.push(this[i]);
+                };
+            }
+            return newArray;
+        }
+        let new_s = s.myFilter(function(item) { return item % 2 === 1; } );
+
+    // The following is the equivalent of the .filter() method but using the forEach() method
+        let s = [23, 65, 98, 5];
+        Array.prototype.myFilter = function(callback) {
+            let newArray = [];
+            this.forEach(i => { 
+                if(callback(i) === true) { newArray.push(i) } 
+            });
+            return newArray;
+        }
+        let new_s = s.myFilter(function(item) { return item % 2 === 1; } );
 
     // Create a new array populated with the results of calling a provided function on every element in the calling array
         // map() takes three arguments: the currennt element being processed, the index of that element, and the array upon which the map method is called
@@ -1346,7 +1373,24 @@ value.isNaN();
                 title: film["Title"],                   // use barckets to select the property name if 
                 rating: film["imdbRating"]              // the property is a string
             }));
-
+        // The following is the equivalent of the .map() method but using a for loop
+            let s = [23, 65, 98, 5];
+            Array.prototype.myMap = function(callback) {
+                let newArray = [];
+                for (let i = 0; i < this.length; i++) {
+                    newArray.push(callback(this[i]));
+                }
+                return newArray;
+            }
+            let new_s = s.myMap(function(item) { return item * 2; });
+        // The following is the equivalent of the .map() method but using the forEach() method
+        let s = [23, 65, 98, 5];
+        Array.prototype.myMap = function(callback) {
+            let newArray = [];
+            this.forEach(i => newArray.push(callback(i)));
+            return newArray;
+        }
+        let new_s = s.myMap(function(item) { return item * 2; });
 
     // Sort the elements of an array in place and return the sorted array
         // Sorts by comparing two items and returning 1 or -1
