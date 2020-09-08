@@ -1415,16 +1415,68 @@ value.isNaN();
                 total += arrayName[i].property;
             }
 
-    // Find the number of instance of an item in an array, when you don't know the what the items are
-    const variable = arrayName.reduce(function(obj, item){
-        if (!obj[item]) {               // if there are items in the object,
-          obj[item] = 0;                // set the count to zero for each item
-        }
-        obj[item]++;                    // iterate through the items in the object, tally instances
-        return obj;
-      }, {});
-  
-      console.log(variable);
+    // reduce() Method to Analyze Data
+            // Both filter() and map() cann be derived as special applications of reduce() 
+        // reduce() iterates over each item in nan array and returnns a single value (ie, string, number, object or array). This is achieved via a callback functionn that is called on each iteration.
+        // reduce() accepts 4 arguments
+            // the accumulator - gets assigned the return value of the callback function from the previous iteration 
+            // the current element being processed
+            // the index of that element
+            // the array upon which reduce() is called
+        // reduce() has an additional parameter which takes an initial value for the accumulator. If this second parameter is not used, then nthe first iteration is skipped and the second iteration gets passed the first element of the array as the accumulator.
+            const users = [
+                { name: 'John', age: 34 };
+                { name: 'Amy', age: 20 };
+                { name: 'camperCat', age: 10 };
+            ];
+            const sumOfAges = user.reduce((sum, user) => sum + user.age, 0);
+            console.log(sumOfAges); // 64
+        // An object can be returned containing the names of the users as properties with their ages as values. 
+        const users = [
+            { name: 'John', age: 34 };
+            { name: 'Amy', age: 20 };
+            { name: 'camperCat', age: 10 };
+        ];
+        const usersObj = users.reduce((obj, user) => {
+            obj[user.name] = user.age;
+            return obj;
+        }, {});
+        console.log(usersObj); // { John: 34, Amy: 20, camperCat: 10}
+        
+
+        // Find the number of instance of an item in an array, when you don't know the what the items are
+        const variable = arrayName.reduce(function(obj, item){
+            if (!obj[item]) {               // if there are items in the object,
+            obj[item] = 0;                // set the count to zero for each item
+            }
+            obj[item]++;                    // iterate through the items in the object, tally instances
+            return obj;
+        }, {});
+        console.log(variable);
+
+        // Find the average imdbRating of Christopher Nolan films in an array named watchList
+        function getRating(watchList){
+            let averageRating;
+            averageRating = watchList.filter(film => {
+              if (film["Director"] === "Christopher Nolan") { 
+                return film;
+              };
+            })
+            .map(film => ( 
+                parseFloat(film["imdbRating"],10) 
+            ))
+            .reduce((sum, rating, index, array) => {
+              sum += rating;
+              if (index === array.length-1){
+                return sum / array.length;
+              } else {
+                return sum;
+              }
+            },0);
+            return averageRating;
+          }
+
+
 
 
 
