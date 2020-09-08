@@ -1393,16 +1393,47 @@ value.isNaN();
         let new_s = s.myMap(function(item) { return item * 2; });
 
     // Sort the elements of an array in place and return the sorted array
-        // Sorts by comparing two items and returning 1 or -1
-    const result = arrayName.sort(function(firstArg, secondArg){
-        if (firstArg.property > secondArg.property) {
-            return 1;
-        } else {
-            return -1;
+        // JS's default sorting method is by string Unicode point value, which may return unexpected results. It is important to provide a callback function to specify how to sort the array items. When nsuch a callback function (normally called a 'compareFunction'), is supplied, the array elements are sorted according to the return value of the 'compareFuntion'
+            // If 'compareFunction(a,b)' returns a value less than 0 for two elements 'a' and 'b', then 'a' will come before 'b'. 
+            // If 'compareFunction(a,b)' returns a value greater than 0 for the two elements 'a' and 'b', then 'b' will come before 'a'. 
+            // If 'compareFunction(a,b)' returns a value equal to 0 for two elements 'a' and 'b', then 'a' and 'b' will remain unchanged. 
+        // sort() will change the order of the elements in the orign array (it mutates the array in place). One way to avoid this is to first concatenate an empty array to the one being sorted (remember that slice() and concat() return a new array), then run the sort() method. 
+        const result = arrayName.sort(function(firstArg, secondArg){
+            if (firstArg.property > secondArg.property) {
+                return 1;
+            } else {
+                return -1;
+            }
+        });
+            // As an arrow function
+            const result = arrayName.sort((a, b) => a.property > b.property ? 1 : -1);
+        // An ascending order funtion
+        function ascentingOrder(arr) {
+            return arr.sort(function(a, b) { return a - b; });
         }
-    });
-                // As an arrow function
-                const result = arrayName.sort((a, b) => a.property > b.property ? 1 : -1);
+        ascentingOrder([1,5,2,3,4]);    // returns [1,2,3,4,5]
+        // An alphabetical sorting function
+        function sortAlpha(arr) {
+            return arr.sort(function(a, b) {
+                return a === b ? 0 : a < b ? -1 : 1;
+            });
+        }
+        sortAlpha(['l', 'h', 'z', 'b', 's']);    // returns ['b', 'h', 'l', 's', 'z']
+        // A reverse alphabetical sorting function
+        function reverseAlpha(arr) {
+            return arr.sort(function(a, b) {
+                return a === b ? 0 : a < b ? 1 : -1;
+            });
+        }
+        reverseAlpha(['l', 'h', 'z', 'b', 's']);    // returns ['z', 's', 'l', 'h', 'b']
+        // Return a new array and then sort it
+        let globalArray = [5,6,3,2,9];
+        function nonMutatingSort(arr) {
+            return arr.slice().sort((a,b) => {
+                return a < b ? -1 : 1;
+            })
+        }
+
 
     // Execute a reducer function (that you provide) on each element of the array, resulting in single output value
     const result = arrayName.reduce((total, arg) => {
@@ -1474,13 +1505,113 @@ value.isNaN();
               }
             },0);
             return averageRating;
-          }
+        }
+
+    // The split() method splits a string into ann array of strings. It takes an argument for the delimiter, which can be a character to use to break up the string or a regular expression. 
+        // If the delimiter is a space (" "), you get an array of words.
+        // If the delimiter is an empty string (""), you get an array of each character in the string.
+            // Split by space (" ")
+            let str = "Hello World";
+            let bySpace = str.split(" ");   // Sets bySpace to ["Hello", "World"]
+            // Split by digits using a regular expression
+            let otherString = "How9are7you2today";
+            let byDigits = otherString.split(/\d/);   // Sets byDigits to ["How", "are", "you", "today"]
+            // Split into array of words containing no punctuation
+            function splitify(str) {
+                return str.split(/\W/); 
+                // `/\W/` tests for any non-alphanumeric character 
+            }
+            splitify("Hello World,I-am code");
+
+    // The join() method is used to join the elements of an array together to create a string. It takes an argument for the delimiter that is used to separate the array elements in the string.
+        let arr = ["Hello", "World"];
+        let str = arr.join(" ");    // Sets str to "Hello World"
+        // Make a sentence from the words in the string str
+        function sentensify(str) {
+            return str.split(/\W/).join(" ");
+        }
+        sentensify("May-the-force-be-with-you");
+    
+    // Convert Strings to URL Slugs using Functional Programming
+        // Many content management sites (CMS) have the titles of a post added to aprt of the URL for simple bookmarking purposes. For example, if you write a Medium post titled "Stop Using Reduce", it's likely the URL would have some form of the title string in it (".../stop-using-reduce").
+        function urlSlug(title) {
+            return title.toLowerCase()
+            .trim()         // trim out excessive spaces between words
+            .split(/\s+/)   // split on whitespace
+            .join("-")      // join with hyphens
+        }
+
+    // The every() method is used to check every instance in an array against a condition. Returns Boolean.
+        // Check if every element in an array is less than 10
+        let numbers = [1,5,8,0,10,11];
+        numbers.every(function(currentValue) {
+            return currentValue < 10;
+        });         // returns false because not every value is less than 10
+        // Check if every instance of an array is a positive number
+        function checkPositive(arr) {
+            return arr.every(num => (num > 0));
+        }
+        checkPositive([1,2,3,-4,5]);    // returns False
+        
+    // The some() method is used to check if ANY instance in an array passes a conditional test
+        // Check if any instance is less than 10
+        let numbers = [10,50,8,220,110,11];
+        numbers.some(num => (num < 10));    // returns True
+        // Check if any element in arr is positive
+        function checkPositive(arr) {
+            return arr.some(num => (num > 0));
+        }
+
+    // Introduction to Currying and Partial Application
+        // The ARITY of a function is the number of arguments it requires.
+        // CURRYING a function means to convert a function nof N arity into N functions of arity 1. In other words, it restructures a function so it takes one argument, then returns another function that takes the next argument, and so on. 
+            // Un-curried function
+            function unCurried(x, y) {
+                return x + y;
+            } 
+            // Curried function
+            function curried(x) {
+                return function(y) {
+                    return x + y;
+                }
+            }
+            // Alternative using ES6
+            const curried = x => y => x + y
+            curried(1)(2)   // Returns 3
+        // This is useful in your program if you can't supply all the arguments to a function at one time. You can save each function call into a variable, which will hold the returned function reference that takes the next argument when it's available.
+            // Call a curried function in parts
+            let funcForY = curried(1);
+            console.log(funcForY(2));   // Prints 3
+        // Similarly, partial application can be described as applying a few arguments to a function at a time and returning another function that is applied to more arguments.
+            // Impartial function
+            function impartial(x,y,z) {
+                return x + y + z;
+            }
+            let partialFn = impartial.bind(this, 1, 2);
+            partialFn(10);  // Returns 13
+        // Write a function that uses currying to add parameters x, y, and z
+        function add(x) {
+            return function(y) {
+                return function(z) {
+                    return x + y + z;
+                };
+            }          
+        }
+        add(10)(20)(30);
+          
 
 
 
 
 
 
+
+
+
+
+
+// Algorith Scripting
+    // 
 
 
 
