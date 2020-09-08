@@ -2053,135 +2053,184 @@ value.isNaN();
         });
         const cleanString = cleanLetters.join('');
 
-        // Regular Expression
-            // RegEx Literals are enclosed between to forward slashes
-            const regEx = /ab+c/;
-                // The code above matches the character 'a', followed by one or more instances of the character 'b', followed by the character 'c'
-            // You can write a regular expression string and pass it as an argument to the RegExp constructor
-            const re = new RegExp('ab+c');
-                // The syntax used to create a RegExp object is as follows:
-                new RegExp(pattern, [flags])
-                // To create a regular expression literal, use the following syntax
-                /patter/flags 
-                    // Flags can have a combination of the following values
-                        g // Golbal match
-                        i // Ignore case
-                        m // Multiline. Treates beginning (^) and end ($) characters as working over multiple lines
-                        u // Unicode. Treat pattern as a sequennce of unicode code points
-                        y // Sticky. Matches only from the index indicated by the lastIndex property of this regular expression in the target string. 
 
-            // Special Characters in Regular Expressions
-                // Character Classes - used to match a single character
-                    // Enclosed in [] - specify what you want your expression to match ex [a-z]
-                    // Predefined - backslash (\) character followed by a letter
-                        . // matches any single character, except line terminators (ie, newline)
-                        \d // matches a single digit character (ie, [0-9])
-                        \D // matches a single non-digit character (ie, [^0-9])
-                        \w // matches a single alphanumeric word character, including underscore (ie, [A-Za-z0-9_])
-                        \W // matches a single non-word character (ie, [^A-Za-z0-9_])
-                        \s // matches a single whitespace character, including space ( ), tab(\t), form feed, line feed, and other Unicode spaces
-                        \S // matches a single non-whitespace character (ie, [^\w])
-                // Character Sets
-                    // Any characters within the [] will be matched (ie [a-z])
-                    // The carat (^) symbol will cause the set to match anything other than what is enclosed in the [] (ie [^a-z])
-                    // The pipe symbol (|) will match one character of the other (ie, [a|b])
-                        ^ // matches beginning of input. If multiline flag is set to true, also matches immediately after a line break character
-                        $ // matches end of input. If the multiline flag is set to true, also matches immediately before a line break character
-                        \b // matches a zero-width word boundary, such as between a letter and a space
-                        \B // matches a zero-width non-word boundary, such as between two letters or between two spaces
-                    // Grouping and back references
-                        (a) // matches 'a' and remembers the match. Called capturing groups.
-                        (?:a) // matches 'a' but does not remember the match. Called non-capturing groups
-                        \n // n is a positive integer. A back reference to the last substring matching the n parenthetical in the regular expression
-                    // Quantifiers
-                        a* // matches the preceding item 'a', 0 or more times
-                        a+ // matches the preceding item 'a', 1 or more times
-                        a? // matches the preceding item 'a', 0 or 1 time
-                        a{n} // n is a positive integer. Matches exactly n occurences of the preceding item 'a'
-                        a{n, } // n is a positive integer. Matches at least n occurences of the preceding item 'a'
-                        a{n,m} // n and m are positive integers. Matches at least n and at most m occurences of the preceding item 'a'
-                    // Assertions 
-                        a(?=b) // matches 'a' only if 'a' is followed by 'b'
-                        a(?!b) // matches 'a' only if 'a' is NOT followed by 'b'
-                // Regular expressions are used with the RegExp methods `test` and `exec`, and with the String methods `match`, 'search', 'split', 'replace'
-                    // The `test` Method executes a search for a match between a regular expression and a specified string and returns a true or false. 
-                        // Test whether 'learn' is contained at tthe very beginning of a string
-                        let re = /^learn/;
-                        let str1 = 'learn regular expressions';
-                        let str2 = 'write regular expressions';
-                            console.log(re.test(str1)); // true
-                            console.log(re.test(str2)); // false
-                        // The following are various test expressions
-                        /[0123456789]/.test('string'); // true if the string contains a digit
-                        /[0-9]/.test('string'); // true if the string contains a digit
-                        /\d/.test('string');  // tests for any digit
-                        /\w/.test('string');  // tests for an alphanumeric character ('word character')
-                        /\s/.test('string');  // tests for any whitespace character (space, tab, newline, etc)
-                        /\D/.test('string');  // tests for any character NOT a digit
-                        /\W/.test('string');  // tests for a non alphanumeric character
-                        /\S/.test('string');  // tests for a non whitespace character
-                        /./.test('string');   // tests for any character except for newline
-                            // This is not a complete list of Regular Expressions
-                    // The `exec` Method executes a search for a match in a specified string and returns a result array or null
-                        // Match 'quick brown' followed by 'jumps', ignoring characters in between; remember 'brown' and 'jumps'; ignore case
-                        let re = /quick\s(brown).+?(jumps)/ig;
-                        let str = 'The Quick Brown Fox Jumps Over The Lazy Dog.';
-                        let res = re.exec(str);
-                            console.log(res);
-                            // The result object contains the following information:
-                            // 1. [0] is the full string of characters matched
-                                console.log('string of characters matched = ' + res[0]);
-                            // 2. [1], ...[n] is the parenthesized substring matches, if any. The number of possible parenthesized substrings is unlimited. 
-                                console.log('first parenthesized substring match = ' + res[1]);
-                                console.log('second parenthesized substring match = ' + res[2]);
-                            // 3. index is the 0-based indes of the match in the string
-                                console.log('index of the match = ' + res.index);
-                            // 4. input is the original string
-                                console.log('original string = ' + res.input);
-                    // The `match` Method retrieves the matches when matching a string against a regular expression
-                        // Find 'chapter', followed by `$1$` or more numeric characters, followed by a decimal point, followed by a zero or more numeric characters, and use a flag to specify that the results are *case-insensitive*.
-                        let re = /see (chapter \d+(\.\d)*)/i;
-                        let str = 'For more info, see Chapter 3.4.5.1 and CHAPTER 2.3';
-                            console.log(str.match(re));
-                    // The `search` Method executes a search for a match between a regular expression and this String object. If successful, search() returns the index of the first match of the regular expression inside the string. Otherwise, it returns -1.
-                        // Check whether or not a string contains the word 'learn'
-                        const re = /learn/;
-                        const str1 = 'Today, we\'ll learn about regular expressions.';
-                            console.log('A search for', re, 'returns', str1.search(re), '\n');
-                            // 'A search for /learn/ returns 13
-                    // The `split` Method splits a String object into an array of strings by separating the string into substrings. Separator specifies the character(s) to use for separating the string. The separator is treated as string or a regular expression. If separator is omitted, the array returned contains one elemenet consisting of the entire string. If separator is an empty string (''), str is converted to an array of characters
-                        // Split a name string at the space separating the first and last names
-                        const name = 'Julia Roberts';
-                        const res = name.split(' ');
-                        console.log('The split array:', res); // The split array: ['Julia', 'Roberts']
-                        console.log('First name:', res[0]);   // First name: Julia
-                        console.log('Last name:', res[1]);    // Last name: Roberts
-                    // The `replace(pattern, replacement)` Method returns a new string where some (or all) occurrences of a matched 'pattern' have been replaced with a 'replacement' substring
-                        // 'patterns' can be a string or a RegExp object to match against the calling string
-                        // 'replacement' can be a substring to replace the match with, or it can be a function to invoke that genereate the replacement substring
-                        // Replace any occurence of the substring 'RegExp' with 'Regular Expression'
-                        const re = /RegExp/;
-                        const myString = 'We\'re learning about RegExps.';
-                        const replacementString = 'Regular Expression';
-                        console.log(myString);
-                        console.log(myString.replace(re, replacementString));
-                // HOW TO WRITE A REGEXP
-                    // 
 
-                    function regexVar(str) {
-                        //  ^ => first item matches:
-                        // () => stores matching value captured within
-                        // [aeiou] => matches any of the characters in the brackets
-                        // . => matches any character:
-                        // + => for 1 or more occurrances (this ensures str length > 3)
-                        // \1 => matches to previously stored match. 
-                            // \2 looks for matched item stored 2 instances ago 
-                            // \3 looks for matched item stored 3 ago, etc
-                        //  $ ensures that matched item is at end of the sequence
-                        
-                            let re = /^([aeiou]).+\1$/;
-                            return re;
-                        }
+
+
+
+
+
+
+
+
+
+
+
+// Regular Expression
+    // Regular Expressions are special strings that represent a search patter. Also know as "regex" or "regexp", they help programmers match, search, and replace text.
+    // Regex literals are enclosed between two forward slashes
+        let regex = /search/;
+    // One way to use a regex is with the .test() method. The .test() method takes the regex, applies it to a string (which is placed inside the parentheses), and returns 'true' or 'false' if your pattern finds something or not.
+    // To use the .test() method, you call it on the regex variable and pass it the string as its argument
+        let testStr = "freeCodeCamp";
+        let testRegex = /Code/;
+        testRegex.test(testStr);    // Returns true
+    // Capitalization matters when using regex. "Kevin" is not the same as "kevin" or "KEVIN"
+    // You can search for multiple patterns by using the 'alternation' or 'OR' operator (|). This operator matches patters before or after it.
+        let regex = /yes|no/;   // searches for 'yes' or 'no'
+        let regex = /yes|no|maybe/;   // searches for 'yes', 'no' or 'maybe'
+    // To ignore letter case (uppercase or lowercase) use the 'i' flag by appending it to the regex
+        let regex = /ignorecase/i;
+    // Use the .match() method to extract the actual matches you find. Apply the method on a string and pass in the regex inside the parenthese
+        let ourStr = "Regular expressions";
+        let ourRegex = /expressions/;
+        ourStr.match(ourRegex);     // Returns ["expressions"]
+        // Note that the .match() syntax is the 'opposite' of the .test() syntax
+        'string'.match(/regex/);
+        /regex/.test('string');
+    // Search or extract a pattern more than once using the 'g' flag
+        let testStr = "Repeat, Repeat, Repeat";
+        let ourRegex = /Repeat/g;
+        testStr.match(ourRegex);    // Returns ["Repeat, Repeat, Repeat"]
+    // You can have multiple flags on the same regex
+        let complexRegex = /search/gi;
+    // Use the wildcard character (.) will match any one character. You can use the wildcard character just like any other character in the regex. If you want to match "hug", "huh", "hut", and "hum", you can use the regex /hu./ to match all four words
+        let humStr = "I'll hum a song";
+        let hugStr = "Bear hug";
+        let huRegex = /hu./;
+        huRegex.test(humStr);   // Returns true
+        huRegex.test(hugStr);   // Returns true
+    // 
+
+
+    // RegEx Literals are enclosed between to forward slashes
+    const regEx = /ab+c/;
+        // The code above matches the character 'a', followed by one or more instances of the character 'b', followed by the character 'c'
+    // You can write a regular expression string and pass it as an argument to the RegExp constructor
+    const re = new RegExp('ab+c');
+        // The syntax used to create a RegExp object is as follows:
+        new RegExp(pattern, [flags])
+        // To create a regular expression literal, use the following syntax
+        /patter/flags 
+            // Flags can have a combination of the following values
+                g // Golbal match
+                i // Ignore case
+                m // Multiline. Treates beginning (^) and end ($) characters as working over multiple lines
+                u // Unicode. Treat pattern as a sequennce of unicode code points
+                y // Sticky. Matches only from the index indicated by the lastIndex property of this regular expression in the target string. 
+
+    // Special Characters in Regular Expressions
+        // Character Classes - used to match a single character
+            // Enclosed in [] - specify what you want your expression to match ex [a-z]
+            // Predefined - backslash (\) character followed by a letter
+                . // matches any single character, except line terminators (ie, newline)
+                \d // matches a single digit character (ie, [0-9])
+                \D // matches a single non-digit character (ie, [^0-9])
+                \w // matches a single alphanumeric word character, including underscore (ie, [A-Za-z0-9_])
+                \W // matches a single non-word character (ie, [^A-Za-z0-9_])
+                \s // matches a single whitespace character, including space ( ), tab(\t), form feed, line feed, and other Unicode spaces
+                \S // matches a single non-whitespace character (ie, [^\w])
+        // Character Sets
+            // Any characters within the [] will be matched (ie [a-z])
+            // The carat (^) symbol will cause the set to match anything other than what is enclosed in the [] (ie [^a-z])
+            // The pipe symbol (|) will match one character of the other (ie, [a|b])
+                ^ // matches beginning of input. If multiline flag is set to true, also matches immediately after a line break character
+                $ // matches end of input. If the multiline flag is set to true, also matches immediately before a line break character
+                \b // matches a zero-width word boundary, such as between a letter and a space
+                \B // matches a zero-width non-word boundary, such as between two letters or between two spaces
+            // Grouping and back references
+                (a) // matches 'a' and remembers the match. Called capturing groups.
+                (?:a) // matches 'a' but does not remember the match. Called non-capturing groups
+                \n // n is a positive integer. A back reference to the last substring matching the n parenthetical in the regular expression
+            // Quantifiers
+                a* // matches the preceding item 'a', 0 or more times
+                a+ // matches the preceding item 'a', 1 or more times
+                a? // matches the preceding item 'a', 0 or 1 time
+                a{n} // n is a positive integer. Matches exactly n occurences of the preceding item 'a'
+                a{n, } // n is a positive integer. Matches at least n occurences of the preceding item 'a'
+                a{n,m} // n and m are positive integers. Matches at least n and at most m occurences of the preceding item 'a'
+            // Assertions 
+                a(?=b) // matches 'a' only if 'a' is followed by 'b'
+                a(?!b) // matches 'a' only if 'a' is NOT followed by 'b'
+        // Regular expressions are used with the RegExp methods `test` and `exec`, and with the String methods `match`, 'search', 'split', 'replace'
+            // The `test` Method executes a search for a match between a regular expression and a specified string and returns a true or false. 
+                // Test whether 'learn' is contained at tthe very beginning of a string
+                let re = /^learn/;
+                let str1 = 'learn regular expressions';
+                let str2 = 'write regular expressions';
+                    console.log(re.test(str1)); // true
+                    console.log(re.test(str2)); // false
+                // The following are various test expressions
+                /[0123456789]/.test('string'); // true if the string contains a digit
+                /[0-9]/.test('string'); // true if the string contains a digit
+                /\d/.test('string');  // tests for any digit
+                /\w/.test('string');  // tests for an alphanumeric character ('word character')
+                /\s/.test('string');  // tests for any whitespace character (space, tab, newline, etc)
+                /\D/.test('string');  // tests for any character NOT a digit
+                /\W/.test('string');  // tests for a non alphanumeric character
+                /\S/.test('string');  // tests for a non whitespace character
+                /./.test('string');   // tests for any character except for newline
+                    // This is not a complete list of Regular Expressions
+            // The `exec` Method executes a search for a match in a specified string and returns a result array or null
+                // Match 'quick brown' followed by 'jumps', ignoring characters in between; remember 'brown' and 'jumps'; ignore case
+                let re = /quick\s(brown).+?(jumps)/ig;
+                let str = 'The Quick Brown Fox Jumps Over The Lazy Dog.';
+                let res = re.exec(str);
+                    console.log(res);
+                    // The result object contains the following information:
+                    // 1. [0] is the full string of characters matched
+                        console.log('string of characters matched = ' + res[0]);
+                    // 2. [1], ...[n] is the parenthesized substring matches, if any. The number of possible parenthesized substrings is unlimited. 
+                        console.log('first parenthesized substring match = ' + res[1]);
+                        console.log('second parenthesized substring match = ' + res[2]);
+                    // 3. index is the 0-based indes of the match in the string
+                        console.log('index of the match = ' + res.index);
+                    // 4. input is the original string
+                        console.log('original string = ' + res.input);
+            // The `match` Method retrieves the matches when matching a string against a regular expression
+                // Find 'chapter', followed by `$1$` or more numeric characters, followed by a decimal point, followed by a zero or more numeric characters, and use a flag to specify that the results are *case-insensitive*.
+                let re = /see (chapter \d+(\.\d)*)/i;
+                let str = 'For more info, see Chapter 3.4.5.1 and CHAPTER 2.3';
+                    console.log(str.match(re));
+            // The `search` Method executes a search for a match between a regular expression and this String object. If successful, search() returns the index of the first match of the regular expression inside the string. Otherwise, it returns -1.
+                // Check whether or not a string contains the word 'learn'
+                const re = /learn/;
+                const str1 = 'Today, we\'ll learn about regular expressions.';
+                    console.log('A search for', re, 'returns', str1.search(re), '\n');
+                    // 'A search for /learn/ returns 13
+            // The `split` Method splits a String object into an array of strings by separating the string into substrings. Separator specifies the character(s) to use for separating the string. The separator is treated as string or a regular expression. If separator is omitted, the array returned contains one elemenet consisting of the entire string. If separator is an empty string (''), str is converted to an array of characters
+                // Split a name string at the space separating the first and last names
+                const name = 'Julia Roberts';
+                const res = name.split(' ');
+                console.log('The split array:', res); // The split array: ['Julia', 'Roberts']
+                console.log('First name:', res[0]);   // First name: Julia
+                console.log('Last name:', res[1]);    // Last name: Roberts
+            // The `replace(pattern, replacement)` Method returns a new string where some (or all) occurrences of a matched 'pattern' have been replaced with a 'replacement' substring
+                // 'patterns' can be a string or a RegExp object to match against the calling string
+                // 'replacement' can be a substring to replace the match with, or it can be a function to invoke that genereate the replacement substring
+                // Replace any occurence of the substring 'RegExp' with 'Regular Expression'
+                const re = /RegExp/;
+                const myString = 'We\'re learning about RegExps.';
+                const replacementString = 'Regular Expression';
+                console.log(myString);
+                console.log(myString.replace(re, replacementString));
+        // HOW TO WRITE A REGEXP
+            // 
+
+            function regexVar(str) {
+                //  ^ => first item matches:
+                // () => stores matching value captured within
+                // [aeiou] => matches any of the characters in the brackets
+                // . => matches any character:
+                // + => for 1 or more occurrances (this ensures str length > 3)
+                // \1 => matches to previously stored match. 
+                    // \2 looks for matched item stored 2 instances ago 
+                    // \3 looks for matched item stored 3 ago, etc
+                //  $ ensures that matched item is at end of the sequence
+                
+                    let re = /^([aeiou]).+\1$/;
+                    return re;
+                }
 
     // Palindrome function -> check if a string is a palindrome
         const palindromes = function(string) {
