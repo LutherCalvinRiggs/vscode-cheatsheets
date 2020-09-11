@@ -510,7 +510,7 @@
 
 
 // JS Objects and  Methods
-
+      
     // Create an object and add properties
     let objectName = {
         property1: value, 
@@ -915,6 +915,55 @@
                 alert( prop );      // name, surname, age
             }
 
+    // Use 'hasOwnProperty' or the 'in' to check whether or not an object as a property within it
+    Array.hasOwnProperty("property");   // Returns true if the property is present
+    "property" in Array;    // Returns true if the property is present
+        // Check if everyone is present in the classroom
+            let users = {
+                Alan: { age: 27, online: true },
+                Jeff: { age: 32, online: true },
+                Sarah: { age: 48, online: true },
+                Ryan: { age: 19, online: true }
+            };
+            function isEveryoneHere1(obj) {
+                return ((obj.hasOwnProperty("Alan") && obj.hasOwnProperty("Jeff") && 
+                         obj.hasOwnProperty("Sarah") && obj.hasOwnProperty("Ryan")) ? true : false); 
+            }
+            function isEveryoneHere2(obj) {
+                return ["Alan", "Jeff", "Sarah", "Ryan"].every(name => obj.hasOwnProperty(name)); 
+            }
+            console.log(isEveryoneHere1(users));    // Returns true
+            console.log(isEveryoneHere2(users));    // Returns true
+    // Use a `for...in` loop to iterate through all the keys within an object
+    // NOTE: Objects do not maintain an ordering to stored keys like arrays do; thus a key's position on an object, or the realtive order in which it appears, is irrelevant when nreferencing or accessing that key.
+            for (let user in users) {
+                console.log(user);
+            } // logs: "Alan", "Jeff", "Sarah", "Ryan"
+        // Use a 'for...in' statment within a function to loop through the users object passed into the function and return the number of users whose 'online' property is set to 'true'. 
+            function countOnline(usersObj) {
+                let count = 0;
+                for (let user in usersObj) {
+                    if (usersObj[user].online === true) {   // syntax is similar to an array
+                        count++
+                    }
+                }
+                return count;
+            }
+    // Use the `Object.keys()` method to gennerate an array which contains all the keys stored in an object. This will return an array with strings representing each property in the object. Again, there will be no specific order to the entries in the array.
+        // Write a function so that it returns an array containing all the properties in the object it receives as an argument
+            let users = {
+                Alan: { age: 27, online: false },
+                Jeff: { age: 32, online: true },
+                Sarah: { age: 48, online: false },
+                Ryan: { age: 19, online: true }
+            };
+            function getArrayOfUsers(obj) {
+                return Object.keys(obj);
+            }
+            console.log(getArrayOfUsers(users));    // Returns ["Alan", "Jeff", "Sarah", "Ryan"]
+
+
+
 
 
 
@@ -952,6 +1001,27 @@
             numbersCopy.push(4);
             console.log(numbers, numbersCopy); // [1,2,3] and [1,2,3,4]  - numbers is left alone
         // The above is simply one way of handling copy an array. The code will depend on what the function needs to accomplish. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Algorithm Scripting 
+    // 
+
 
 
 
@@ -1629,7 +1699,7 @@ value.isNaN();
 // Array Iterations
     // Array iterations methods operate on every array item
 
-    // Call a function nonce for each array element
+    // Call a function once for each array element
     arrayName.forEach(myFunction);
     function myfunction (value) {
         txt = txt + value + "<br>";
@@ -2367,7 +2437,20 @@ value.isNaN();
                 // The g flag looks for all instances, first at the start, then at the back
             let result = hello.replace(wsRegex, ""); // Replace extra space with nothing, ie removes them
         
-
+    // Use the .endsWith() method to check if a string ends with another string or variable (circa, ES2015)
+            function confirmEnding(str, target) {
+                return str.endsWith(target);
+            }
+            confirmEnding("Bastian", "n");  // Returns true
+        // The same operation as above can be done by creating a new RegExp object and passing it the variable 'target' then adding the '$' to test for the pattern at the end of the string
+            function confirmEnding(str, target) {
+                let regex = new RegExp(target + "$");   // to add a flag use `new RegExp('string','flag')`
+                return regex.test(str);
+            }
+            confirmEnding("Bastian", "n");  // Returns true
+    // 
+          
+      
 
 
         
@@ -2635,13 +2718,15 @@ value.isNaN();
         };
 
         // Factorial
-        function factorial (num) {
-            if (num === 0) return 1;
-            let total = 1;
-            for(let i = num; i > 0; i--) {
-                total *= i;
+        function factorial(num) {
+            if (num === 0) {
+                return 1;
+            } else {
+                for (let i = num-1; i > 0; i--) {
+                num *= i;
+                }
+                return num;
             }
-            return total;
         }
 
     // Fibonacci Sequence Calculator
@@ -2681,6 +2766,98 @@ value.isNaN();
             function removeChar(str){return str.slice(1, -1);};
             // OR
             const removeChar = str =>  str.slice(1, -1)
+    
+    // Return the length of the longest word in the provided sentence. Your response should be a number.
+        function findLongestWordLength(str) {
+            return str.split(' ').map(word => word.length).sort((a,b) => (a>b)? 1:-1).pop();
+        }
+        findLongestWordLength("The quick brown fox jumped over the lazy dog");  // Returns 6
+        findLongestWordLength("What if we try a super-long word such as otorhinolaryngology");// Returns 19
+    
+    // Return an array consisting of the largest number from each provided sub-array.
+        function largestOfFour(arr) {
+            let newArray = [];
+            for (let i = 0; i < arr.length; i++){
+            arr[i].sort((a,b) => (a<b)? -1: 1);
+            let highest = arr[i].slice().pop();     // .pop() alone will mutate the original arrays
+            newArray.push(highest);
+            }
+            return newArray;
+        }
+        largestOfFour([[4, 5, 1, 3], [13, 27, 18, 26], [32, 35, 37, 39], [1000, 1001, 857, 1]])
+            // Returns [ 5, 27, 39, 1001 ]
+
+    // Truncate a string (first argument) if it is longer than the given maximum string length (second argument). Return the truncated string with a `...` ending.
+        function truncateString(str, num) {
+            if (str.length > num) {
+            return str.slice(0,num).concat('...');
+            } else {
+            return str;
+            }
+        }
+        truncateString("A-tisket a-tasket A green and yellow basket", 8);   // Returns "A-tisket..."
+    
+    // Create a function that looks through an array arr and returns the FIRST element in it that passes a 'truth test'. This means that given an element x, the 'truth test' is passed if func(x) is true. If no element passes the test, return undefined.
+            function findElement(arr, func) {
+                for (let i = 0; i < arr.length; i++) {
+                    if (func(arr[i])) {
+                        return arr[i]
+                    };
+                };
+            }
+            findElement([1, 2, 3, 4], num => num % 2 === 0);    // Returns 2
+        // The same task as above can be performed using the .find() function. The .find() method returns the value of the first element in the provided array that satisfies the provided testing function.
+            function findElement(arr, func) {
+                arr.find(func);
+            };
+            findElement([1,2,3,4], num => num % 2 === 0);       // Returns 2
+
+    // Check if a value is classified as a boolean primitive. Return true or false. Boolean primitives are true and false.
+        function booWho(bool) {
+            if (typeof bool === "boolean") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        booWho(null);   // Returns false
+    
+    // Return the provided string with the first letter of each word capitalized. Make sure the rest of the word is in lower case. For the purpose of this exercise, you should also capitalize connecting words like "the" and "of".
+        function titleCase(str) {
+            return str.split(' ')
+                      .map(word => word.slice(0,1).toUpperCase() + word.slice(1).toLowerCase())
+                      .join(' ');
+        }
+        titleCase("I'm a little tea pot");  // Returns "I'm A Little Tea Pot"
+
+    // You are given two arrays and an index. Copy each element of the first array into the second array, in order. Begin inserting elements at index n of the second array. Return the resulting array. The input arrays should remain the same after the function runs.
+            function frankenSplice(arr1, arr2, n) {
+                let newArr = arr2.slice();
+                for (let i = 0; i < arr1.length; i++) {
+                    newArr.splice(n+i, 0, arr1[i]);
+                }
+                return newArr;
+            }
+            console.log(frankenSplice([1, 2, 3], [4, 5, 6], 1));    // Returns [4, 1, 2, 3, 5, 6]
+        // The above function can also be done like this
+            function frankenSplice(arr1, arr2, n) {
+                let newArr = arr2.slice();
+                newArr.splice(n, 0, ...arr1);
+                return newArr;
+            }
+            console.log(frankenSplice([1, 2, 3], [4, 5, 6], 1));    // Returns [4, 1, 2, 3, 5, 6]
+          
+    // 
+
+
+      
+      
+      
+      
+
+
+
+
 
 
 
