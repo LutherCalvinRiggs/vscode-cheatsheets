@@ -574,7 +574,7 @@
             // The `hasOwnProperty` method is defined in `Object.prototype`, which can be accessed by `Bird.prototype`, which can ben be accessed by `duck` (the instance). In this Prototype Chain, `Bird` is the 'supertype' for `duck`, while `duck` is the 'subtype'. `Object` is a 'supertype' for both `Bird` and `duck`.
             // `Object` is a supertype for all objects in JS. Therefore, any object can use the `hasOwnProperty` method. 
         // Full Example
-        let beagle = new DOMStringList("Snoopy");
+        let beagle = new Dog("Snoopy");
         Dog.prototype.isPrototypeOf(beagle); // true
         Object.prototype.isPrototypeOf(Dog.prototype); // true
 
@@ -1002,25 +1002,6 @@
             console.log(numbers, numbersCopy); // [1,2,3] and [1,2,3,4]  - numbers is left alone
         // The above is simply one way of handling copy an array. The code will depend on what the function needs to accomplish. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Algorithm Scripting 
-    // 
 
 
 
@@ -1668,20 +1649,57 @@ value.isNaN();
             }          
         }
         add(10)(20)(30);
+
+// Arguments Object
+    // The arguments[] object is an Array-like object accessible inside functions that contains the values of the arguments passed to that funcion.
+        // "Array-like" means that arguments[] has a .length property and properties indexed from zero, but it does NOT have Array's built-in methods like .forEach(), or .map() 
+        function func1(a, b, c) {
+            console.log(arguments[0]);      // first argument. expected output: 1
+            console.log(arguments[1]);      // second argument. expected output: 2
+            console.log(arguments[2]);      // third argument. expected output: 3
+        }
+        func1(1, 2, 3);
+    // The arguments[] object is a local variable available within all non-arrow functions. You can refer to a funnction's arguments inside that function by using its arguments[] object. It has entries for each argument the function was called with, with the first entry's index at 0. 
+    // Each argument cann be set or reassigned
+        arguments[1] = 'new value';
+    // The arguments[] object lacks all Array properties except for .length
+        for (let i = 0; i < arguments.length; i++) {}
+    // It can be converted into an array
+        var args = Array.prototype.slice.call(arguments);
+        // Using an array literal is shorter than above but allocates an empty array
+        var args = [].slice.call(arguments); 
+    // You can use the Array.from() method or spread syntax to convert arguments[] to a real Array.
+        let args = Array.from(arguments);
+        // or
+        let args = [...arguments];
+    // THIS IS ALL DONE WITHIN A FUNCTION
+    // The arguments[] object is useful for functions called with more arguments than the are formally declared to accept. This technnique is useful for functions that can be passed a variable number of arguments, such as Math.min(). 
+        // This example funnctionn accepts any number of string arguments and returnns the longest one:
+            function longestString() {
+                var longest = '';
+                for (var i=0; i < arguments.length; i++) {
+                    if (arguments[i].length > longest.length) {
+                        longest = arguments[i];
+                    }
+                }
+                return longest;
+            }
+    // You can use arguments.length to count how many arguments the function was called with. If you instead want to count how many parameters a function is declared to accept, inspect that function's length property.
+        // A function's .length property indicates the number of parameters expected by the function
+            function func1() {}
+            vunction func2(a, b) {}
+            console.log(func1.length);  // expected output: 0
+            console.log(func2,length);  // expected output: 2
+    // The `typeof` operator returns 'object' when used with arguments[]
+        console.log(typeof arguments);  // 'ojbect'
+    // The type of individual arguments can be deteremined by indexing arguments[]
+        console.log(typeof arguments[0]);  // returns the type of the first argument
+    // The `arguments.callee` property references the currently executing function that the arguments belong to. The .callee property is forbidden in strict mode
+    // The `arguments.length` property is the number of arguments that were passed to the function
+    // The `arguments[@@iterator]` returns a new Array iterator object that contains the values for each index in arguments[]
           
 
 
-
-
-
-
-
-
-
-
-
-// Algorith Scripting
-    // 
 
 
 
@@ -2137,6 +2155,9 @@ value.isNaN();
 
 
 // Regular Expression
+    // Turn a variable to a RegExp. Flags are added in the second argment.
+        var regExp = new RegExp(`${before}`, 'i');
+
     // Regular Expressions are special strings that represent a search patter. Also know as "regex" or "regexp", they help programmers match, search, and replace text.
     // Regex literals are enclosed between two forward slashes
         let regex = /search/;
@@ -2359,7 +2380,7 @@ value.isNaN();
             let timStr = "Timmmmber";
             let timRegex = /tim{4}ber/i; 
             let result = timRegex.test(timStr);
-    // Specify the possible existence of an element with a question mark (?). This checks for zero or one or th epreceding element. You can think of this symbol as saying the previous element is optional.
+    // Specify the possible existence of an element with a question mark (?). This checks for zero or one or the preceding element. You can think of this symbol as saying the previous element is optional.
         // Use the question mark to match the word 'color' even if it is spelled using British English 
             let american = "color";
             let british = "colour";
@@ -2448,24 +2469,6 @@ value.isNaN();
                 return regex.test(str);
             }
             confirmEnding("Bastian", "n");  // Returns true
-    // 
-          
-      
-
-
-        
-        
-        
-        
-        
-
-        
-        
-        
-        
-        
-        
-
 
     // RegEx Literals are enclosed between to forward slashes
     const regEx = /ab+c/;
@@ -2661,7 +2664,6 @@ value.isNaN();
             return char;
         };
 
-    //
 
 
 
@@ -2774,6 +2776,22 @@ value.isNaN();
         findLongestWordLength("The quick brown fox jumped over the lazy dog");  // Returns 6
         findLongestWordLength("What if we try a super-long word such as otorhinolaryngology");// Returns 19
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+// Basic Algorithm Scripting
     // Return an array consisting of the largest number from each provided sub-array.
         function largestOfFour(arr) {
             let newArray = [];
@@ -2847,15 +2865,219 @@ value.isNaN();
             }
             console.log(frankenSplice([1, 2, 3], [4, 5, 6], 1));    // Returns [4, 1, 2, 3, 5, 6]
           
+    // Remove all falsy values from an array. Falsy values in JavaScript are false, null, 0, "", undefined, and NaN. Hint: Try converting each value to a Boolean.
+        function bouncer(arr) {
+            return arr.filter(value => Boolean(value) === true);
+        }
+        bouncer([7, "ate", "", false, 9]);
+
+    // Return the lowest index at which a value (second argument) should be inserted into an array (first argument) once it has been sorted. The returned value should be a number.
+        function getIndexToIns(arr, num) {
+            arr.splice(1,0,num)
+            arr.sort((a,b) => a < b ? -1 : 1); 
+            return arr.indexOf(num);
+        }
+        console.log(getIndexToIns([10, 20, 30, 40, 50], 35));
+    
+    // Return true if the string in the first element of the array contains all of the letters of the string in the second element of the array.
+            function mutation(arr) {
+                let target = arr[0].toLowerCase();
+                let test = arr[1].toLowerCase();
+                for (let i = 0; i < test.length; i++){
+                    if (target.indexOf(test[i]) < 0) {
+                        return false
+                    };
+                }
+                return true;
+            }
+            mutation(["hello", "hey"]);     // Returns false
+        // The same task can be performed with the following
+            function mutation(arr) {
+                return arr[1]
+                .toLowerCase()
+                .split("")
+                .every(function(letter) {
+                    return arr[0].toLowerCase().indexOf(letter) != -1;
+                });
+            }
+    // Write a function that splits an array (first argument) into groups the length of size (second argument) and returns them as a two-dimensional array.
+            function chunkArrayInGroups(arr, size) {
+                let newArr = [];
+                while (arr.length) {
+                newArr.push(arr.splice(0, size));
+                }
+                return newArr; 
+            }
+            console.log(chunkArrayInGroups([0, 1, 2, 3, 4, 5], 2));
+        // The same task can be done using the slice() method
+            function chunkArrayInGroups(arr, size) {
+                let newArr = [];
+                for (let i = 0; i < arr.length; i += size){
+                newArr.push(arr.slice(i, i + size));
+                }
+                return newArr; 
+            }
+            console.log(chunkArrayInGroups([0, 1, 2, 3, 4, 5], 2));
+
+// Intermediate Algorithm Scripting
+    // We'll pass you an array of two numbers. Return the sum of those two numbers plus the sum of all the numbers between them. The lowest number will not always come first.
+        function sumAll(arr) {
+            return arr.sort((a,b) => (a < b) ? -1 : 1)
+                    .reduce((a,b) => {
+                        let sum = 0;
+                        for (let i = a; i <= b; i++){
+                            sum += i;
+                        }
+                        return sum;
+                    });
+        }
+        sumAll([1, 4]);
+    
+    // Compare two arrays and return a new array with any items only found in one of the two given arrays, but not both. In other words, return the symmetric difference of the two arrays. Note: You can return the array with its elements in any order.
+            function diffArray(arr1, arr2) {
+                var newArr = [];
+                for (let i = 0; i < arr2.length; i++){
+                    if(arr1.indexOf(arr2[i]) < 0){
+                    newArr.push(arr2[i]);
+                    }; 
+                };
+                
+                for (let j = 0; j < arr1.length; j++){
+                    if(arr2.indexOf(arr1[j]) < 0){
+                    newArr.push(arr1[j]);
+                    }; 
+                };
+                return newArr;
+            };
+            diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5]);
+        // The same task as above can be written using the .concat() and .filter() methods
+            function diffArray(arr1, arr2) {
+                return arr1
+                .concat(arr2)
+                .filter(item => !arr1.includes(item) || !arr2.includes(item));
+            }
+            diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5]);
+
+    // You will be provided with an initial array (the first argument in the destroyer function), followed by one or more arguments. Remove all elements from the initial array that are of the same value as these arguments. Note: You have to use the arguments object.
+        function destroyer(arr) {
+            for(let i = 1; i < arguments.length; i++){
+                for(let j = 0; j < arr.length; j++){
+                    if ( arr[j] === arguments[i] ) {
+                        arr.splice(j,1);
+                        j--;
+                    }
+                }
+            }
+            return arr;
+        }
+        destroyer([3, 5, 1, 2, 2], 2, 3, 5);
+    
+    // Make a function that looks through an array of objects (first argument) and returns an array of all objects that have matching name and value pairs (second argument). Each name and value pair of the source object has to be present in the object from the collection if it is to be included in the returned array.
+        function whatIsInAName(collection, source) {
+            var srcKeys = Object.keys(source);      // Put the source keys into an array for iteration
+            return collection.filter(function(obj) {    // Passes first obj in collection for testing
+                for (let i = 0; i < srcKeys.length; i++){
+                    if (!obj.hasOwnProperty(srcKeys[i]) || obj[srcKeys[i]] !== source[srcKeys[i]]) {
+                    return false;
+                    }
+                }
+                return true;
+            });
+        }
+        whatIsInAName([{ "apple": 1, "bat": 2 }, { "apple": 1 }, { "apple": 1, "bat": 2, "cookie": 2 }], { "apple": 1, "cookie": 2 });      // Returns { "apple": 1, "bat": 2, "cookie": 2 }
+    
+    // Convert a string to spinal case. Spinal case is all-lowercase-words-joined-by-dashes.
+        function spinalCase(str) {
+            var regex = /[\s,'_']|(?=[A-Z])/; // Looks for space and underscores, or a capital letter
+            return str.split(regex).join('-').toLowerCase();
+        }
+        spinalCase('This Is Spinal Tap');
+
+    // Pig Latin is a way of altering English Words. The rules are as follows: If a word begins with a consonant, take the first consonant or consonant cluster, move it to the end of the word, and add "ay" to it. If a word begins with a vowel, just add "way" at the end. Note: Input strings are guaranteed to be English words in all lowercase.
+        function translatePigLatin(str) {
+            var firstCharVowel = new RegExp("^[aeiou]");
+            var search4Vowels = new RegExp("[aeiou]","g")
+            var notVowel = new RegExp("[^aeiou]");
+        
+            if (firstCharVowel.test(str) == true) {
+                console.log("first letter is a vowel");
+                return str.concat("way");
+            };
+        
+            if (firstCharVowel.test(str) == false) {
+                console.log("first letter is a consonant");
+                if (search4Vowels.test(str) == false){
+                    console.log("word condtains no vowels");
+                    return str.concat("ay");
+                } else {
+                    let strArray = str.split('');
+                    for (let i = 0; i < strArray.length; i++) {
+                        if (strArray[i].match(notVowel)){
+                            let passBack = strArray.shift();
+                            strArray.push(passBack);
+                            i--;
+                        } else {
+                            strArray.push("ay");
+                            break;
+                        };
+                    };
+                    return strArray.join("");
+                };
+            };
+        }
+        translatePigLatin("algorithm");
+
+    // Perform a search and replace on the sentence using the arguments provided and return the new sentence. First argument is the sentence to perform the search and replace on. Second argument is the word that you will be replacing (before). Third argument is what you will be replacing the second argument with (after). Note: Preserve the case of the first character in the original word when you are replacing it. For example if you mean to replace the word "Book" with the word "dog", it should be replaced as "Dog".
+        function myReplace(str, before, after) {
+            // convert 'before' to a RegExp
+            var regExp = new RegExp(`${before}`, 'i');
+            // locate regExp in string
+            let regExpIndex = str.match(regExp).index;
+            // extract first letter Unicode of 'after'
+            var afterUnicode = after.charCodeAt(0);
+            // if str and after are both lowercase
+            if (str.charCodeAt(regExpIndex) >= 97 
+                && str.charCodeAt(regExpIndex) <= 122
+                && afterUnicode >= 97 
+                && afterUnicode <= 122) {
+                // console.log("str and after are both lowercase")
+                return str.replace(regExp, after);
+            };
+            // if str and after are both capitalized
+            if (str.charCodeAt(regExpIndex) >= 65 
+                && str.charCodeAt(regExpIndex) <= 90
+                && afterUnicode >= 65 
+                && afterUnicode <= 90) {
+                // console.log("str and after are both capitalized")
+                return str.replace(regExp, after);
+            };
+            // if str is lowercase and after is capitalized
+            if (str.charCodeAt(regExpIndex) >= 97 
+                && str.charCodeAt(regExpIndex) <= 122
+                && afterUnicode >= 65 
+                && afterUnicode <= 90) {
+                // console.log("str is lowercase and after is capitalized")
+                return str.replace(regExp, after.toLowerCase());
+            };
+            // if str is capitalized and after is lowercase
+            if (str.charCodeAt(regExpIndex) >= 65 
+                && str.charCodeAt(regExpIndex) <= 90
+                && afterUnicode >= 97 
+                && afterUnicode <= 122) {
+                // console.log("str is capitalized and after is lowercase")
+                return str.replace(regExp, after[0].toUpperCase() + after.slice(1));
+            };
+            }
+            myReplace("A quick brown fox Jumped over the lazy dog", "jumped", "leaped");
+        
     // 
 
 
       
-      
-      
-      
+    
 
-
+      
+      
 
 
 
