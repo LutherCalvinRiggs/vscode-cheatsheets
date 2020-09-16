@@ -2482,7 +2482,7 @@ value.isNaN();
             // Flags can have a combination of the following values
                 g // Golbal match
                 i // Ignore case
-                m // Multiline. Treates beginning (^) and end ($) characters as working over multiple lines
+                m // Multiline. Treats beginning (^) and end ($) characters as working over multiple lines
                 u // Unicode. Treat pattern as a sequennce of unicode code points
                 y // Sticky. Matches only from the index indicated by the lastIndex property of this regular expression in the target string. 
 
@@ -2509,6 +2509,8 @@ value.isNaN();
                 (a) // matches 'a' and remembers the match. Called capturing groups.
                 (?:a) // matches 'a' but does not remember the match. Called non-capturing groups
                 \n // n is a positive integer. A back reference to the last substring matching the n parenthetical in the regular expression
+                    let regexp = /['"](.*?)['"]/g;
+                    let regexp = /(['"])(.*?)\1/g;  // This is the same as above
             // Quantifiers
                 a* // matches the preceding item 'a', 0 or more times
                 a+ // matches the preceding item 'a', 1 or more times
@@ -3070,8 +3072,77 @@ value.isNaN();
             }
             myReplace("A quick brown fox Jumped over the lazy dog", "jumped", "leaped");
         
-    // 
+    // Find the missing letter in the passed letter range and return it. If all letters are present in the range, return undefined.
+        function fearNotLetter(str) {
+            // create alphabet string variable
+            const alphabet = "abcdefghijklmnopqrstuvwxyz";
+            const alphaArray = alphabet.split('');
+            const strArray = str.split('');
+            const regex = new RegExp(`${str[0]}`, "i");
+            // determine alphabet start point with regex.index
+            let searchStart = alphabet.match(regex).index;       
+            // set i = searchStart and loop through alphabet and str for the duration of str.length
+            for (let i = searchStart; i < (searchStart + str.length); i++) {  
+            // return missing letter when there is a discrepency between alphabet and str
+            // if no mismatch with alphaget string, return nothing
+                if (strArray[i-searchStart] != alphaArray[i]){
+                return alphaArray[i];
+                }; 
+            };
+        }
+        console.log(fearNotLetter("stvwx"));
+    
+    // Write a function that takes two or more arrays and returns a new array of unique values in the order of the original provided arrays. In other words, all values present from all arrays should be included in their original order, but with no duplicates in the final array.
+        function uniteUnique(arr) {
+            // merge the arrays into a newArray
+            var newArr = [];
+            for (let i = 0; i < arguments.length; i++) {
+                newArr.push(...arguments[i]);
+            };
+            // use a for loop to cycle through the indexes for the test value
+                for (let j = 0; j < newArr.length; j++){
+            // use a for loop to scan for matching with test
+                    for (let k = j+1; k < newArr.length; k++){
+            // remove any matches
+                        if (newArr[j] === newArr[k]) {
+                        newArr.splice(k,1);
+                        };
+                    };
+                };
+            return newArr;
+        }
+        uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1]);
 
+    // Convert the characters &, <, >, " (double quote), and ' (apostrophe), in a string to their corresponding HTML entities.
+        function convertHTML(str) {
+            // create RegExp to locate all instances
+            var regExp = /[(&)(<)(>)(")(')]/g;
+            // create function to run on any RegExp matches
+            function replacer(match){
+                if(match === "&"){
+                    return "&amp;";
+                };
+                if(match === "<"){
+                    return "&lt;";
+                };
+                if(match === ">"){
+                    return "&gt;";
+                };
+                if(match === '"'){
+                    return "&quot;";
+                };
+                if(match === "'"){
+                    return "&apos;";
+                };
+            };
+            // Check str for any matches. If found call replacer() and pass the match.
+            // If no matches, return original str
+            var newString = str.replace(regExp, replacer);
+            return newString;
+        }
+        convertHTML("<>");
+        
+    // 
 
       
     
