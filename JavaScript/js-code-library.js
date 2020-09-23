@@ -511,19 +511,79 @@
 
 // JS Objects and  Methods
       
-    // Create an object and add properties
+    // Create an object and add properties (object literal syntax)
     let objectName = {
         property1: value, 
         property2: value
     };
-    // Create an object with a Constructor
-    function ObjConstName(prop1, prop2, propN) = {
+
+    // There are two ways to get information out of an object:
+        // Dot notation
+            myObject.property 
+        // Bracket notation
+            myObject['property name']
+            // You cannot use variables in dot notation
+            let variable = "blah"
+            myObject[variable] // This is equivalent to myObject["blah"]
+
+    // One of the simplest ways you ca nbeginn to organize your code is by simply grouping things into objects.
+        // Tic-Tac-Toe game example
+            // example one
+            const playerOneName = "tim"
+            const playerTwoName = "jenn"
+            const playerOneMarker = "X"
+            const playerTwoMarker = "O"
+
+            // example two
+            const playerOne = {
+            name: "tim",
+            marker: "X"
+            }
+            const playerTwo = {
+            name: "jenn",
+            marker: "O"
+            }
+        // Using objects is very convenient when making a multiplayer game or keeping track of inventory. 
+
+    // A constructor is a function used for innitializing new objects, and you use the `new` keyword to call the constructor.
+    function ObjConstName(prop1, prop2, propN) {
         this.property1 = prop1;
         this.property2 = prop2;
         this.propertyN = propN;
     }
     // Create an instance of that Object using the constructor and `new` operator
-    let objectName = new ObjConstName(prop1, prop2, propN);    
+    let objectName = new ObjConstName(prop1, prop2, propN);  
+    // All objects that inherit from another object also inherit a constructor property, and this constructor property is simply a property (like any variable) that holds or points to the constructor of the object. 
+        //The constructor in this example is Object () 
+        var myObj = new Object ();
+        // And if you later want to find the myObj constructor:
+        console.log(myObj.constructor); // Object()
+        // Another example: Account () is the constructor
+        var userAccount = new Account (); 
+        // Find the userAccount object's constructor
+        console.log(userAccount.constructor); // Account()
+    // All objects created with object literals and with the Object constructor inherits from `Object.prototype`. Therefore, Object.prototype is the prototype attribute (or the rototype object) of all objects created with new Object () or with {}. Object.prototype itself does not inherit any methods or properties from any other object.
+
+    // Just like with objects created using the Object Literal method, you can add functions to the object:
+    function Player(name, marker) {
+        this.name = name
+        this.marker = marker
+        this.sayName = function() {
+          console.log(name)
+        }
+    }
+        // EXERCISE: Write a constructor for making "Book" objects. Your book should have the book's title, author, the nnumber of pages, and whether or not you have read the book. Also, put a function into the constructor that can report the book info.
+        function Book(title, author, pages, read) {
+            this.title = title;
+            this.author = author;
+            this.pages = pages;
+            this.read = read;
+        }
+
+        Book.prototype.info = function () {
+            return this.title + " by " + this.author + ", " + this.pages + " pages, " + this.read;
+        }
+    
     // Verify an object's constructor, 
     objectName instanceof ObjConstName; // returns 'true' or 'false'
 
@@ -538,8 +598,31 @@
             ownProps.push(property);
         }
     }
+
+    // There are two interrelated concepts with prototype in JavaScript:
+        // Every JS function has a prototype property (this property is empty by default), annd you attach properties and methods o ntis prototype property when you want to implement inheritance. 
+            // This prototype property is NOT ENUMERABLE ( that is, it isn't accessible in a for/in loop), but Firefox and most versions of Safari and Chrome have a _proto_ "pseudo" property (an alternative syntax) that allows you to access and object's prototype property. 
+                // You will likely never use this _proto_ pseudo property, but you should know that it exists and it is simply a way to access an object's prototype property in nsome browsers. 
+            // The prototype property is used primarily for inheritance; you add methods and property on a function's prototype property to make those methods and propertys available to instance of that function.
+            // Consider this simple example of inheritance with the prototype property:
+                function PrintStuff (myDocuments) {
+                    this.documents = myDocuments;
+                }
+                // We add the print () method to PrintStuff prototype property so that other instances (objects) can inherit it:
+                PrintStuff.prototype.print = function () {
+                    console.log(this.documents);
+                }
+                // Create a new object with the PrintStuff () constructor, thus allowing this new object to inherit PrintStuff's properties and methods.
+                var newObj = new PrintStuff ("I am a new Object and I can print.");
+                // newObj inherited all the properties and methods, including the print method, from the PrintStuff function. Now newObj can call print directly, even though we never created a print () method on it.
+                newObj.print (); // I am a new Object and I can print.
+        // The second concept with prototype in JS is the prototype attribute. 
+            // Think of the prototype attribute as a characterisitc of the object; this characteristic tells us the object's "parent". In simple terms: an object's prototype attribute points to the object's "parent" - the object it inherited its properties from. 
+            // The prototype attribute is normally referred to as the prototype object, and it is set automatically when you create a new object. Every object inherits properties from some other object, and it is this other object that is the object's prototype attribute or "parent". (You can think of the prototype attribute as the lineage or the parent). In the example code above, newObj's prototype is PrintStuff.prototype.
+            // NOTE: All objects have attributes just like object properties have attributes. And, the object attributes are prototype, class, and extensible attributes.
+            // ALSO NOTE: The _proto_ "pseudo" property contains an object's prototype object (the parent object it inherited its methods and properties from).
     
-    // Prototype Properties are shared among all instances automatically
+    // Prototype Properties are shared among all instances automatically. Stated simply, the prototype is another object that the original object inherits from, which is to say, the original object has access to all of its prototype's methods and properties
         // The prototype is part of the object constructor. It can be written anywhere.
         // Nearly every JS object has a prototype property which is part of the constructor function that created it.
     Object.prototype.property = value; // prototype property
@@ -555,7 +638,7 @@
         objName.constructor === Object; // true, all objects inherit
         objName instanceof ObjConstName; // true, still works
     // Whenever a prototype is manually set to a new object, remember to define the constructor property
-    ObjConstName.prototype = {
+    objName.prototype = {
         constructor: ObjConstName,  // define the constructor property
         property1: value,
         propertyN: function() {}
@@ -578,7 +661,203 @@
         Dog.prototype.isPrototypeOf(beagle); // true
         Object.prototype.isPrototypeOf(Dog.prototype); // true
 
+    // IN ECMAScript 5, you cann create objects with an Object.create() method that allows you to set the new object's prototype object. 
+
     // Object Inheritance 
+        // JS does not have classical inheritance based on Classes (as most OO languages do), and therefore all inheritannce in JS is made possible through the prototype proptery. JS has a prototype-based inheritance mechanism. 
+        // Inhereitance is a programming paradigm where object (or Classes in some languages) can inherit properties and methods from other objects (or Classes). In JS, you implement inheritance with a prototype prperty. For example, you can creat a Fruit function (an object, since all functions in JS are objects) and add properties annd methods on the Fruit prototype property, and all instances of the Fruit function will inherit all the Fruit's properties and methods.
+            // Demonnstration of Inheritance in JS
+            function Plant () {
+                this.country = "Mexico";
+                this.isOrganic = true;
+            }
+            // Add the showNameAndColor method to the Plant prototype property
+            Plant.prototype.showNameAndColor =  function () {
+            console.log("I am a " + this.name + " and my color is " + this.color);
+            }
+            
+            // Add the amIOrganic method to the Plant prototype property
+            Plant.prototype.amIOrganic = function () {
+            if (this.isOrganic)
+            console.log("I am organic, Baby!");
+            }
+
+            function Fruit (fruitName, fruitColor) {
+            this.name = fruitName;
+            this.color = fruitColor;
+            }
+            // Set the Fruit's prototype to Plant's constructor, thus inheriting all of Plant.prototype methods and properties.
+            Fruit.prototype = new Plant ();
+            // Creates a new object, aBanana, with the Fruit constructor
+            var aBanana = new Fruit ("Banana", "Yellow");
+            // Here, aBanana uses the name property from the aBanana object prototype, which is Fruit.prototype:
+            console.log(aBanana.name); // Banana
+            // Uses the showNameAndColor method from the Fruit object prototype, which is Plant.prototype. The aBanana object inherits all the properties and methods from both the Plant and Fruit functions.
+            console.log(aBanana.showNameAndColor()); // I am a Banana and my color is yellow.
+        // This is the principal manner in which inheritance is implemennted in JS and the integral role the prototype chain has in the process. 
+
+    // The Prototype Chain
+        // Prototype is also important for accessing properties and methods of objects. The prototype attribute (or prototype object) of any object is the "parent" object where the inherited properties were originally defined. 
+        // If you want to access a property of an object, the search for the property begins directly o nthe object. If the JS runtime can't find the property there, it then looks for the property on the object's prototype (the parent) - the object it inherited its property from. If the property is not found on the object's prototype, the search then moves to the prototype of the object's prototype (the grandparent). This continues until there are no more prototypes. 
+        // If the property does not exist on any of the object's prototype in its prototype chain, then the property does not exist and 'undefined' is returned. 
+        // There are two limitations to the prototype chain:
+            // The references can't go in circles, JS will throw an error.
+            // The value of prototype can be either an object or 'null'. Other types are ignored.
+        // There can be only one prototype per object. An object may not inherit from two others.
+    
+    // Object.prototype Properties Inherited by all Objects
+        // constructor, hasOwnProperty(), isPrototypeOf(), propertyIsEnumerable(), toLocaleString(), toString(), and valueOf(). 
+    // All built-in constructors (Array(), Number(), String(), etc.) were created from the Object constructor, and as such their prototype is Object.prototype.
+
+    // The prototype is only used for reading properties. Write/delete operations work directly with the object. 
+    // Accessor propertites are an exception, as assignment is handled by a setter function. So writing to such a proeprty is actually the same as calling a function
+        let user = {
+            name: "John",
+            surname: "Smith",
+            set fullName(value) {
+                [this.name, this.surname] = value.split(" ");
+            },
+            get fullName() {
+                return `${this.name} ${this.surname}`;
+            }
+        };
+        // create an object
+        let admin = {
+            __proto__: user,
+            isAdmin: true
+        };
+        // getter triggers
+        alert(admin.fullName); // John Smith (has a getter in the prototype 'user', so it is called)
+        // setter triggers!
+        admin.fullName = "Alice Cooper"; // (has a setter in the prototype, so it is called)
+        alert(admin.fullName); // Alice Cooper , state of admin modified
+        alert(user.fullName); // John Smith , state of user protected
+    // No matter where the method is found, in an object or its prototype, `this` is always the object before the dot. So the setter call `admin.fullName` uses `admin` as `this`, not `user`.
+        // This is a super-important thing, because we may have a big object with many methods, and have objects that inherit from it. And whenn the inhertiting objects run the inhertied methods, they will modify only their own states, not the state of the big object.
+    
+    // The for...in loop iterates over inherited properties too.
+        let animal = {
+            eats: true
+        };
+        
+        let rabbit = {
+            jumps: true,
+            __proto__: animal
+        };
+        // Object.keys only returns own keys
+        alert(Object.keys(rabbit)); // jumps
+        // for..in loops over both own and inherited keys
+        for(let prop in rabbit) alert(prop); // jumps, then eats
+    
+    // We can exclude inherited properties by using the built-in method `obj.hasOwnProperty(key)`: it returns `true` if `obj` has its own (not inherited) property named `key`.
+        // We can filter out inherited properties (or do something else with them):
+        let animal = {
+            eats: true
+        };
+        
+        let rabbit = {
+            jumps: true,
+            __proto__: animal
+        };
+        
+        for(let prop in rabbit) {
+            let isOwn = rabbit.hasOwnProperty(prop);
+        
+            if (isOwn) {
+                alert(`Our: ${prop}`); // Our: jumps
+            } else {
+                alert(`Inherited: ${prop}`); // Inherited: eats
+            }
+        }
+        // Where is the method `rabbit.hasOwnProperty` coming from? We did not define it. The method is provided by `Object.prototype.hasOwnProperty`. In other words, it's inherited. ... But why does `hasOwnProperty` not appear in the `for...in` loop like `eats` and `jumps` do, if `for...in` lists inherited properts? The answer is simple: it's not enumerable. Just like all other propertites of Object.prototype, it has an `enumerable:false` flag. Since `for...in` onnly lists enumerable properties, `hasOwnProperty` and the rest of the Object.prototype properties are not listed.
+        // ALMOST ALL OTHER KEY/VALUE-GETTING METHODS IGNORE INHERITED PROPERTIES
+            // Methods such as `Object.keys` and `Object.values` and more ignore inherited properties. They only operate on the object itself. Properties from the prototype are NOT taken into account.
+
+    // Object Constructors
+            function Student(name, grade) {
+                this.name = name
+                this.grade = grade
+            }
+            // add the sayName method to the Student object
+            // methods are typically NOT UNIQUE to an object and are therefore placed in the prototype object so that they can be called back on all of the objects at the instance level
+            Student.prototype.sayName = function() {
+                console.log(this.name)
+            }
+            // add the goToProm method to the Student object
+            Student.prototype.goToProm = function() {
+                // eh.. go to prom?
+            }
+        // If you're using constructors to make your objects it is best to define functions on the prototype of that object. Doing so means that a single instance of each function will be shared between all of the Student objects. If we declare the function directly in the constructor, like we did when they were first introduced, that function would be duplicated every time a new Student is created. In this example, that wouldn't really matter much, but in na project that is creating thousands of objects, it really can make a difference. 
+        
+    // Object.create - Recommended Method for Prototypal Inheritance
+        // At this point in history, Object.create the recommended way of setting the prototype of an object. Object.create very simply returns a new object with the specified prototype and any additional properties you want to add.
+            // constructor for student
+            function Student() {
+            }
+            // add a function property call sayName to the Student object
+            Student.prototype.sayName = function() {
+                console.log(this.name)
+            }
+            // constructor for EighthGrader
+            function EighthGrader(name) {
+                this.name = name
+                this.grade = 8
+            }
+            // set the prototype of EighthGrader to a new object that has a copy of Student.prototype
+            EighthGrader.prototype = Object.create(Student.prototype)
+                // EighthGrader.prototype = Student.prototype DOES NOT WORK because it will literally set EighthGradter's prototype to Student.prototype (ie, not a copy), which could cause problems if you want to edit something in the future. Changes will be made on the Student.prototype
+            
+            const carl = new EighthGrader("carl")
+            carl.sayName() // console.logs "carl"
+            carl.grade // 8
+
+            
+    // ES6 Classes
+        // Classes are written with the `class` keyword. A class has a constructor function, and the properties that we want to add to the prototype are defined on the classes body itself.
+            class Dog {
+                constructor(name, breed, color) {
+                    this.name = name;
+                    this.breed = breed;
+                    this.color = color;
+                }
+                bark() {
+                    returnn "Woof!"
+                }
+            }
+        // The class above is the same as the following constructor:
+            function Dog(name, breed, color) {
+                this.name = name;
+                this.breed = breed;
+                this.color = color;
+            }
+            // Attach bark to the prototype object
+            Dog.prototype.bark = function() {
+                return "Woof!";
+            }
+        // Classes can also be extended to other classes. In an extended class, we can access the parent class' constructor using the `super` keyword. The arguments the parent class' constructor expects, we have to pass to `super: name` in this case.
+            class Dog {
+                constructor(name) {
+                    this.name = name;
+                }
+                bark() {
+                    return "Woof!";
+                }
+            }
+            
+            class Chihuahua extends Dog {
+                constructor(name) {
+                    super(name);        // the super keyword calls the class that the sub-class extends
+                }
+                smallBark() {
+                    return "Small woof!";
+                }
+            }
+            // create a new instance of Chihuahua
+            const myPet = new Chihuahua("Max");
+        // myPet has access to both the Chihuahua.prototype and Dog.prototype (and automatically Object.prototype, since Dog.prototype is an object).
+        // Since Chihuahua.prototype has the smallBark function and Dog.prototype has the back function, we can access both smallBark and bark on myPet.
+
+
         // Use supertypes so you don't have to right repeated methods
         // This is a supertype (or parent)
             function Animal() { }
@@ -3142,8 +3421,64 @@ value.isNaN();
         }
         convertHTML("<>");
         
-    // 
+    // Given a positive integer num, return the sum of all odd Fibonacci numbers that are less than or equal to num. The first two numbers in the Fibonacci sequence are 1 and 1. Every additional number in the sequence is the sum of the two previous numbers. 
+            function sumFibs(num) {
+                // create fibArr, first two numbers are 1 and 1 
+                var fibArr = [1,1];
+                // use for loop to create an array of Fib numbers less than num 
+                for (let i = 2; i <= num; i++){
+                    for (let j = 0; j < fibArr.length; j++){
+                        if(i == (fibArr[j]+fibArr[j+1])){
+                            fibArr.push(i);
+                        };
+                    };
+                };
+                // remove even numbers
+                let oddFibArr = fibArr.filter(fibNum => fibNum % 2 !== 0 );
+                // sum all numbers in fibArr
+                return oddFibArr.reduce((accumulator, currentValue) => accumulator + currentValue );
+            }
+            console.log(sumFibs(75024));
+        // The same task can be performed using the following code
+            function sumFibs(num) {
+                // Perform checks for the validity of the input
+                if (num <= 0) return 0;
+                // Create an array of fib numbers till num
+                const arrFib = [1, 1];
+                let nextFib = 0;
+                // We put the new Fibonacci numbers to the front so we
+                // don't need to calculate the length of the array on each
+                // iteration
+                while ((nextFib = arrFib[0] + arrFib[1]) <= num) {
+                arrFib.unshift(nextFib);
+                }
+                // We filter the array to get the odd numbers and reduce them to get their sum.
+                return arrFib.filter(x => x % 2 != 0).reduce((a, b) => a + b);
+            }
+            sumFibs(4);
+    
+    // A prime number is a whole number greater than 1 with exactly two divisors: 1 and itself. For example, 2 is a prime number because it is only divisible by 1 and 2. In contrast, 4 is not prime since it is divisible by 1, 2 and 4. Rewrite sumPrimes so it returns the sum of all prime numbers that are less than or equal to num.
+        function sumPrimes(num) {
+            let i = 1;
+            let sum = 0;
+            while (i <= num) {
+                if (isPrime(i)) {
+                    sum += i;
+                }
+                i++;
+            }
+            return sum;
+        }
+        //function to check if a number is prime or not
+        function isPrime(x) {
+            for (let i = 2; i < x; i++) {
+                if (x % i === 0) return false;
+            }
+            return x !== 1 && x !== 0;
+        }
+        sumPrimes(10);
 
+    // 
       
     
 
