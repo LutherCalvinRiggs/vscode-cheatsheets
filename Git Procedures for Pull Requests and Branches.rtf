@@ -1,0 +1,62 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww24740\viewh13200\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Fork - Clone - Push - Pull\
+\
+1) Fork the Original Repo (\'93Upstream\'94) to make a copy of it on YOUR GitHub (\'93Origin\'94)\
+2) Then clone your GitHub Fork (\'93Origin\'94) to your local computer\
+	- Use clone URL (SSH or HTTPS)\
+	- Use Terminal to cd to your directory\
+	- Use `git clone \'93url\'94` to clone the repository to your computer\
+3) Work on your local clone\
+	- Use `ls` in Terminal to see the files in the local computer directory\
+	- Use `git status` to see the changed files\
+	- `git add .`\
+	- `git commit -m \'93 \'93`\
+4) Push your local version back to your GitHub fork version (\'93Origin\'94)\
+	- Assume that once you\'92ve made a Fork of the Original Repo (\'93Upstream\'94), your Fork (\'93Origin\'94) is out of date.\
+	- Make sure your local version is up to date with the Original Repo (\'93Upstream\'94) by using a Remote. When you Fork an Original Repo, the Remote of the Fork is \'93Origin\'94\
+		- Go back to the Original Repo (\'93Upstream\'94) and copy the clone URL\
+		- Then add the new \'93Upstream\'94 remote using `git remote add upstream \'93url\'94`\
+			- Use `git remote` to see the available remotes. \'93origin\'94 is the remote to your Forked repo. \'93upstream\'94 is the remote to the Original Repo (\'93Upstream\'94).\
+		- Update your local clone by pulling changes from the Upstream remote\
+			- Use `git pull upstream master` (pulls from the master branch of the upstream remote)\
+	- Push back to your Fork (\'93Origin\'94) by using `git push origin master`\
+5) Make a Pull Request from the Forked Repo (\'93Origin\'94)\
+	- Create a Pull Request on GitHub.com\
+		- Type in a message if you want\
+		- Submit the Pull Request\
+\
+\
+Branches\
+1) Create and checkout a 
+\i feature branch\
+	- 
+\i0 Create a new branch and check it out (tell Git you\'92ll be making changes to the branch, by using `git checkout -b < new-branch-name >`\
+2) Make changes to the files\
+	- General rule of thumb is to limit a branch to 
+\i one logical change
+\i0 \
+3) Commit your changes to the branch\
+	- Use `git add` and `git commit` to make changes to the branch\
+		- Some projects don\'92t want a bunch of commits in a pull request so you may need to use `git rebase` to flatten the commit history\
+4) Push the branch changes to the GitHub repository (\'93Origin\'94)\
+	- Use `git push origin < branch-name >` to push your changes back to the forked repository \
+		- The generic form of this command is `git push < remote > < branch>`. The < branch > is pushed to the < remote > \
+5) Open a pull request from the forked repo (\'93Origin")\
+	- Type in a message if you want\
+	- Submit the pull request\
+6) Cleaning up after a merged pull request\
+	-  Use `git pull upstream master` to update your local clone. After your feature branch has been merged, the pull will update your local repo with all of the new changes\
+	- Use `git branch -d < branch-name >` to delete the feature branch (because the changes are already in the master branch)\
+	- Use `git push origin master` to update the master branch in your forked repo\
+	- Use `git push \'97delete origin < branch-name >` to push the deletion of the feature branch to your GitHub repo\
+\
+\
+To keep your fork in sync\
+1) Use `git pull upstream master` to pull new updates from the Original Repo (\'93Upstream\'94) to the local repo\
+2) Use `git push origin master` to push the new updates from the local repo to your forked repo (\'93origin\'94)}
