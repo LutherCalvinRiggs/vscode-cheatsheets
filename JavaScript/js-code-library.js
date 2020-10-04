@@ -1249,6 +1249,569 @@
 
 
 
+// Factory Functions => Tarek Sherif (https://tsherif.wordpress.com/2013/08/04/constructors-are-bad-for-javascript/)
+    // One of the biggest issues with constructors is that while they look just like regular functions, they do not behave like regular functions at all. If you try to use a constructor function without the `new` keyword, your program will not work as expected, but it won't produce error messages that are easy to trace. 
+    // What we need is a way to take advantage of the reuse patters of constructors, while at the same time writing code that is more explicit about what it's actually doing. This can be done by pushing the object creation and inheritance code directly into the constructor, essentially turning it into a factory function. 
+    
+    // Writing explicity factory functions involves relatively minor changes to the code of constructors. Take the following constructor example:
+        function MyObject(data) {
+            this.data = data;
+        }  
+        MyObject.prototype = {
+            getData: function() {
+            return this.data;
+            }
+        }
+        var o = new MyObject("data");
+    // This can be replaced by the following equivalent factory function
+        function myObject(data) {
+            var obj = Object.create(myObject.proto);
+            obj.data = data;
+            return obj;
+        }
+        myObject.proto = {
+            getData: function() {
+                return this.data;
+            }
+        }
+        var o = myObject("data");
+    // The objects created by the constructor and the factory function are equivalent, but the factory function construst has the following advantages
+        // There's no risk of using it in the "wrong" way. It doesn't require the `new` keyword, as it isn't meant to be used as a constructor. Nor is it a constructor that forces proper invocation, essentially hiding errors. The factory function is meant to be used in exactly one way: as a regular function.
+        // There's not pretense of creating a "class" of objects by capitalizing the name or otherwise trying to make it look like the classes or other languages. The prototype property isn't used, so there will be no instanceof link between the function and the objects it creates. It is simply a function that happens to create objects.
+    // If we want to go all the way annd not use `new` at all in our code, the following generic factory can be used to invoke constructor functions in a more explicit manner:
+        function genericFactory(Ctr) {
+            var obj = Object.create(Ctr.prototype);
+            var args = Array.prototype.slice.call(arguments, 1);
+            Ctr.apply(obj, args);
+            return obj;
+        }
+    // Using the genericFactory() function to invoke the MyObject constructor, described earlier in this section, would look like the following:
+        var o = genericFactory(MyObject, "data"); 
+    // Whether this makes the code clearer or not might be debatable, but one definite advantage is that this construct allows us to invoke constructors dynamically, something not possible with invocations that use `new`. 
+
+// Factory Functions => The Odin Project
+    // Factory function pattern is similar to constructors, but instead of using `new` to create an object, factory functions simply set up and return the new object when you call the function
+            const personFactory = (name, age) => {
+                const sayHello = () => console.log('hello!');
+                return { name, age, sayHello };                     // JS Object Shorthand
+            };
+            const jeff = personFactory('jeff', 27);
+            console.log(jeff.name); // 'jeff'
+            jeff.sayHello(); // calls the function and logs 'hello!'
+        // For reference, this is the same thing created using the constructor pattern:
+            const Person = function(name, age) {
+                this.sayHello = () => console.log('hello!');
+                this.name = name;
+                this.age = age;
+            };
+            const jeff = new Person('jeff', 27);
+    
+    // Object Shorthand
+        // In 2015, a handy new shorthand for creating objects was added into JS. Without the shorthand, line 3 from the Factory Function example would have looked something like this:
+            return {name: name, age: age, sayHello: sayHello};
+        // Put simply, if you are creating an object where you are referring to a variable that has the exact same name as the object property you're creating, you cann condense it like so:
+            return {name, age, sayHello};
+        // With that knnowledge in your pocket, check out this little hack:
+            const name = "Maynard"
+            const color = "red"
+            const number = 34
+            const food = "rice"
+            // logging all of these variables might be a useful thing to do, but doing it like this can be somewhat confusing.
+            console.log(name, color, number, food) // Maynard red 34 rice
+            // if you simply turn them into an object with brackets, the output is much easier to decipher:
+            console.log({name, color, number, food})
+            // { name: 'Maynard', color: 'red', number: 34, food: 'rice' }
+    
+    // Scope and Closure
+        // Scope is the term that refers to where things like variables and functions can be used in your code. Scopes can be 'globally' or 'locally' defined.
+            // Note: Global variables can be accessed using the window object - console.log(window.a)
+            // If you do not include the `var` or `let` declarations in a function, yet use a variable name that is the same as a global variable name, JS will think that you are changing the global variable. If there is no declaration of the same name in a parent scope, JS will keep looking up parent scopes until it reaches the window object. If there is no variable declared in the window object (or root scope), JS will create and declare the variable for you. This is known as "polluting the root scope". 
+                // You can "use strict"; to keep yourself from accidentally polluting the root scope.
+        // Global Scope is where you are before you start writing a line of code. The 'namespace' is sometimes an interchangeable word for scope, but usually this refers to the hieghest level scope. 
+        // Local Scope refers to any scope defined past the global scope. There is typically one global scope, and each function defined has its own (nested) local scope. Any function defined within another function has a local scope which is linked to the outer function. 
+            // Any locally scoped items are not visible in the global scope - unless exposed, meaning if functions or variables are defined withing a new scope, it's inaccessible outside of that current scope. 
+        // All scopes in JS are created with Function Scope only, the aren't created by `for` or `while` loops or expression statements like `if` or `switch`. 
+        // Lexical Scope (or Closure) is created by a function within a function, and the inner function has access to the scope in the outer function. This is also referred to as Static Scope.
+            // Any variables/objects/functions defined in its parent scope are available in the scope chain.
+                var name = 'Todd';
+                var scope1 = function () {
+                    // name is available here
+                    var scope2 = function () {
+                        // name is available here too
+                        var scope3 = function () {
+                        // name is also available here!
+                        };
+                    };
+                };
+            // It is important to remember that Lecixal scope does NOT work backwards
+                // name = undefined
+                var scope1 = function () {
+                    // name = undefined
+                    var scope2 = function () {
+                        // name = undefined
+                        var scope3 = function () {
+                            var name = 'Todd'; // locally scoped
+                        };
+                    };
+                };
+            // You can always return a reference to 'name', but never the variable itself.
+        
+        // Scope chains establish the scope for a given function. Each function defined has its own nnested scope as we know, and any function defined within another function has a local scope which is linked to the outer function - this link is called the chain. It's always the position in the code that defines the scope. When resolving a variable, JavaScript starts at the innermost scope and searches outwards until it finds the variable/object/function it was looking for.
+
+        // Closures ties in very closely with Lexical Scope. A better example of how the closure side of things works, can be seen when returning a function reference - a more practical usage. Inside our scope, we can return things so that they're available in the parent scope:
+                var sayHello = function (name) {
+                    var text = 'Hello, ' + name;
+                    return function () {
+                        console.log(text);
+                    };
+                };
+            // The closure concept we've used here makes our scope inside sayHello inaccessible to the public scope. Calling the function alone will do nothing as it returns a function:
+                sayHello('Todd'); // nothing happens, no errors, just silence...
+            // The function returns a function, which means it needs assignment, and then calling:
+                var helloTodd = sayHello('Todd');
+                helloTodd(); // will call the closure and log 'Hello, Todd'
+            // You can call the function by calling the closure, like this:
+                sayHello('Bob')(); // calls the returned function without assignment
+            // AngularJS uses the above technique for its `$compile` method, where you pass the current scope reference into the closure:
+                $compile(template)(scope);
+            // Meaning we could guess that their code would (over-simplified) look like this:
+                var $compile = function (template) {
+                    // some magic stuff here
+                    // scope is out of scope, though...
+                    return function (scope) {
+                        // access to `template` and `scope` to do magic with too
+                    };
+                };
+            // A function doesn't have to return in order to be called a closure. Simply accessing variables outside of the immediate lexical scope creates a closure. 
+
+        // Scope and 'this'
+            // Each scope binds a different value of `this` depending on how the function is invoked. By default, `this` refers to the outer most global object, the `window`. We can easily show how invoking functions in different ways binds the `this` value differently:
+                var myFunction = function () {
+                    console.log(this); // this = global, [object Window]
+                };
+                myFunction();
+                
+                var myObject = {};
+                myObject.myMethod = function () {
+                    console.log(this); // this = Object { myObject }
+                };
+                
+                var nav = document.querySelector('.nav'); // <nav class="nav">
+                var toggleNav = function () {
+                    console.log(this); // this = <nav> element
+                };
+                nav.addEventListener('click', toggleNav, false);
+            // There are also problems that we run into when dealing with the `this` value, for instance if we do this, even inside the same function the scope can be changed and the `this` value can be changed:
+                var nav = document.querySelector('.nav'); // <nav class="nav">
+                var toggleNav = function () {
+                    console.log(this); // <nav> element
+                    setTimeout(function () {
+                        console.log(this); // [object Window]
+                    }, 1000);
+                };
+                nav.addEventListener('click', toggleNav, false);
+            // Above, we've created new scope which is not invoked from our event handler, so it defaults to the `window` Object as expected. There are several things we cann do if we want to access the proper `this` value which isn't affected by the new scope. You might have seen this before, where we can ncache a refernce to the `this` value using a `that` variable and refer to the lexical binding:
+                var nav = document.querySelector('.nav'); // <nav class="nav">
+                var toggleNav = function () {
+                    var that = this;
+                    console.log(that); // <nav> element
+                    setTimeout(function () {
+                        console.log(that); // <nav> element
+                    }, 1000);
+                };
+                nav.addEventListener('click', toggleNav, false);
+            // This is a neat little trick to be able to use the proper `this` value and resolve problems with newly created scope.
+        
+        // Changing scope with .call(), .apply(), and .bind()
+            // Sometimes you need to manipulate the scopes of your JS depending on what you're looking to do. Below is a simple demonstration of how to change the scope when looping:
+                var links = document.querySelectorAll('nav li');
+                for (var i = 0; i < links.length; i++) {
+                    console.log(this); // [object Window]
+                }
+                // The `this` value here doesn't refer to our elements, we're not invoking anything or changing the scope. Let's look at how we can change scope (well, it looks like we change scope, but what we're really doing is changing the context of how the function is called).
+            
+            // The .call() and .apply() methods allow us to pass in a scope to a function, which binds the correct `this` value. Let's manipulate the above function to make it so that our `this` value is each element in the array:
+                    var links = document.querySelectorAll('nav li');
+                    for (var i = 0; i < links.length; i++) {
+                        (function () {
+                            console.log(this);
+                        }).call(links[i]);
+                    }
+                // You can see that we're passing in the current elemennt in the Array iteration, `links[i]`, which changes the scope of the function so that the `this` value becomes that iterated element. We can then use the `this` binding if we wanted. 
+                // We can use either .call() or .apply() to channge the scope, but any further arguments are where the two differ. 
+                    // .call(scope, arg1, arg2, arg3) takes individual argumennts, comma separated
+                    // .apply(scope, [arg1, arg2]) takes an Array of arguments
+                // It is importannt to remember that using .call() or .apply() actually invokes your function, so instead of doing this:
+                    myFunction(); // invoke myFunction
+                // You'll let .call() handle it and chain the method
+                    myFunction.call(scope); // invoke myFunction using .call()
+
+            // Unlike .call() and .apply(), using .bind() does NOT invoke a function, it merely binds the values before the function is invoked. As you know we can't pass parameters into function references:
+                    // works
+                    nav.addEventListener('click', toggleNav, false);
+
+                    // will invoke the function immediately
+                    nav.addEventListener('click', toggleNav(arg1, arg2), false);
+                // We can fix this by creating a new function inside it:
+                    nav.addEventListener('click', function() {
+                        toggleNav(arg1, arg2);
+                    }, false);
+                // But again, this changes scope and we're once more creating a needless function, which will be costly on performance if we were inside a loop and binding event listeners. This is where .bind() shines through, as we can pass in arguments but the functions are not called:
+                    nav.addEventListener('click', toggleNav.bind(scope, arg1, arg2), false);
+                // The function isn't invoked, and the scope can be changed if needed, but arguments are sat waiting to be passed in.
+
+        // In many programming languages, you'll hear about `public` and `private` scope, in JS there is no such thing. We can, however, emulate pubic and private scope through things like Closures. By using JS design patterns, such as the Module pattern for example, we can create public and private scope. 
+            // A simple way to create private scope, is by wrapping our functions inside a function. As we've learned, functions create scope, which keeps things out of the global scope:
+                (function () {
+                    // private scope inside here
+                })();
+            // We might then add a few functions for use in our app:
+                (function () {
+                    var myFunction = function () {
+                        // private scope inside here
+                    }
+                })();
+            // But when we come to calling our function, it would be out of scope:
+                (function () {
+                    var myFunction = function () {
+                    // do some stuff here
+                    };
+                })();
+                
+                myFunction(); // Uncaught ReferenceError: myFunction is not defined
+            // This created a private scope. 
+            
+            // What if we want the function to be public? The Module Pattern (and Revealing Module Pattern) allows us to scope our functions correctly, using private and public scope and an Object. Here we grab the global namespace, called Module, which contains all of our relevant code for that module:
+                // define module
+                var Module = (function () {
+                    return {
+                        myMethod: function () {
+                            console.log('myMethod has been called.');
+                        }
+                    };
+                })();
+                // call module + methods
+                Module.myMethod();
+            // The return statement here is what returns our public methods, which are accessible in the global scope - but are namespaced. This means our Module takes care of our namespace, and can contain as many methods as we want. We can extend the Module as we wish:
+                // define module
+                var Module = (function () {
+                    return {
+                        myMethod: function () {
+                
+                        },
+                        someOtherMethod: function () {
+                
+                        }
+                    };
+                })();
+                // call module + methods
+                Module.myMethod();
+                Module.someOtherMethod();
+            
+            // What about private methods? This is where a lot of developers go wrong and pollute the global namespace by dumping all their functions in the global scope. Functions that help our code work do not need to be in the global scope, only the API calls do - things that need to be accessed globally in order to work.
+            // Here's how we can create private scope, by NOT returning functions:
+                var Module = (function () {
+                    var privateMethod = function () {
+
+                    };
+                    return {
+                        publicMethod: function () {
+                            
+                        }
+                    };
+                })();
+            // This means that publicMethod cann be called, but privateMethod cannot, as it's privately scoped. These privately scoped functions are things like helpers, addClass, removeClass, Ajax/XHR calls, Arrays, Objects, anything you can think of.
+            // There is an interesting twist, anything in the same scope has access to anything in the same scope, even after the function has been returned. Which means, our public methods have access to our private ones, so they can still interact but are unaccessible in the global scope. 
+                var Module = (function () {
+                    var privateMethod = function () {
+                
+                    };
+                    return {
+                    publicMethod: function () {
+                        // has access to `privateMethod`, we can call it: privateMethod();
+                    }
+                    };
+                })();
+            // This allows a very powerful level of interactivity, as well as code security. A very important part of JS is ensuring security, which is exactly why we can't afford to put all functions in the global scope as they'll be publicly available, which makes them open to vulnerable attacks.
+            // Here's an example of returning an Object, making use of public and private methods:
+                var Module = (function () {
+                    var myModule = {};
+                    var privateMethod = function () {
+                
+                    };
+                    myModule.publicMethod = function () {
+                
+                    };
+                    myModule.anotherPublicMethod = function () {
+                
+                    };
+                    return myModule; // returns the Object with public methods
+                })();
+                // usage
+                Module.publicMethod();
+            
+            // One neat naming convention is to begin private methods with an underscore, which visually helps you differentiate between public and prviate:
+                var Module = (function () {
+                    var _privateMethod = function () {
+                
+                    };
+                    var publicMethod = function () {
+                
+                    };
+                })();
+            // This helps us when returning an anonymous Object, which the Module can use in Object fashion as we can simply assign the function references:
+                var Module = (function () {
+                    var _privateMethod = function () {
+                
+                    };
+                    var publicMethod = function () {
+                
+                    };
+                    return {
+                        publicMethod: publicMethod,
+                        anotherPublicMethod: anotherPublicMethod
+                    }
+                })();
+    
+// How `let`, `const`, and `var` are scoped in JS
+    // var
+        // `var`  variables can redefined or updated. You can also redeclare a variable and the code will still work as you'd expect because `var` variables can be updated or redefined. 
+        // `var` variables are function scoped, which means that they are ONLY AVAILABLE INSIDE THE FUNCTION THAT THEY ARE CREATED IN. However, if they are not declared in a function, then they are globally scoped and available in the whole window.
+            // IF YOU NEED SOMETHING OUTSIDE OF A FUNCTION, YOU WANT TO RETURN IT AND STORE THAT IN A VARIABLE.
+            // If you use a `var` variable as a temporary variable in a condition or loop, and that condition is NOT a part of a function, then that temporary `var` variable will still be a global function. This is because `var` variables are function scoped and in the situation just mentioned, there is no function.
+                var age = 100;
+                if(age > 12) {
+                    var dogYears = age * 7;
+                    console.log(`You are ${dogYears} dog years old!`);
+                }
+            
+    // let & const
+        // `let` and `const` are block scoped. Any time that you see { curly braces }, that's a block. Functions are also blocks, which means that `let` and `const` are still going to be scoped to a function, but they will be SCOPED TO THE CLOSES SET OF CURLY BRACKETS.
+            var age = 100;
+            if (age > 12) {
+                let dogYears = age * 7;
+                console.log(`You are ${dogYears} dog years old!`);
+            }
+            console.log(dogYears); // error because it's scoped only to the above block
+        // `let` canNOT be redeclared in the same scope, unlike `var`. If you redeclare `let`, you will recieve an error. 
+        // The only difference between `let` and `const` is that `CONST` VARIABLES CANNOT BE UPDATED. `let` variables are made to be updated. 
+        // `const` variable are not immutable. However, the properties of a `const` variable can change. That's because the entire object is not immutable. It just can't be reassigned entirely. This of an object as a person. The person (object) doesn't change, but attributes about the person (object) may change. As long as the object that is assigned is always exactly the same object, we can go ahead and set a new property or property value.
+            const person = {
+                name: 'Wes',
+                age: 28
+            }
+            person.age = 29
+    
+    // Private Variables and Functions
+            const FactoryFunction = string => {
+                const capitalizeString = () => string.toUpperCase();
+                const printString = () => console.log(`----${capitalizeString()}----`);
+                return { printString };
+            };
+            const taco = FactoryFunction('taco');
+            printString(); // ERROR!!
+            capitalizeString(); // ERROR!!
+            taco.capitalizeString(); // ERROR!!
+            taco.printString(); // this prints "----TACO----"
+        // Because of the concept of scope, neither of the functions created inside of FactoryFunction can be accessed outside fo the function itself, hence the errors. The only way to use either of those functions is to returnn then in the object, which is why we can call taco.printString() but not taco.capitalizeString(). The big deal here is that even though we can't access the capitalizeString() function, printString() can. That is closure. 
+        // The concept of closure is the idea that functions retain their scope even if they are passed arounnd and called outside of that scope. In this case, printString has access to everything inside of FactoryFunction, even if it gets called outside of that function.
+        // In the following example, counterCreator innitializes a local variable (count) and then returns a function. To use that function we have to assignn it to a variable. Then, every time we run the function it console.logs count annd increments it. As above, the function counter is a closure. It has access to the variable count and cann both print and increment it, but there is no way for our program to access that variable. 
+            const counterCreator = () => {
+                let count = 0;
+                return () => {
+                    console.log(count);
+                    count++;
+                };
+            };
+            
+            const counter = counterCreator();
+            
+            counter(); // 0
+            counter(); // 1
+            counter(); // 2
+            counter(); // 3
+        // In the context of factory functions, closures allow us to create private variables and functions. Private functions are functions that are used in the workings of our objects that are not intended to be used elsewhere in our program. Inn other words, even though our objects might onnly do one or two things, we are free to split our functions up as much as we want (allowing for cleaner, easier to read code) and only export the functions that the rest of the program is going to use. 
+        // The concept of private functions is very useful and should be used as often as is possible! For every bit of functionality that you need for your program, there are likely to be several supporting functions that do NOT need to be used in your program as a whole. Tucking these away making them inaccessible makes your code easier to refactor, easier to test, and easier to reasonn about for you and anyone following. 
+
+    // Factories are simply plain old JS functions that return objects for us to use in our code. Factories are a powerful way to organize and contain code. If we are writing any sort of game, we will probably need an object to describe our players and their functionality:
+            const Player = (name, level) => {   
+                let health = level * 2;             // health is a private variable and cannot be manipulated
+                const getLevel = () => level;
+                const getName  = () => name;
+                const die = () => {                 // die() is a private function
+                    // uh oh
+                };
+                const damage = x => {
+                    health -= x;
+                    if (health <= 0) {
+                        die();
+                    }
+                };
+                const attack = enemy => {
+                    if (level < enemy.getLevel()) {
+                        damage(1);
+                        console.log(`${enemy.getName()} has damaged ${name}`);
+                    }
+                    if (level >= enemy.getLevel()) {
+                        enemy.damage(1);
+                        console.log(`${name} has damaged ${enemy.getName()}`);
+                    }
+                };
+                return {attack, damage, getLevel, getName} // neither die() nor `health` are listed here and are therefore private
+            };
+            const jimmie = Player('jim', 10);
+            const badGuy = Player('jeff', 5);
+            jimmie.attack(badGuy);
+        // Setting up objects like this makes it easier for us to use them because we've actually put some thought into how and when we are going to want to use the information. In this case, we have jimmie's health hdiing as a private variable inside of the object which meanns we nneed to export a function if we want to manipulate it. In the long run, this will make our code much easier to reason about because all of the logic is encapsulated in an appropriate place.
+    
+    // Inheritannce with factories
+        // With constructors, we looked fairly deeply into the concept of prototypes and inheritance, or giving our objects access to the methods and properties of another object. There are a few easy ways to accomplish this while using factories.
+            const Person = (name) => {
+                const sayName = () => console.log(`my name is ${name}`)
+                return {sayName}
+            }
+            
+            const Nerd = (name) => {
+                // simply create a person and pull out the sayName function with destructuring assignment syntax!
+                const {sayName} = Person(name)
+                const doSomethingNerdy = () => console.log('nerd stuff')
+                return {sayName, doSomethingNerdy}
+            }
+            
+            const jeff = Nerd('jeff')
+            jeff.sayName() //my name is jeff
+            jeff.doSomethingNerdy() // nerd stuff
+        // This pattern allows you to pick and choose which functions you want to include in your new object. If you want to lump all of another object in, you can do that with Object.assign():
+                const Nerd = (name) => {
+                    const prototype = Person(name)
+                    const doSomethingNerdy = () => console.log('nerd stuff')
+                    return Object.assign({}, prototype, {doSomethingNerdy})
+                    // returns a new object with properties of the Person() object and the property doSomethingNerdy()
+                }
+            // The Object.assign() method copies all enumerable own properties from one or more source objects to a target object. It returns the target object. The syntax is as follows:
+                Object.assign(target, ...sources)
+                // target - The target object; what to apply the sources' properties to, which is returned after it is modified.
+                // sources - The source object(s); objects containing the properties you want to apply.
+                // Return value = the target object
+            // Properties in the target object are overwritten by properties in the sources if they have the same key. Later sources; properties overwrite earlier ones.
+            // This method only copies enumerable and own properties from a source object to a target object. It uses [[Get]] on the source and [[Set]] on the target, so it will invoke getters and setters. Therefore it assigns properties, versus copying or defining new properties. This may make it unnsuitable for merging new properties into a prototype if the merge sources contain getters. 
+        
+        // 3 Kinds of Prototypal Inheritance
+            // Delegation / Differential Inheritance
+                // A delegate prototype is an object that serves as a base for another object. When you inherit from a delegate prototype, the new object gets a reference to the prototype.
+                // When you try to access a property on the new object, it checks the object's own properties first. If it doesn't find it there, it checks the [[Prototype]], and so on up the prototype chain until it gets back to Object.prototype, which is the root delegate for most objects. Method delegtation can preserve memory resources because you only need one copy of each method to be shared by all instances. 
+                // In JavaScript, any function cann create new objects. When it's not a constructor function, it's called a factory function.
+                    const proto = {
+                        hello () {
+                            return `Hello, my name is ${ this.name }`;
+                        }
+                    };
+                    const greeter = (name) => Object.assign(Object.create(proto), {
+                        name
+                    });        
+
+                    const george = greeter('george');
+                    const msg = george.hello();
+                    console.log(msg);
+                // You can avoid property delegation by setting the prototype to 'null' using Object.create(null).
+                // One major drawback to delegation is that it's not very good for storing state. If you try to store state as objects or arrays, mutating any member of the object or array will mutate the member for every instance that shares the prototype. In order to preserve instance safety, you need to make a copy of the state for each object.
+            
+            // Concatenative Inheritance / Cloning / Mixins
+                // Concatenative inheritance is the process of copying the properties from one object to another, without retaining a reference between the two objects. It relies on JS's dynamic object extension feature.
+                // Cloning is a great way to store default state for objects: This process is commonly achieved using Object.assign(). Prior to ES6, it was common to use similar .extend() methods from Lodash, Underscore, or jQuery.
+                    const proto = {
+                        hello: function hello() {
+                        return `Hello, my name is ${ this.name }`;
+                        }
+                    };
+                    
+                    const george = Object.assign({}, proto, {name: 'George'});
+                    const msg = george.hello();
+                    console.log(msg); // Hello, my name is George
+                // It's common to see this style used for mixins. For example, you can turn anny object into an event emitter by mixing in an EventEmitter3 prototype:
+                    import Events from 'eventemitter3';
+                    const object = {};
+                    Object.assign(object, Events.prototype);
+                    object.on('event', payload => console.log(payload));
+                    object.emit('event', 'some data'); // 'some data'
+                // We can use this to create a Backbone-style event emitting model:
+                    import Events from 'eventemitter3';
+
+                    const modelMixin = Object.assign({
+                        attrs: {},
+                        set (name, value) {
+                            this.attrs[name] = value;
+                        
+                            this.emit('change', {
+                                prop: name,
+                                value: value
+                            });
+                        },
+                        
+                        get (name) {
+                            return this.attrs[name];
+                        }
+                    }, Events.prototype);
+                    
+                    const george = { name: 'george' };
+                    const model = Object.assign(george, modelMixin);
+                    model.on('change', data => console.log(data));
+                    model.set('name', 'Sam');
+                    /* { prop: 'name', value: 'Sam' } */
+                // Concatenative inheritance is very powerful, but it gets even better when you combine it with closures.
+
+            // Functional Inheritance
+                // Not to be confused with function programming.
+                // Functional inheritance makes use of factory function, and then tacks on new properties using concatenative inheritance. Functions created for the purpose of extending existing objects are commonly referred to as functional mixins. The primary advantage of using functions for extension is that it allows you to use the function closure to encapsulate private data. In other words, you can enforce private state. 
+                // It's a bit awkward to hang the attributes on a public property where a user could set or get them without calling the proper methoes. What we really want to do is hide the attributes in a private closure:
+                    import Events from 'eventemitter3';
+
+                    const rawMixin = function () {
+                        const attrs = {};
+                        
+                        return Object.assign(this, {
+                            set (name, value) {
+                                attrs[name] = value;
+                            
+                                this.emit('change', {
+                                    prop: name,
+                                    value: value
+                                });
+                            },
+                        
+                            get (name) {
+                                return attrs[name];
+                            }
+                        }, Events.prototype);
+                    };
+                    
+                    const mixinModel = (target) => rawMixin.call(target);
+                    const george = { name: 'george' };
+                    const model = mixinModel(george);
+                    model.on('change', data => console.log(data));
+                    model.set('name', 'Sam');
+                    /* { prop: 'name', value: 'Sam' } */
+                // By moving 'attrs' from a public property to a private identifier, we remove all trace of it from the public API. The only way to use it now is via the privileged methods. Privileged methods are any methods defined withing the closer's function scope, which gives them access to the private data.
+                // Note in the example above, we have the `mixinModel()` wrapper around the actual functional mixin, `rawMixin()`. The reason nwe need that is because we need to set the value of "this" inside the function, which we do with a `Function.prototype.call()` We could skip the wrapper and let callers do that instead, but that would be obnoxious. 
+            
+            // Composition Over Class Inheritance
+                // Class inheritance creates is-a relationships with restrictive taxonomies, all of which are eventually wrong for new use-cases. But it turns out, we usually employ inheritance for has-a, uses-a, or can-do relationships. 
+                // Composition is more like a guitar effects pedalboard. Want something that cann do delay, subtle distoration, and a robot voice? Just plug them all in:
+                    const effect = compose(delay, distortion, robovoice);   // Rock on!
+                // CLASS INHERITANCE SHOULD NEVER BE USED. Composition is simpler, more expressive and more flexible
+            // What About `class`?
+                // JS provides a very flexible object system without the need to rely on 'class'. So why did 'class' ever get used? Because a log of people are familiar with the class paradigm from other languages, and people kept trying to emulate it in JS. 
+                // Several popular libraries implemented pseudo-class inheritance in JS using the delegate prototype chain to emulate class inheritance. Adding an official `class` keywor provided a single canonical way to emulate class inheritance in JS, but you should avoid it all together. In JS, composition is simpler, more expressive, and more flexible than class inheritance. 
+    
+    // The Module Pattern
+        // 
+
+
+
+
+
+
+
 
 
 
