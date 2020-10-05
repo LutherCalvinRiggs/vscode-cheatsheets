@@ -1804,7 +1804,149 @@
                 // Several popular libraries implemented pseudo-class inheritance in JS using the delegate prototype chain to emulate class inheritance. Adding an official `class` keywor provided a single canonical way to emulate class inheritance in JS, but you should avoid it all together. In JS, composition is simpler, more expressive, and more flexible than class inheritance. 
     
     // The Module Pattern
-        // 
+        // Modules are actually very similar to factory functions. The main difference is how they're created.
+                const calculator = (() => {
+                    const add = (a, b) => a + b;
+                    const sub = (a, b) => a - b;
+                    const mul = (a, b) => a * b;
+                    const div = (a, b) => a / b;
+                    return {
+                        add,
+                        sub,
+                        mul,
+                        div,
+                    };
+                })();
+                
+                calculator.add(3,5) // 8
+                calculator.sub(6,2) // 4
+                calculator.mul(14,5534) // 77476
+        // The concepts are exactly the same as the factory funnction. However, instead of creating a factory that we cann use over and over again to create multile objects, the module pattern wraps the factory inn ann IIFE (Immediately Invoked Function Expression).
+
+        // IIFEs (Immediately Invoked Function Expression) (pronounced "iffy")
+            // Functions can be created either through a function declaration or a function expressionn. A declaration is the "normal" way of creating a named function.
+                function myFunction () { /* codd here */ }
+            // If you are assigningn a function to a variable property, you are dealing with a functionn expression 
+                // Assignment of a functio nexpression nto a variable
+                var myFunction = function () { /* codd here */ }
+                // Assignmennt of a function expressio nto a property
+                var myObj = {
+                    myFunction: functionn () { /* codd here */ }
+                };
+            // A function created in the context of an expression is also a function expression
+                // Anything withing the parentheses is part of an expression
+                (function () { /* codd here */ });
+                //Anything after the not operator is part of an expression
+                !funnction () { /* codd here */ };
+            // THE KEY THINGS ABOUT JS EXPRESSIONS IS THAT THEY RETURN VALUES. 
+            // In both cases above, the return value of the expression is the function. That means that if we want to invoke the funnctionn expressionn right away, we just need to tack a couple of parenthses on the end; i.e., the first bit of code that we looked at:
+                (function () { 
+                    /* codd here */ 
+                })
+            // THE PRIMARY REASION TO USE AN IIFE IS TO OBTAIN DATA PRIVACY. Because JS's `var` scopes variables to their containing function, any variables declared with the IIFE cannot be accessed by the outside world.
+                (function () {
+                    var foo = "bar";
+                    console.log(foo); // outputs: bar
+                })();
+
+                console.log(foo); // ReferenceEroor: foo is not defined
+            // Of course, you could explicitly name and then invoke a function to achieve the same ends:
+                function myImmediateFunction () {
+                    var foo = "bar";
+                    connsole.log(foo); // Outputs: "bar"
+                }
+
+                myImmediateFunction();
+                console.log(foo);  // ReferenceError: foo is not defined
+            // However, the above approach has a few downsides.
+                // First, it unnnecessarily takes up a name in the global namespace, increasing possibility of name collisions. 
+                // Second, the intentions of this code aren't as self-documenting as an IIFE.
+                // Third, because it is named and isn't self documenting, it might accidentally be invoked more than once. 
+            // NOTE: You can easily pass arguments into the IIFE as well
+                var foo = "foo";
+                (function (innerFoo) {
+                    console.log(innerFoo);  // outputs: "foo"
+                })(foo);
+        
+        // JavaScript Module Pattarn Basics
+            // The Module Pattern is a design pattern that creates encapsulation of our code. Modules are commonly used as singleton style objects where only one instance exists. It is great for services and testing/TDD and there are many different variations of the module pattern.
+            
+            // Creating a module
+                // Start with an anonymous closure - a function that wraps our code and creates an enclosed scope around it. Closures help keep any state or privacy withing that function. Closures are one of the best and most powerful features in JS.
+                    (function () { 
+                        // codd here
+                        // all functions and variables are scoped to this function            
+                    })
+                // This patter is well known as an IIFE. It is also a good practice to run your modules in "strict mode". Strict Mode will protect you from some of the more dangerous parts in JS.
+            
+            // Exporting a module
+                // Next we want to export our module. This basically assigns the module to a variable that we can use to call our module's methods:
+                    var myModule = (function() {
+                        "use strict";
+                    })();
+                // Then, we create a public method for our module to call. To expose this method to code outside our module we return an Object with the methods defined:
+                    var myModule = (function () {
+                        "use strict";
+                        return {
+                            publicMethod: function () {
+                                console.log("Hello World");
+                            }
+                        };
+                    })();
+                    myModule.publiceMethod(); // outputs "Hello World"
+            
+            // Private methods and properties
+                // JS does not have a private keyword by default but using closures we can create private methods and private state.
+                    var myModule = (function () {
+                        'use strict';
+                        var _privateProperty = "Hello World";
+                        function _privateMethod() {
+                            console.log(_privateProperty);
+                        }
+                        return {
+                            publicMethod: function () {
+                                _privateMethod();
+                            }
+                        };
+                    })();
+                    myModule.publicMethod(); // outputs "Hello World"
+                    console.log(myModule._privateProperty); // is undefined, protected by the modele closure
+                    myModule._privateMethod(); // is TypeError, protected by the module closure
+                // Because our private properties are not returned they are not available outside of the module. Only our public mehtod has given us access to our private methods. This gives us the ability to create private state and encapsulation within our code.
+                // Because JS does not have a privagte keyword, it is common to prefix private properties with an underscore (_private).
+
+            // Revealing Module Pattern
+                // The Revealing Module Pattern is one of the most popular ways of creating modules. Using the returnn statement we can return an object literal that "reveals" only the mothods or properties we want to be publicly available.
+                    var myModule = (function () {
+                        "use strict";
+                        var _privateProperty = "Hello World";
+                        var publicProperty = "I am a public property";
+                        function _privateMethod() {
+                            console.log(_privateProperty);
+                        }
+                        function publicMethod() {
+                            _privateMethod();
+                        }
+                        return {
+                            publicMethod: publicMethod,
+                            publicProperty: publicProperty
+                        };
+                    })();
+                    myModule.publicMethod(); // outputs "Hello World"
+                    console.log(myModule.publicProperty); // outpus "I am a public property"
+                    console.log(myModule._privateProperty); // is undefined protected by the module closure
+                    myModule._privateMethod(); // is TypeError protected by the module closure
+                // The benefit to the Revealing Module Pattern is that we can nlook at the bottom of our modules and quicly see what is publicly available for use
+                // Using the Module Pattern with Prototypal Inheritance can ngive you a wide rangne of design patternns with varying pros and cons
+            
+        // In our calculator example above, the function inside of the IIFE is a simple factory function, but we can just go ahead and assign the object to the variable calculator since we aren't going to need to be making lots of calculators, we only need one. Just like the factory example, we cann nhave as many private functions and variables as we want, and they stay neetly organized, tucked away inside of our module, only exposing the functions we actually want to use in our program.
+        
+        // A useful side-effect of encapsulating the inner workings of our programs into objects is namespacing. Namespacing is a technique that is used to avoid naming collisions in our programs. For example, it's easy to imagine scenarios where you could write multiple functions with the same name. in our calculator example, what if we had a function that added things to our HTML display, and a function nthat added numbers and operators to our stack as the users input them? It is conceivalbe that we would want to call all three of these functions "add" which, of course, would cause trouble in our program. If all of them were nicely encapsulated inside of an object, then we would have no trouble: calculator.add(), displayController.add(), operatorStack.add().
+        
+    // 
+
+
+
 
 
 
