@@ -1942,8 +1942,116 @@
         // In our calculator example above, the function inside of the IIFE is a simple factory function, but we can just go ahead and assign the object to the variable calculator since we aren't going to need to be making lots of calculators, we only need one. Just like the factory example, we cann nhave as many private functions and variables as we want, and they stay neetly organized, tucked away inside of our module, only exposing the functions we actually want to use in our program.
         
         // A useful side-effect of encapsulating the inner workings of our programs into objects is namespacing. Namespacing is a technique that is used to avoid naming collisions in our programs. For example, it's easy to imagine scenarios where you could write multiple functions with the same name. in our calculator example, what if we had a function that added things to our HTML display, and a function nthat added numbers and operators to our stack as the users input them? It is conceivalbe that we would want to call all three of these functions "add" which, of course, would cause trouble in our program. If all of them were nicely encapsulated inside of an object, then we would have no trouble: calculator.add(), displayController.add(), operatorStack.add().
+       
         
-    // 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// jQuery 
+    // The following is a bare minimum setup for utitlizing jQuery on a "real" website. We have a basic HTML5 structure stubbed out. jQuery is included as a <script> and the nwe perform a super simple jQuery task:
+
+    // Add the jQuery file to your scripts folder and then link it to your HTML file with the following:
+        <script src="scripts/jquery-3.5.1.js"></script>
+    
+    // Select and Do
+        // One way to think of jQuery is the "Select and Do" library. jQuery is particularly good at selecting elements on the page (stuff in the DOM) and then doing something. Select and do.
+        // jQuery uses CSS selectors to location elements
+            $("selector").method("parameter1","parameter2", "parameterN");
+            $("h1").css("color", "red");
+        // jQuery can chain methods until you place a semi-colon at the end of the syntax
+            $("#selector-id").css("color","red").hide().addClass().anotherMethod();
+        // Pass multiple parameters to the same method using curly braces and Object syntax
+            $(".selected-class").css({
+                "color": "red",
+                "font-family": "Georgia"
+            });
+            // ALL STYLES ARE APPLIED AS LINE STYLE SYNTAX
+    
+    // jQuery Selectors are CSS3 Selectors
+        // In CSS, you can select all <h1> elements on the page with this:
+            h1 { /* styles for all <h1> elements here */ }
+        // In jQuery, you can use that exact same selector:
+            $("h1") // set of all <h1> elements
+        // You can use any CSS selector in jQuery. The following uses the :nth-of-type selector to select the second definition term in a definition list:
+            $("dt:nth-of-type(2)").html("I'm the second definition term!");
+        // The .html() mthod is a useful on. It allows you to change (or get) the "innerHTML" of an element. It is similar to the .text() method, but .text() is literally just for text (it won't return actual HTML from inside the element). 
+            // Example: if the "guts" were `Some <span>text</span>`, it would just return "Some text". Setting text with it will excape any HTML you put inn, meaning you would literally see the "<span>". 
+        // Getting text with it is unique as well, for if you select multiple elements, it will return the combined text from all of them, which is unique inn jQuery. In other cases when you "get" a value from a method, it will return the value from the first in the set. Like .height() will just return the height from the first element in the set. 
+    
+    // All about DOM ready
+        // If a jQuery script is placed in the <head> of the HTML document, it will fail because it will be run before there is any HTML rendered to the browser. The best way to handle this is to load JS files at the bottom of your page. Right above the closing </body> tag. Placing script tags at the bottom of your page will also increase you page load time because JS files "block" page rendering as they are downloaded and ran. 
+        // We can still fix the not-finding-elements issue even if we are forced to load scripts in the head. We do it through the jQuery "DOM Ready" function. Literally, when the document is done and ready to be manipulated. 
+            $(documennt).ready(function() { /* code here */ });
+        // There is a shorter version which does the exact same thing:
+            $(function () { /* code here */ });
+        // Putting your code inside a function like that ensures it won't run unntil the documennt is ready. It's actually a rather clever bit of code that does it, which of course is difficult to do cross-browser. What is cool about it is that it is pretty fast. It's not the same as waiting for the entire winndow to load, which is slow, because it waits for all resources to be done downloading before firing. DOM ready happens much soonner. If you do need to wait for resources to be done (eg, you need to measure an image), you can wait for that like this:
+            $(window).load(function() { /* code here */ });
+        // To fix your JS-in-the-head proglem with a DOM Ready, the script would look like this
+            <script src="scripts/jquery-2.0.3.js"></script>
+            script>
+                $(function () {
+                    $("h1").css("color", "red");
+                });
+            </script>
+        
+    // jQuery Selector Extensions
+        // There are a number of additionnal selectors that jQuery offers (via the Sizzle selector engine) that are pretty darn useful. For instance, CSS has attribute selectors that allow you to select an element based on any arbitrary attribute the element might have.
+            <div data-whatever="elephant-eyeballs"></div>
+        // We can write the following in jQuery to select that element
+            $("[data-whatever="elephant-eyeballs"]");
+        // There are variations on the attribute selector, like instead of `=` you can use `^=` to indicate the "starts with this value". For some reason, CSS doesn't have `!=` or "not equal to this value", but jQuery does!
+            $()
+        // There are lots of these selector extensions, including the following:
+            // :eq() - a 0-indexed version of :nth-child()
+            // :even - shortcut for :nth-child(even)
+            // :gt(n) - select elements with a greater index than n. Also a shortcut for a more complex :nth-child() formula
+            // :has() - limites the selection to elements which contain what you pass this pseudo selector
+        // You can also make your own selection extensions if you wish, by using the following syntax:
+            jQuery.extend(jQuery.expr[':'], {  
+                inview: function (el) {    
+                var $e = $(el),    
+                    $w = $(window),    
+                    top = $e.offset().top,   
+                    height = $e.outerHeight(true),    
+                    windowTop = $w.scrollTop(),    
+                    windowScroll = windowTop - height,    
+                    windowHeight = windowTop + height + $w.height();    
+            
+                return (top > windowScroll && top < windowHeight);  
+                }
+            });
+        
+    // Doing things with jQuery
+        // .on() is the best/standard way to bind events jQuery. Bind, meaning "watch for this event on this element or set of elements"
+            $("#link-that-toggles").on("click", function() {
+                $("#thing-to-toggle").slideToggle();
+            });
+        // .preventDefault() is used to prevent a functions default behavior from taking place
+            $("#link-that-toggles").on("click", function(event) {
+                $("#thing-to-toggle").slideToggle();
+                event.preventDefault();
+            });
+        // jQuery is great for setting an active class on things that you click
+            $("nav a").on("click", function() {    
+                $("nav a").removeClass("active");                
+                $(this).addClass("active");        
+            });
+
+    // preventDefault(), stopPropagation, and return false
+        // https://css-tricks.com/lodge/learn-jquery/08-preventdefault-stoppropagation-return-false/
+            
 
 
 
