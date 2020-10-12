@@ -1246,20 +1246,20 @@
 
 
 
-
+// RULE OF THUMB: If you only ever need ONE of something, create that something with a module
 
 
 // Factory Functions => Tarek Sherif (https://tsherif.wordpress.com/2013/08/04/constructors-are-bad-for-javascript/)
     // One of the biggest issues with constructors is that while they look just like regular functions, they do not behave like regular functions at all. If you try to use a constructor function without the `new` keyword, your program will not work as expected, but it won't produce error messages that are easy to trace. 
     // What we need is a way to take advantage of the reuse patters of constructors, while at the same time writing code that is more explicit about what it's actually doing. This can be done by pushing the object creation and inheritance code directly into the constructor, essentially turning it into a factory function. 
     
-    // Writing explicity factory functions involves relatively minor changes to the code of constructors. Take the following constructor example:
+    // Writing explicit factory functions involves relatively minor changes to the code of constructors. Take the following constructor example:
         function MyObject(data) {
             this.data = data;
         }  
         MyObject.prototype = {
             getData: function() {
-            return this.data;
+                return this.data;
             }
         }
         var o = new MyObject("data");
@@ -1275,10 +1275,10 @@
             }
         }
         var o = myObject("data");
-    // The objects created by the constructor and the factory function are equivalent, but the factory function construst has the following advantages
+    // The objects created by the constructor and the factory function are equivalent, but the factory function construct has the following advantages
         // There's no risk of using it in the "wrong" way. It doesn't require the `new` keyword, as it isn't meant to be used as a constructor. Nor is it a constructor that forces proper invocation, essentially hiding errors. The factory function is meant to be used in exactly one way: as a regular function.
         // There's not pretense of creating a "class" of objects by capitalizing the name or otherwise trying to make it look like the classes or other languages. The prototype property isn't used, so there will be no instanceof link between the function and the objects it creates. It is simply a function that happens to create objects.
-    // If we want to go all the way annd not use `new` at all in our code, the following generic factory can be used to invoke constructor functions in a more explicit manner:
+    // If we want to go all the way and not use `new` at all in our code, the following generic factory can be used to invoke constructor functions in a more explicit manner:
         function genericFactory(Ctr) {
             var obj = Object.create(Ctr.prototype);
             var args = Array.prototype.slice.call(arguments, 1);
@@ -1824,25 +1824,25 @@
         // The concepts are exactly the same as the factory funnction. However, instead of creating a factory that we cann use over and over again to create multile objects, the module pattern wraps the factory inn ann IIFE (Immediately Invoked Function Expression).
 
         // IIFEs (Immediately Invoked Function Expression) (pronounced "iffy")
-            // Functions can be created either through a function declaration or a function expressionn. A declaration is the "normal" way of creating a named function.
+            // Functions can be created either through a function declaration or a function expression. A declaration is the "normal" way of creating a named function.
                 function myFunction () { /* codd here */ }
-            // If you are assigningn a function to a variable property, you are dealing with a functionn expression 
-                // Assignment of a functio nexpression nto a variable
+            // If you are assigning a function to a variable property, you are dealing with a functionn expression 
+                // Assignment of a function expression nto a variable
                 var myFunction = function () { /* codd here */ }
-                // Assignmennt of a function expressio nto a property
+                // Assignmennt of a function expression to a property
                 var myObj = {
-                    myFunction: functionn () { /* codd here */ }
+                    myFunction: function () { /* codd here */ }
                 };
             // A function created in the context of an expression is also a function expression
                 // Anything withing the parentheses is part of an expression
                 (function () { /* codd here */ });
                 //Anything after the not operator is part of an expression
-                !funnction () { /* codd here */ };
+                !function () { /* codd here */ };
             // THE KEY THINGS ABOUT JS EXPRESSIONS IS THAT THEY RETURN VALUES. 
-            // In both cases above, the return value of the expression is the function. That means that if we want to invoke the funnctionn expressionn right away, we just need to tack a couple of parenthses on the end; i.e., the first bit of code that we looked at:
+            // In both cases above, the return value of the expression is the function. That means that if we want to invoke the funnction expressionn right away, we just need to tack a couple of parenthses on the end; i.e., the first bit of code that we looked at:
                 (function () { 
                     /* codd here */ 
-                })
+                })()
             // THE PRIMARY REASION TO USE AN IIFE IS TO OBTAIN DATA PRIVACY. Because JS's `var` scopes variables to their containing function, any variables declared with the IIFE cannot be accessed by the outside world.
                 (function () {
                     var foo = "bar";
@@ -1853,9 +1853,8 @@
             // Of course, you could explicitly name and then invoke a function to achieve the same ends:
                 function myImmediateFunction () {
                     var foo = "bar";
-                    connsole.log(foo); // Outputs: "bar"
+                    console.log(foo); // Outputs: "bar"
                 }
-
                 myImmediateFunction();
                 console.log(foo);  // ReferenceError: foo is not defined
             // However, the above approach has a few downsides.
@@ -1946,6 +1945,633 @@
         
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// JS Classes
+    // JS does NOT have classes in the same sense as other Object Oriented languages like Java or Ruby. ES6, however, did introduce syntax for object creationn nthat uses the `class` keyword. It is a new syntax that does the exact same thing as the object constructors and prototypes we learned about in the constructor lesson. 
+    // There is some controversy about using the class syntax. Opponennets argue that class is basically just syntactic sugar over the existing prototype-based connstructors and that it's danggerous and/or misleading to obscure what's really going on with these objects. Despite the controversy, classes are beginning to crop up in real code bases that you are almost certainly going to encounter with frameworks such as React.
+    // Classes can be used much the same way as object contructors.
+    // CLASSES AND FACTORY FUNCTIONS DO THE SAME THING
+
+    // Argument: Class in ES6 is a "Good" Part
+        // Making the syntax look better and similar to other OO languages, while still keeping the "prototype" inheritance goodness is a good thing. People cann use other ways if they don't want to use "Class" to create Objects. This is an optional way of creating Objects. It doesn't prevent people from creating objects using other techniques like "function factories", "Object literal", etc.
+    // Argument: Class in ES6 is a "Bad" Part
+        // Conceptually, there is No Class in JS. Objects are created without Classes. 
+            // To exist in Java, objects need a blueprint called a Class (similar to how DNA is passed within human beings). 
+            // In JS, objects just show up without the need for "Classes". They are similar to "nonliving things", things that can be created or invented. BUT, they come with a plug/socket mechanism called "prototype" that cann be used to wire up different objects. 
+            // In JS, there is no overhead and constraints of needing a Class to use object. Further "prototype"-chain based inheritance can wire up any object to any other object that may not be related (IS-A relationship). So it's very flexible compared to Classes. 
+        // Bad for Functional Programming
+            // In JS, functions are first-class citizens. Functional programming is all about using functions to their fullest extent. There is a notion called: "Favor Composition over Inheritance", and with Classes we are going in the opposite directionn because "Class" notation favors "inheritance over Composition".
+    // Summary
+        // "Good" because:
+            // Class is something everyone learns and making the syntax better is a good thing
+            // It's an optionanl feature and there are other ways to create objects like factory functions
+            // Using it for limited purposes is fine
+        // "Bad" because:
+            // The concept of "Class" doesn't exist in JS
+            // Concept of classes makes things brittle. Prototypes are better and very flexible.
+            // It guides people away from goodnness and power of function programming.
+
+    // Class - Basic Syntax
+        // In object-oriented programminng, a class is an extensible program-code-template for creating objects, providing initial values for state (member variables) and implementationns of behavior (member functions or methods). - Wikipedia
+        
+        // The 'class' syntax
+                class MyClass {
+                    // class methods
+                    constructor() { ... }
+                    method1() { ... }
+                    method2() { ... }
+                    method3() { ... }
+                    ... 
+                }
+            // Then use `new MyClass()` to create a new object with all the listed methods.
+            // The `constructor()` method is called automatically by `new`, so we can initialize the object there.
+                class User {
+                    constructor(name) {
+                        this.name = name;
+                    }
+                    sayHi() {
+                        alert(this.name);
+                    }
+                }
+                // Usage: 
+                let user = new User("John");
+                user.sayHi();
+            // When `new User("John") is called:
+                // 1) a nnew object is created.
+                // 2) the `constructor` runs with the given argument and assignes `this.name` to it.
+            // ... then we can call object methods, such as `user.sayHi()`
+            // NO COMMA BETWEEN CLASS METHODS - A common pitfall for novice developers is to put a comma between class methods, which would result in na syntax error. The notation nhere is not to be confused with object literals. Within the class, no commas are required.
+
+    // What is a class?
+        // In JS, a class is a kind of function
+            class User {
+                constructor(name) { this.name = name; }
+                sayHi() { alert(this.name); }
+            }
+            // proof: User is a function
+            alert(typeof User); // function
+        // What the `class User {...}` construct really does is:
+            // 1) Creates a function named `User`, that becomes the result of the class declaration. The function code is taken from the `connstructor` method (assumed empty if we don't write such method). 
+            // 2) Stores class methods, such as `sayHi`, in `User.prototype`
+        // After a `new User` object is created, when we call its method, it's taken from the prototype, so the object has access to class methods. The following is the code to introspect it:
+            class User {
+                constructor(name) { this.name = name; }
+                sayHi() { alert(this.name); }
+            }
+            // class is a function
+            alert(typeof User); // function
+            // ...of, more precisely, the conntructor method
+            alert(User === User.prototype.constructor); // true
+            // The methods are in nUser.prototype, e.g.:
+            alert(User.prototype.sayHi); // alert(this.name);
+            // there are exactly two methods inn the prototype
+            alert(Object.getOwnPropertyNames(User.prototype)); // constructor, sayHi
+
+    // Not just syntactic sugar
+        // Sometimes people say that `class` is a "syntactic sugar" (syntax that is designed to make things easier to read, but doesn't introduce anything new), because we could actually declare the same without `class` keyword
+            // rewriting class User in pur functions
+            // 1) Create constructor function
+            function User(name) {
+                this.name = name;
+            }
+            // a function prototype has "constructor" property by default, so we don't need to create it
+            // 2) Add the method to prototype
+            User.prototype.sayHi = function() {
+                alert(this.name);
+            };
+            // Usage:
+            let user = new User("John");
+            user.sayHi();
+        // The result of this definition is about the same. So, there are indeed reasons why `class` can be considered a syntactic sugar to define a connstructor toegether with its prototype methods. Still, there are important differences:
+            // 1) First, a function created by `class` is labelled by a special internal property                                     `[[FunctionnKind]]:"classConstructor"`. So it's not entirely the same as creating it manually. The language checks for that property in a variety of places. For example, unlike a regular function, it must be called with `new`:
+                    class User {
+                        constructor() {}
+                    }
+                    alert(typeof User); // function
+                    User(); // Error: Class constructor User cannot be invoked without "new"
+                // Also, a string representation of a class constructor in most JS engines starts with the "class..."
+                    class User {
+                        constructor() {}
+                    }
+                    alert(User); // class User { ... }
+            // 2) Class methods are non-enumerable. A class definition sets `enumerable` flag to `false` for all methods in the "prototype". That's good, because if we `for..in` over an object, we usually don't want its class methods.
+            // Classes always `use strict`. All code inside the class construct is automatically in strict mode.
+        
+    // Class Expression
+        // Just like functions, classes can be defined inside another expression, passed around, returned, assigned, etc. Here's an example of a class expression:
+            let User = class {
+                sayHi() {
+                    alert("Hello");
+                }
+            };
+        // Similar to named Function Expressions, class expressions may have a name. If a class expression nhas a name, it's visible inside the class only:
+            // "Named Class Expression" (no such term in the spec, but that's similar to Named Function Expression)
+            let User = class MyClass {
+                sayHi() {
+                    alert(MyClass); // MyClass nname is visible only inside the class
+                }
+            };
+            new User().sayHi(); // works, shows MyClass definitionn
+            alert(MyClass); // error, MyClass name isn't visible outside of the class
+        // We can even make classes dynamically "on-demand", like this:
+            function makeClass(phrase) {
+                // declare a class and return it
+                return class {
+                    sayHi() {
+                        alert(phrase);
+                    };
+                };
+            }
+            // Create a new class
+            let User = makeClass("Hello");
+            new User().sayHi(); // Hello
+    
+    // Getters/setters
+        // Just like literal objects, classes may include getters/setters, computed properties etc. The following is an example for `user.name` implemented using `get/set`:
+            class User {
+                constructor(name) {
+                    // invokes the setter
+                    this.name = name;
+                }
+                get name() {
+                    return this._name;
+                }
+                set name(value) {
+                    if (value.length < 4) {
+                        alert("Name is too short.");
+                        return;
+                    }
+                    this._name = value;
+                }
+            }
+            let user = new User("John");
+            alert(user.name); // John
+            user = new User(""); // Name is too short.
+        // Technically, such class declaration works by creating getters and setters in `User.prototype`
+
+    // Computed names [...]
+        // Here's an example with a computed method name using brackets `[...]`:
+            class User {
+                ['say' + 'Hi']() {
+                    alert("Hello");
+                }
+            }
+            new User().sayHi();
+        // Such features are easy to remember, as they resemble that of literal objects.
+    
+    // Class fields
+        // OLD BROWSERS MAY NEED A POLYFILL - Class fields are a recent addition to the language
+        // Previously, our classes only had methods. "Class fields" is a syntax that allows us to add any properties. For instance, let's add `name` property to `class User`:
+            class User {
+                name = "John";
+                sayHi() {
+                    alert(`Hello, ${this.name}!`);
+                }
+            }
+            new User().sayHi(); // Hello, John!
+        // So, we just write "=" in the declaration, and that's it. The important difference of class fields is that they are set on individual objects, not `User.prototype`:
+            class User {
+                name = "John";
+            }
+            let user = new User();
+            alert(user.name); // John
+            alert(User.prototype.name); // undefined
+        // We can also assign values using more complex expressions and function calls:
+            class User {
+                name = prompt("name, please?", "John");
+            }
+            let user = new User();
+            alert(user.name); // John
+        
+        // Making bound methods with class fields
+            // As demonstrated in Function binding, functions in JS have a dynamic `this`. It depeneds on the context of the call. So if an object method is passed around and called in another context, `this` won't be a reference to its object anymore. For instance, this code will show `undefined`:
+                class Button {
+                    constructor(value) {
+                        this.value = value;
+                    }
+                    click() {
+                        alert(this.value);
+                    }
+                }
+                let button = new Button ("hello");
+                setTimeout(button.click, 1000); // undefined
+            // The problem is called "losing `this`". There are two approaches to fixing it using Function binding:
+                // 1) Pass a wrapper-function, such as `setTimeout(() => button.click(), 1000)`.
+                // 2) Bind the method to object, eg in the constructor
+            // Class fields provide another, quite elegant syntax:
+                class Button {
+                    constructor(value) {
+                        this.value = value;
+                    }
+                    click = () => {
+                        alert(this.value);
+                    }
+                }
+                let button = new Button("hello");
+                setTimeout(button.click, 1000); // hello
+            // The class field `click = () => {...}` is created on a per-object basis, there's a separate function for each `Button` object, with `this` inside it referecing that object. We can pass `button.click` around anywhere, and the value of `this` will always be correct.
+            // That's expecially useful in browser environment, for event listeners.
+
+    // Summary
+        // The basic class syntax looks like this:
+            class MyClass {
+                prop = value; // property
+
+                constructor(...) { // constructor
+                    // ...
+                }
+
+                method(...) {} // method
+
+                get something(...) {} // getter method
+                set something(...) {} // setter method
+
+                [Symbol.iterator]() {} // method with computed name (symbol here)
+                // ...
+            }
+        // `MyClass` is technically a function (the one that we provide as constructor`), while methods, getters and setters are written to `MyClass.prototype`. 
+
+        // Code for a `Clock` written in "Class" style
+            class Clock {
+                constructor({ template }) {
+                this.template = template;
+                }
+            
+                render = () => {
+                let date = new Date();
+            
+                let hours = date.getHours();
+                if (hours < 10) hours = '0' + hours;
+            
+                let mins = date.getMinutes();
+                if (mins < 10) mins = '0' + mins;
+            
+                let secs = date.getSeconds();
+                if (secs < 10) secs = '0' + secs;
+            
+                let output = this.template
+                    .replace('h', hours)
+                    .replace('m', mins)
+                    .replace('s', secs);
+            
+                console.log(output);
+                };
+            
+                stop = () => {
+                clearInterval(this.timer);
+                };
+            
+                start = () => {
+                this.render();
+                this.timer = setInterval(this.render, 1000);
+                };
+            }
+            
+            let clock = new Clock({ template: 'h:m:s' });
+            clock.start();
+            
+            /* 
+            console.log(clock.hasOwnProperty('stop')); // true
+            console.log(clock.hasOwnProperty('start')); // true
+            console.log(clock.hasOwnProperty('render')); // true
+            */
+
+        // Code for a `Clock` written in functional style
+            function Clock({ template }) {
+                this.template = template;
+            }
+            
+            Clock.prototype = {
+                constructor: Clock,
+            
+                render() {
+                let date = new Date();
+            
+                let hours = date.getHours();
+                if (hours < 10) hours = '0' + hours;
+            
+                let mins = date.getMinutes();
+                if (mins < 10) mins = '0' + mins;
+            
+                let secs = date.getSeconds();
+                if (secs < 10) secs = '0' + secs;
+            
+                let output = this.template
+                    .replace('h', hours)
+                    .replace('m', mins)
+                    .replace('s', secs);
+            
+                console.log(output);
+                },
+            
+                stop() {
+                clearInterval(this.timer);
+                },
+            
+                start() {
+                this.render();
+                this.timer = setInterval(() => this.render(), 1000);
+                },
+            };
+            
+            let clock = new Clock({ template: 'h:m:s' });
+            clock.start();
+            
+            /* console.log(clock.hasOwnProperty('stop')); // false
+            console.log(clock.hasOwnProperty('start')); // false
+            console.log(clock.hasOwnProperty('render')); // false */
+
+    // MDN on Class syntax
+        // Note the use of 'extends' and 'Mixins'. React (and other frameworks) uses classes in this way. You create your componnennts and make them extend the core React component which gives you access to all their built-in functionality. 
+
+        // Classes are a template for creating objects. They encapsulate data with code to work on that data. Classes in JS are built on prototypes but also have some syntax and semantics that are not shared with ES5 classalike semanics.
+
+        // Defining Classes
+            // Classes are in fact "special functions", and just as you can define function nexpressions and function ndeclarations, the class syntax has two components: class expressions and class declarations:
+                
+            // Class Declarations
+                // One way to define a class is using a class declaration. To decaulre a class, you use the `class` keyword with the name of the class
+                    class Rectangle {
+                        constructor(height, width) {
+                            this.height = height;
+                            this.width = width;
+                        }
+                    }
+                // Hoisting
+                    // An important difference between function declarations and class declarations is that function declarations are hoisted and class declarationns are not. You first need to declare your class and then access it, otherwise code like the following will throw a ReferenceError
+                        const p = new Rectangle(); // ReferenceError
+                        class Rectangle {}
+            
+            // Class Expressions
+                // A class expression is another way to define a class. Class expressions can be named or unnamed. The name given to a named class expression is local to the class's body (it can be retrieved through the class's, not an instance's, `name` property).
+                    // unnamed
+                    let Rectangle = class {
+                        constructor(height, width) {
+                            this.height = height;
+                            this.width = width;
+                        }
+                    };
+                    console.log(Rectangle.name); // output: "Rectangle"
+
+                    // named
+                    let Rectangle = class Rectangle2 {
+                        constructor(height, width) {
+                            this.height = height;
+                            this.width = width;
+                        }
+                    };
+                    console.log(Rectangle.name); // output: "Rectangle2"
+                // NOTE: Class expressions are subject to the same hoisting restricitons as described in nthe Class declarations section.
+
+        // Class body and method definitions
+            // The body of a class is the part that is in curly brackets {}. This is where you define class memebers, such as methods or constructor
+
+            // Strict Mode
+                // The body of a class is executed in strict mode, ie, code written here is subject to stricter syntax for increased performance, some otherwise silent errors will be thrown, and certain keywords are reserved for future versions of ECMAScript.
+
+            // Constructor
+                // The constructor method is a special method for creating and initializing an object created with a `class`. There can onnly be one special method with the name "constructor" in a class. A SyntaxError will be thrown if the class conntains more than one occurences of a constructor method.
+                // A constructor can use the `super` keyword to call the constructor of the super class
+
+            // Prototype methods
+                    class Rectangle {
+                        constructor(height, width) {
+                            this.height = height;
+                            this.width = width;
+                        }
+                        // Getter
+                        get area() {
+                            return this.calcArea();
+                        }
+                        // Method
+                        calcArea() {
+                            return this.height * this.width;
+                        }
+                    }
+                    const squre = new Rectangle(10, 10);
+                    console.log(square.area); // 100
+                
+            // Static methods and properties
+                // The static keyword defines a static method or property for a class. Static memebers (properties and methods) are called without instantiating their class and cannot be called through a class instance. Static methods are often used to create utility functions for an application, whereas static properties are useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
+                    class Point {
+                        constructor(x, y) {
+                            this.x = x;
+                            this.y = y;
+                        }
+
+                        static displayName= "Point";
+                        static distance(a, b) {
+                            const dx = a.x = b.x;
+                            const dy = a.y = b.y;
+                            return Math.hypot(dx, dy)
+                        }
+                    }
+                    const p1 = new Point(5, 5);
+                    const p2 = new Point(10, 10);
+                    p1.displayName; // undefined
+                    p1.distance;    // undefined
+                    p2.displayName; // undefined
+                    p2.distance;    // undefined
+                    console.log(Point.displayName);        // "Point"
+                    console.log(Point.distance(p1, p2));    // 7.0710678118654755
+
+            // Binding `this` with prototype and static methods
+                // When a static or prototype method is called without a value for `this`, such as by assigning a variable to the method and then calling it, the `this` value will be `undefined` inside the method. This behavior will be the same even if the "use strict" directive isn't present, because code within the `class` body's syntactic boundary is always executed in strict mode. 
+                    class Animal {
+                        speak() {
+                            return this;
+                        }
+                        static eat() {
+                            return this;
+                        }
+                    }
+
+                    let obj = new Animal();
+                    obj.speak();    // the Animal object
+                    let speak = obj.speak;
+                    speak();        // undefined
+
+                    Animal.eat()    // class Animal
+                    let eat = Animal.eat;
+                    eat();          // undefined 
+                // If we rewrite the above using traditional function-based syntax in non-strict mode, then `this` method calls are automatically bound to the initial `this` value, which by default is the global object. In strict mode, autobinding will not happen; the value of `this` remains as passed.
+                    function Animal() { }
+                    Animal.prototype.speak = function() {
+                        return this;
+                    }
+                    Animal.eat = function() {
+                        return this;
+                    }
+
+                    let obj = new Animal();
+                    let speak = obj.speak;
+                    speak();    // global object (in non-strict mode)
+
+                    let eat = Animal.eat;
+                    eat();      // global object (in non-strict mode)
+                
+            // Instance properties
+                // Instance properties must be defined inside of class methods:
+                    class Rectangle {
+                        constructor(height, width) {
+                            this.height = height;
+                            this.width = width;
+                        }
+                    }
+                // Static (class-side) data properties and prototype data properties must be defined outside of the ClassBody declaration:
+                    Rectangle.staticWidth = 20;
+                    Rectangle.prototype.prototypeWidth = 25;
+
+            // Field declarations
+                // NOTE: Public and private field declarations are an experimental feature.
+
+                // Public field declarations
+                    // With the JS field declaration syntax, the above example can be written as:
+                        class Rectangle {
+                            height = 0;
+                            width;
+                            constructor (height, width) {
+                                this.height = height;
+                                this.width = width;
+                            }
+                        }
+                    // By declaring fields up-front, class definitions become more self-documenting, and the fields are always present. As seen above, the fields can be celcared with or without a default value. See public class fields for more info.
+
+                // Private field declarations
+                    // Using private fields, the definition can be refined as below:
+                        class Rectangle {
+                            #height = 0;
+                            #width;
+                            constructor(height, width) {
+                                this.height = height;
+                                this.width = width;
+                            }
+                        }
+                    // It's an error to reference private fields from outside of the class; they cann only be read or written within the class body. By defining things which are not visible outside of the class, you ensure that your classes' users can't edepennd o ninternals, which may change version to version.
+                    // PRIVATE FIELDS CAN ONLY BE DECLARED UP-FRONT IN A FIELD DECLARATION.
+                    // Private fields cannot be created later through assigning to them, the way that normal properties can.
+
+        // Sub classing with `extends`
+            // The `extends` keyword is used in class declarations or class expressions to create a class as a child of another class.
+                class Animal {
+                    constructor(name) {
+                        this.name = name;
+                    }
+                    speak() {
+                        console.log(`${this.name} makes a noise.`);
+                    }
+                }
+
+                class Dog extends Animal {
+                    constructor(name) {
+                        super(name); // call the super class constructor and pass in the name parameter
+                    }
+                    speak() {
+                        console.log(`${this.nname} barks.`);
+                    }
+                }
+                let d = new Dog("Mitzie");
+                d.speak();  // Mitzie barks.
+            // If there is a constructor present in the subclass, it needs to first call super() before using "this".
+            // One may also extend traditional function-based "classes":
+                function Animal (name) {
+                    this.name = name;
+                }
+
+                Animal.prototype.speak = function () {
+                    console.log(`${this.name} makes a noise.`);
+                }
+                
+                class Dog extends Animal {
+                    speak() {
+                        console.log(`${this.name} barks.`);
+                    }
+                }
+
+                let d = new Dog('Mitzie');
+                d.speak();  // Mitzie barks.
+                // For similar methods, the child's method takes precedence over parent's method
+            // Note that classes cannot extend regular (non-constructible) objects. If you want to inherit from a regular object, you can instead use `Object.setPrototypeOf()`:
+                const Animal = {
+                    speak() {
+                        connsole.log(`${this.name} makes a noise.`);
+                    }
+                };
+
+                class Dog {
+                    constructor(name) {
+                        this.name = name;
+                    }
+                }
+
+                // If you do not do the following you will get a TypeError when you invoke speak
+                Object.setPrototypeOf(Dog.prototype, Animal);
+
+                let d = nnew Dog('Mitzie');
+                d.speak();  // Mitzie makes a noise.
+
+        // Species
+            // You might want to return Array objects in your derived array class MyArray. The species pattern lets you override default constructors. For example, when using methods such as map() that returns the default constructor, you want these methods to return a parent Array object, instead of the MyArray object. The Symbol.species symbol lets you do this:
+                class MyArray extends Array {
+                    // Overwrite species to the parent Array constructor
+                    static get [Symbol.species]() { return Array; }
+                }
+
+                let a = new MyArray(1,2,3);
+                let mapped = a.map(x => x * x);
+
+                console.log(mapped instanceof MyArray); // false
+                console.log(mapped instanceof Array);   // true
+
+        // Super class calls with `super`
+            // The `super` keyword is used to call corresponnding methods of super class. This is one advanntage over prototype-based inheritance.
+                class Cat {
+                    constructor(name) {
+                        this.name = nname;
+                    }
+                    speak() {
+                        console.log(`${this.name} makes a noise.`);
+                    }
+                }
+
+                class Lion extends Cat {
+                    speak() {
+                        super.speak();
+                        console.log(`${this.name} roars.`);
+                    }
+                }
+
+                let l = new Lion('Fuzzy');
+                l.speak();
+                // Fuzzy makes a noise.
+                // Fuzzy roars.
+
+        // Mix-ins
+            // Abstract subclasses or mix-ins are templates for classes. An ECMAScript class can only have a single superclass, so multiple inheritance from tooling classes, for example, is not possible. The functionality must be provided by the superclass.
+            // A function with a superclass as input and a subclass extending that superclass as output can nbe used to implement mix-ins in ECMAScript.
+                let calculatorMixin = Base => class extends Base {
+                    calc() { }
+                };
+
+                let randomizerMixin = Base => class extends Base {
+                    randomize() { }
+                };
+            // A class that uses these mix-ins can then be written like this:
+                class Foo { }
+                class Bar extends calculatorMixin(randomizerMixin(Foo)) { }
 
 
 
