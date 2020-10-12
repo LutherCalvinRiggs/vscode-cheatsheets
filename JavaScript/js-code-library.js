@@ -2010,7 +2010,7 @@
                 let user = new User("John");
                 user.sayHi();
             // When `new User("John") is called:
-                // 1) a nnew object is created.
+                // 1) a new object is created.
                 // 2) the `constructor` runs with the given argument and assignes `this.name` to it.
             // ... then we can call object methods, such as `user.sayHi()`
             // NO COMMA BETWEEN CLASS METHODS - A common pitfall for novice developers is to put a comma between class methods, which would result in na syntax error. The notation nhere is not to be confused with object literals. Within the class, no commas are required.
@@ -2572,6 +2572,179 @@
             // A class that uses these mix-ins can then be written like this:
                 class Foo { }
                 class Bar extends calculatorMixin(randomizerMixin(Foo)) { }
+
+    
+
+
+
+    // JS Classes with Steven Mayeux (https://www.youtube.com/watch?v=wQ1MuExYzko&list=PLtwj5TTsiP7uTKfTQbcmb59mWXosLP_7S&index=2)
+        // The following is a Function Constructor -> the old way to do Classes
+            function Person(firstname, lastName) {
+                var secret = "tacos are great";     // anything NOT using `this` is private
+
+                this.firstName = firstName;         // anything using `this` is public
+                this.lastName = lastName;
+                this.hasJob = false;
+
+                this.fullName = function() {
+                    return this.firstName + " " + this.lastName;
+                }
+
+                this.setFirstName = function(firstName) {
+                    this.firstName = firstName;         // allows us to overwrite firstName
+                }
+
+                this.setLastName = function(lastName) {
+                    this.lastName = lastName;           // allows us to overwrite lastName
+                }
+
+                this.getSecret = function() {
+                    return secret;                      // allows us to access the private variable
+                }
+            }
+
+            var person1 = new Person("Luther", "Riggs");        // creates a new instance of a Person
+
+        // The following is a Class 
+            class Person {
+                constructor(firstName, lastName) {      // the constructor is immediately called whenever the `new` keyword is used 
+                    this.firstName = firstName;         // the constructor does all of the initialization
+                    this.lastName = lastName;
+                    this.hasJob = false;
+                }
+
+                // the methods below are "instance methods"
+                fullName() {
+                    return `${this.firstName} ${this.lastName}`;    // uses a string template instead of concatenating like above
+                }
+
+                setFirstName(firstName) {
+                    this.firstName = firstName;
+                }
+
+                setLastName(lastName) {
+                    this.lastName = lastName;
+                }
+            }
+            const person1 = new Person("Luther", "Riggs");        // creates a new instance of a Person
+
+        // `extends` allows you to inherit from another class. This new Worker class below will be an extension of the Person class above. Extends will borrow properties from another class. We can also override methods from the super class (the class that is being extended from).
+            class Worker extends Person {       // a Worker is a Person but not all Persons are Workers
+                constructor(firstName, lastName, job) {
+                    super(firstName, lastName);         // this calls the constructor from the super class (Person)
+                    this.job = job;                     // these override the properties initializaed by the super constructor
+                    this.hasJob = true;
+                }
+
+                setJob(job) {
+                    this.job = job;
+                }
+            }
+            const worker1 = new Worker("Luther", "Riggs", "Software Developer");
+            // creates a new Worker class that contains all the same methods as Person as well as setting more methods and overrides some variables
+
+        // Static methods don't belong to an instance but to a Class itself
+            class Person {
+                static species() {              // cannot be called on instance because it belongs to the Class
+                    return "Homo sapiens";
+                }
+
+                static speciesSentence() {
+                    return `Humans are classified as ${this.species()}` // `this` in a static method points to the Class
+                }
+
+                constructor(firstName, lastName) {
+                    this.firstName = firstName;
+                    this.lastName = lastName;
+                    this.hasJob = false;
+                }
+
+                fullName() {
+                    return `${this.firstName} ${this.lastName}`;
+                }
+
+                setFirstName(firstName) {
+                    this.firstName = firstName;
+                }
+
+                setLastName(lastName) {
+                    this.lastName = lastName;
+                }
+            }
+
+            person1.species(); // TypeError: person1.species is not a function
+            Person.species(); // "Homo sapiens"
+
+        // Getters allow us to get a function return without using () to invoke the method 
+            class Worker extends Person {
+                constructor(firstName, lastName, job) {
+                    super(firstName, lastName);
+                    this.job = job;
+                    this.hasJob = true;
+                }
+
+                setJob(job) {
+                    this.job = job;
+                }
+
+                get biography() {                       // Getters make methods behave like a property
+                    const bio = `${this.fullName()} is a ${this.job}`.toUpperCase();
+                    return bio; 
+                }
+
+                // `get` can be combined with a static method in order to return the result
+                static get citizenship() {
+                    return "American";
+                }
+            }
+            const worker1 = new Worker("Luther", "Riggs", "Software Developer");
+            worker1.biography; // "LUTHER RIGGS IS A SOFTWARE DEVELOPER"
+            Worker.citizenship; // "American"
+
+        // Setters allow us to 
+            class Person {
+                static get species() {
+                    return "Homo sapiens";
+                }
+
+                static speciesSentence() {
+                    return `Humans are classified as ${this.species}`;
+                }
+
+                constructor(firstName, lastName) {
+                    this.firstName = firstName;
+                    this.lastName = lastName;
+                    this.hasJob = false;
+                }
+
+                fullName() {
+                    return `${this.firstName} ${this.lastName}`;
+                }
+
+                setFirstName(firstName) {
+                    this.firstName = firstName;
+                }
+
+                setLastName(lastName) {
+                    this.lastName = lastName;
+                }
+
+                set setFullName(name) {
+                    name = name.spilit(' ');
+                    this.setFirstName(name[0]);
+                    this.setLastName(name[1]);
+                }
+            }
+
+            const person1 = new Person("Luther", "Riggs");
+            person1.setFullName = "King Louie";        // uses the Setter function to change firstName and lastName using fullName
+            person1.firstName = "King";
+            person1.lastName = "Louie";
+            person1.fullName() = "King Louie";
+
+
+
+
 
 
 
