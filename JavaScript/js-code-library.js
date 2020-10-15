@@ -2757,6 +2757,751 @@
 
 
 
+// ES6 Modules
+    // Separate from the module pattern, "modules" is a feature that arrived with ES6. Browser support for this feature is quite slim at this point, but is slowly improving and until all modern browsers support it, we can make it work using an external module bundler. 
+    // Before we can nreally use these modules, we must first learn npm and webpack. In the end, modules themselves are simple to implement.
+
+    // History of JS
+        // npm was originally a package mannager made specifically for node.js, a JavaScript runtime designed to runn non the server, not the frontend. If you have node.js installed, you already have npm installed.
+        
+        // 1) Navigate your command line to the folder with your index.html file and enter:
+                $ npm init 
+            // This will prompt you with several questions (the defaults are fine, you cann hit "Enter" for each question) and generate a new file named package.json. This is the configuration file that npm uses to save all project information. 
+            // With the defaults, the contents of package.json should look something like this:
+                {
+                    "name": "your-project-name",
+                    "version": "1.0.0",
+                    "description": "",
+                    "main": "index.js",
+                    "scripts": {
+                    "test": "echo \"Error: no test specified\" && exit 1"
+                    },
+                    "author": "",
+                    "license": "ISC"
+                }
+        // 2) To install the moment.js JS package, we cann now follow the npm instructions from their home page by entering the following command inn the command line:
+                $ npm install moment --save
+            // This command does two things -- First, it downloads all the code from the moment.js package into a folder called `node_modules`. Second, it automatically modifies the package.json file to keep track of moment.js as a project dependency.
+                {
+                    "name": "modern-javascript-example",
+                    "version": "1.0.0",
+                    "description": "",
+                    "main": "index.js",
+                    "scripts": {
+                    "test": "echo \"Error: no test specified\" && exit 1"
+                    },
+                    "author": "",
+                    "license": "ISC",
+                    "dependencies": {
+                    "moment": "^2.22.2"
+                    }
+                }
+            // This is useful later when sharing a project with others - instead of sharing the node_modules folder (which can get very large), you only nneed to share the package.json file and other developers can ninstall the required packages automatically with the command `npm install`.
+        
+        // Now we no longer have to manually download moment.js from the website, we can automatically download and update it using npm. Looking inside the `node_modules` folder, we can see the `moment.min.js` file in the `node_modules/moment/min` directory. This means we can link to the npm downloaded version of `moment.min.js` inn the `index.html` file as follows:
+                <head>
+                    <script src="node_modules/moment/min/moment.min.js"></script>
+                    <script src="index.js"></script>
+                </head>
+        // The good thing is that we can now use npm to download annd update our packages through the command line. The bad thing is that right now we're digging through the `node_modules` folder to find the location of each package and manually including it in our HTML. But that process cann be automated as well.
+
+    // Using a JS module bundler (webpack)
+        // Most programminng languages provide a way to import code from one file to another. JS wasn't originally designed with this feature because JS was designed to only run in the browser, with no access to the file system of the client's computer (for security reasons). So for the longest time, organizing JS code in multiple files required you to load each file with variables shared globally. This is actually what's happeninng with the above moment.js example
+        // The entire moment.min.js file is loaded in the HTML, which defines a global variable `moment`, which is then available to any file loaded after moment.min.js (regardless of whether or not it needs access to it).
+        // In 2009, a project named CommonJS was started with the goal of specifying an ecosystem for JS outside the browser. A big part of CommonJS was its specification for modules, which would finally allow JS to import and export code accross files like most programming languages, without resortinng to global variables. The most well-known implementation of CommonnJS modules is node.js. 
+
+        // node.js is a JS runtime designed to run on the server. Here's what the earlier example would look like using node.js modules. Instead of loading all of moment.min.js with an HTML tag, you cann load it directly in the JS file as follows
+            // index.js
+            var moment = require('moment');
+
+            console.log("Hello from JavaScript!");
+            console.log(moment().startOf("day").fromNow());
+        // Again, this is how module loading works in node.js, which works great since node.js is a server side language with access to the computer's file system. Node.js also knows the location of each npm module path, so instead of having to write         `require('.node_modules/moment/min/moment.min.js)`, you can simple write `require('moment')`.
+        // This is great for node.js, but if you tried to use the above code in the browser, you'd get an error saying `require` is not defined. The browser doesn't have access to the file system, which means loading modules in this way is very tricky - loading files has to be done dynamically, either synchronously (which slows down execution) or asynchronously (which can have timing issues). 
+
+        // This where a module bundler comes in. 
+            // To read the rest => https://medium.com/the-node-js-collection/modern-javascript-explained-for-dinosaurs-f695e9747b70
+
+    // To innstall webpack into the project
+        // 1) Navigate to the project folder and use the following code to to install the webpack files from the command line:
+                $ npm install webpack webpack-cli --save-dev 
+            // Note that we're installing two packages - webpack and webpack-cli (which ennables you to use webpack from the command line). Also note the `--save-dev argument` - this saves it as a development dependency, which means it's a package that you need in your development environmennt but not onn nyour production nserver.
+            // You cann see this reflected in the package.json file, which was automatically updated:
+                {
+                    "name": "modern-javascript-example",
+                    "version": "1.0.0",
+                    "description": "",
+                    "main": "index.js",
+                    "scripts": {
+                    "test": "echo \"Error: no test specified\" && exit 1"
+                    },
+                    "author": "",
+                    "license": "ISC",
+                    "dependencies": {
+                    "moment": "^2.19.1"
+                    },
+                    "devDependencies": {
+                    "webpack": "^4.17.1",
+                    "webpack-cli": "^3.1.0"
+                    }
+                }
+        // 2) Now that we have webpack and webpack-cli installed as packages in the node_modules folder. You can use webpack-cli from the command line as follows:
+                $ ./node_modules/.bin/webpack index.js --mode=development
+            // This command will run the webpack tool that was installed in the `node_modules` folder, start with the index.js file, find any `require` statements, and replace them with the appropriate code to create a single output file (which by default is `dist/main.js`). The `--mode=development` argument is to keep the JS readable for developers, as opposed to a minified output with the argument `--mode=production`.
+
+        // Now that we have webpack's dist/main.js output, we are going to use it instead of index.js in the browser, as it contains invalid require statements. This would be reflected in the index.html file as follows:
+                <head>
+                    <script src="dist/main.js"></script>
+                </head>
+            // If you refresh the browser, you should see that everything is working as before.
+        // NOTE that we'll need to ru nthe webpack command each time we change index.js. This is tedious, and will get evenn more tedious as we use webpack's more advanced features (like generating source maps to help debug the original code from the transpiled code). Webpack can read options from a config file in the root directory of the project named `webpack.config.js`, which in our case would look like: 
+                // webpack.config.js
+                module.exports = {
+                    mode: 'development',
+                    entry: './index.js',
+                    output: {
+                        filename: 'main.js',
+                        publicPath: 'dist'
+                    }
+                };
+        // Now each time we change index.js, we can nrunn nwebpack with the command: 
+                $ ./node_modules/.bin/webpack 
+        // We don't need to specify the index.js and `--mode=development` options anymore, since webpack is loading those options from the `webpack.config.js` file. This is better, but it's still tedious to ennter this command for each code change.
+
+        // Overall, this may not seem like much, but there are some huge advanntages to this workflow. We are no lonnnger loading external scripts via global variables. Any new JS libraries will be added using `require` statements in the JS, as opposed to adding new <script> tags in the HTML. Having a single JS bundle file is often better for performance. And now that we added a build step, there are some other powerful features we can add to our development workflow.
+
+    // Transpiling code for new language features (babel)
+        // Transpiling code means converting the code in one lannguage to code in another similar language.
+        // For CSS, there's Sass, Less, and Stylus.
+        // For JS, the most popular was CoffeeScript (2010), but nowadays most people use babel and TypeScript.
+            // CoffeeScript focused on improving JS by significatnly channging the language - optional parentheses, significant whitespace, etc. 
+            // Babel is not a new language but a transpiler that trannspiles next genneration JS with features not yet available to all browsers (ES 2015 and beyond) to older more compatible JS (ES5). Many peole choose to use babel because it's closest to vanilla JS.
+            // TypeScript is a language that is essentially identical to next generation JS, but also adds optional static typing. 
+        
+        // To use babel with our existing webpack build step:
+            // 1) First we'll install babel (which is an npm package) into the project from the command line:
+                $ npm install @babel/core @babel/preset-env babel-loader --save-dev 
+                // Note that we're installing 3 separate packages as dev dependencies
+                    // `@babel/core` is the main part of babel
+                    // `@babel/preset-env` is a preset defining which new JS features to transpile
+                    // `babel-loader` is a package to enable babel to work with webpack
+            // 2) We can configure webpack to use `babel-laoder` by editing the webpack.config.js file as follows:
+                // webpack.config.js
+                module.exports = {
+                    mode: 'development',
+                    entry: './index.js',
+                    output: {
+                        filename: 'main.js',
+                        publicPath: 'dist'
+                    },
+                    module: {
+                        rules: [
+                            {
+                            test: /\.js$/,
+                            exclude: /node_modules/,
+                            use: {
+                                loader: 'babel-loader',
+                                options: {
+                                    presets: ['@babel/preset-env']
+                                }
+                                }
+                            }
+                        ]
+                    }
+                };
+            // The syntax can be confusing (fortunately it's not something you will edit often). Basically we're telling webpack to look for any .js files (excluding ones in the `node_modules` folder) and apply babel transpilation using `babel-loader` with the `@babel/preset-env` preset. READ MORE HERE => http://webpack.github.io/docs/configuration.html
+
+            // Now that everything is set up, we can start writing ES2015 features in our JS. Here's an example of an ES2015 template string in the index.js:
+                // index.js
+                var moment = require('moment');
+                console.log("Hello from JavaScript!");
+                console.log(moment().startOf('day').fromNow());
+
+                var name = "Bob", time = "today";
+                console.log(`Hello ${name}, how are you ${time}?`);
+            // We can also use the ES2015 import statement instead of `require` for loading modules, which is what you'll see in a lot of codebases today:
+                // index.js
+                import moment from 'moment';
+
+                console.log("Hello from JavaScript!");
+                console.log(moment().startOf('day').fromNow());
+                var name = "Bob", time = "today";
+                console.log(`Hello ${name}, how are you ${time}?`);
+            // In this example, the `import` syntax isn't much different from the `require` syntax, but `import` has extra flexibility for more advanced cases. Since we changed index.js, we need to run webpack again in the command line:
+                $ ./node_modules/.bin/webpack 
+            // Now you can refresh index.html in the browser. At the time of this writing, most modern browsers support all ES2015 features, so it can be hard to tell if babel did its job. You can test it in an older broser like IE9, or you can search in main.js to find the line of transpiled code:
+                // main.js
+                // ...
+                console.log("Hello " + name + " , how are you " + time + "?");
+                // ...
+            // Here you cann see babel transpiled the ES2015 template string into regular JS string concatenation to maintain browser compatibility. 
+
+            // While this particular example may not be too exciting, the ability to transpile code is a very powerful one. But, while transpiliation may at times seem tedious and painful, it has led to a dramatic improvement of the language in the past few years, as people are testing out tomorrow's features today.
+
+    // If we're concerned about performance, we should be minifying the bundle file, which should be easy enough since we're already incorporating a build step. We also need to re-runn the webpack command each time we change the JS, which gets old real fast. So the next thing we'll look at are some convenience tools to solve these issues.
+
+    // Using a task manager (npm scripts).
+        // Now that we've ivested in using a build step to work with JS modules, it makes sense to use a talk runner, which is a tool that auotmates different parts of the build process. For frontend development, tasks include minifying code, optimizing images, running tests, etc.
+        // In 2013, Grunt was the most popular frontend task runner, with Gulp following shortly after. Both rely on plugins that wrap other command line tools. Nowadays the most popular choice seems to be using the scripting capabilities built into the npm package manager itself, which doesn't use plugins but instead works with other comman line tools directly.
+
+        // Writing some npm scripts to make using webpack easier involves simply channging the package.json file as follows:
+            {
+                "name": "modern-javascript-example",
+                "version": "1.0.0",
+                "description": "",
+                "main": "index.js",
+                "scripts": {
+                    "test": "echo \"Error: no test specified\" && exit 1",
+                    "build": "webpack --progress --mode=production",
+                    "watch": "webpack --progress --watch"
+                },
+                "author": "",
+                "license": "ISC",
+                "dependencies": {
+                    "moment": "^2.22.2"
+                },
+                "devDependencies": {
+                    "@babel/core": "^7.0.0",
+                    "@babel/preset-env": "^7.0.0",
+                    "babel-loader": "^8.0.2",
+                    "webpack": "^4.17.1",
+                    "webpack-cli": "^3.1.0"
+                }
+            }
+        // Here we've added two new scripts, `build` and `watch`. To run script, you can enter in the command line:
+            $ npm run build
+        // This will run webpack (using configuration from the webpack.config.js we made earlier) with the `--progress` option to show the percent prgress and the `--mode=production` option to minimize the code for production.
+        // To run the `watch` script:
+            $ npm run watch 
+        // This uses the `--watch` option instead to automatically re-run webpack each time any JS file changes, which is great for development. 
+        // Note that the scripts in package.json can run webpack without having to specify the full path `./node_modules/.bin/webpack`, since node.js knows the location of each npm module path. We can even sweeten things up by installing webpack-dev-server, a separate toll which provides a simple web server with live reloading. To install it as a developmennt dependency, enter the command:
+            $ npm install webpack-dev-server --save-dev
+        // Then nadd an npm script to package.json:
+            {
+                "name": "modern-javascript-example",
+                "version": "1.0.0",
+                "description": "",
+                "main": "index.js",
+                "scripts": {
+                    "test": "echo \"Error: no test specified\" && exit 1",
+                    "build": "webpack --progress -p",
+                    "watch": "webpack --progress --watch",
+                    "server": "webpack-dev-server --open"
+                },
+                "author": "",
+                "license": "ISC",
+                "dependencies": {
+                    "moment": "^2.19.1"
+                },
+                "devDependencies": {
+                    "@babel/core": "^7.0.0",
+                    "@babel/preset-env": "^7.0.0",
+                    "babel-loader": "^8.0.2",
+                    "webpack": "^3.7.1",
+                    "webpack-dev-server": "^3.1.6"
+                }
+            }
+        // Now you can start your dev server by running the command:
+            $ npm run server 
+        // This will automatically open the index.html website in your broser with an address of `localhost:8080` (by default). Any time you change your JS in index.js, webpack-dev-server will rebuild its own bundled JS and refresh the browser automatically. 
+
+        // This is only scratching the surface, there are plenty more options with both webpack and webpack-dev-server. You can of course make npm scripts for running other tasks as well, such as converting Sass to CSS, compressing images, running tests - anything that has a command line tool is fair game. 
+
+    // Conclusion
+        // So this is modern JS in a nutshell. We went from plain HTML and JS to using a package manager to automatically download 3rd party packages, a module bundler to creat a single script file, a transpiler to use future JS features, and a task runner to automate different parts of the build process. 
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// npm (node package manager)
+    // The node package manager is a command line tool that gives you access to a gigantic repository of plugins, libraries and tools. It is the world's largest software registry. Open source developers from every continent use npm to share and borrow packages, and many organizations use npm to manage private development as well. 
+    // Packages (or modules) on npm are simply directories that contain reusable code that can be downloaded from npm. These packages also contian a file called package.json that holds metadata about the files in the package. The typical website is built using many packages. These packages are designed to solve a problem and solve it well. 
+
+    // Downloading and installing packages locally
+        // You can install a package locally if you want to depend on the package from your own module, using something like Node.js `require`. This is the `npm install` default behavior.
+        
+    // Installing an unscoped packaged
+        // Unscoped packages are always public, which means they can nbe searched for, downloaded, and installed by anyone. (Similar to how unscoped variables are public to JS) To install a public package, on the command line, run:
+            npm install <package_name>
+        // This will create the `node_modules` directory in your current directory (if one doesn't exist yet) and download the package to that directory. 
+            // NOTE: if there is no package.json file in the local directory, the latest version nof the package is installed. If there is a package.json file, npm installs the latest version that satisfies the semver rule declared in package.json.
+
+    // Installing a private package
+        // Private packages cann only be downloaded and installed by those who have been granted read access to the package. Since private packages are always scoped, you must reference the scope name during installation: 
+            npm install @scope/private-package-name 
+
+    // Testing package installation
+        // To confirm that `npm install` worked correctly, in your module directory, check that a `node_modules` directory exists and that it contains a directory for the package(s) you installed:
+            ls node_modules 
+    
+    // Installed package version
+        // If there is a package.json file in the directory in which `npm install` is run, npm installs the latest version of the package that satisfies the semantic versioning rule declared in package.json.
+        // If there is no package.json file, the latest version of the package is installed. 
+
+    // Installing a package with dist-tags
+        // Like `npm publish`, `npm install <package_name>` will use the `latest` tage by default.
+        // To override `example-package` at the version tagged with `beta`, you would run the following command:
+            npm install example-package@beta 
+
+    // Creating a package.json file
+        // You can add a package.json file to your package to make it easy for others to manage and install. Packages published to the registry must contain a package.json file. 
+        // A package.json file:
+            // lists the packages your project depends on
+            // specifies versions of a package that your project can use using semantic versioning rules
+            // makes your build reproducible, and therefore easier to share with other developers
+        // NOTE: To make your package easier to find on the npm website, we recommend including a custom description in your package.json file. 
+
+    // package.json fields
+        // Required name and version fields
+            // A package.json file must contain "name" and "version" fields.
+                // The "name" field contains your package's name, and must be lowercase and one word, and may contain hyphens and underscores
+                // The "version" field must be inn the form `x.x.x` and follow the semantic versionning guidelines.
+        // Author field
+            // If you want to include package author information in "author" field, use the following format (email and website are both optional): 
+                Your Name <email@example.com> (http://example.com)
+        // Example
+            {
+                "name": "my-awesome-package",
+                "version": "1.0.0"
+            }    
+    
+    // Creating a new package.json file
+        // You cann create a package.json file by running a CLI questionnaire or creating a default package.json file.
+        // Running a CLI questionnaire
+            // To create a package.json file with values that you supply, use the `npm init` command.
+                // 1) On the command line, navigate to the root directory of your package.
+                    cd /path/to/package 
+                // 2) Run nthe following commang
+                    npm init 
+                // 3) Answer the questions in the command line questionnaire.
+            // Customizing the package.json questionnaire
+                // If you expect to create many package.json files, you cann customize the questions asked and fields created during the `init` process so all the package.json files contain a standard set of information>
+                    // 1) In your home directory, create a file called `.npm-init.js`
+                    // 2) To add custom questions, using a text editor, add questions with the `prompt` funcntion:
+                        module.exports = prompt("what's your favorite flavor of ice cream, buddy?", "I LIKE THEM ALL");
+                    // 3) To add custom fields, using a text editor, add desired fields to the `.npm-init.js` file:
+                        module.exports = {
+                            customField: 'Example custom field',
+                            otherCustomField: 'This example field is really cool'
+                        }
+                // To learn more about creating advanced `npm init` customizations, see the init-package-json GitHub repository.
+        // Creating a defaul tpackage.json file
+            // To create a default package.json using information extracted from the current directory, use the `npm init` command with the `--yes` or `-y` flag. For a list of default values, see "Default values extracted from the current directory".
+                // 1) On the command line, navigate to the root directory of your package.
+                    cd /path/to/package 
+                // 2) Run the following command:
+                    npm init --yes 
+            // Example 
+                > npm init --yes
+                Wrote to /home/ag_dubs/my_package/package.json:
+            
+                {
+                    "name": "my_package",
+                    "description": "",
+                    "version": "1.0.0",
+                    "main": "index.js",
+                    "scripts": {
+                        "test": "echo \"Error: no test specified\" && exit 1"
+                    },
+                    "repository": {
+                        "type": "git",
+                        "url": "https://github.com/ashleygwilliams/my_package.git"
+                    },
+                    "keywords": [],
+                    "author": "",
+                    "license": "ISC",
+                    "bugs": {
+                        "url": "https://github.com/ashleygwilliams/my_package/issues"
+                    },
+                    "homepage": "https://github.com/ashleygwilliams/my_package"
+                }
+            // Default values extracted from the current directory
+                // name: the current directory name
+                // version: always 1.0.0
+                // description: info from the README, or an empty string ""
+                // main: always index.js
+                // scripts: by default creates an empty test script
+                // keywords: empty
+                // author: empty
+                // license: ISC
+                // bugs: information from the current directory, if present
+                // homepage: information from the current directory, if present
+        // Setting config options for the init command 
+            // You can set default config options for the init command. For example, to set the default author email, author name, and license, on the command line, run the following commands:
+                > npm set init.author.email "example-user@example.com"
+                > npm set init.author.name "example_user"
+                > npm set init.license "MIT"
+    
+    // If you run into trouble at any point, you can check out the official docs page for more tutorials and documentation
+        // https://docs.npmjs.com/
+
+
+
+
+// Yarn
+    // Yarn is a replacement for the default npm. For the most part, it does the same things though it does have a few more features. Recent versions of npm have incorporated some of the best features of Yar, so using it won't offer you any real advantages at this point in your career. It is a fine project, however, and may be worth your consideration in the future. 
+    // https://classic.yarnpkg.com/en/
+
+
+
+
+// Webpack
+    // Webpack is simply a tool for bundling modules. There is a lot of talk across the net about how difficult and complex it is to set up and use, but at the moment our needs are few and the setup is simple enough. In fact, you cann see an example of getting it up and running on the front page of their website - https://webpack.js.org/
+    // Webpack is a very powerful tool, and with that power comes a decent amount of complexity. Don't let that scare you off, the basic configuration is not difficult and proficiency with webpack looks amazing on resumes.
+
+    // Getting Started
+        // webpack is used to compile JS modules. Once installed, you can interface with webpack either from its CLI or API. If you're still new to webpack, please read through the core concepts (https://webpack.js.org/concepts/) and this comparison (https://webpack.js.org/comparison) to learn why you might use it over the other tools that are out in the community.
+        // Since webpack v5.0.0-beta.1 the minimum Node.js versionn to run webpack is 10.13.0 (LTS)
+    // Basic Setup
+        // First, let's creat e a directory, initialize npm, install webpack locally, and install the webpack-cli (the tool used to runn webpack on the command line):
+            mkdir webpack-demo
+            cd webpack-demo
+            npm init -y
+            npm install webpack webpack-cli --save-dev
+            // Throughout the Guides we will use `diff` blocks to show you what changes we're making to directories, files, and code.
+        // Now we'll creat the following directory structure, files and their contents:
+            // project
+            webpack-demo    // main directory
+            |- package.json
+            |- index.html
+            |- /src         // sub directory
+                |- index.js
+
+            // src/indes.js
+            function component() {
+                const element = document.createElement('div');
+                // Lodash, currently included via a script, is required for this line to work
+                element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+                return element;
+            }
+            document.body.appendChild(component());
+
+            // index.html
+            <!doctype html>
+            <html>
+            <head>
+                <title>Getting Started</title>
+                <script src="https://unpkg.com/lodash@4.16.6"></script>
+            </head>
+            <body>
+                <script src="./src/index.js"></script>
+            </body>
+            </html> 
+
+        // We also need to adjust our `package.json` file in order to make sure we mark our package as `private`, as well as removing the `main` entry. This is to prevent an accidental publish of your code.
+            // If you want to learn more about the inner workings of `package.json`, it is recommended you read the npm documentation.
+            // package.json
+            {
+                "name": "webpack-demo",
+                "version": "1.0.0",
+                "description": "",
+                "private": true,
+                "scripts": {
+                    "test": "echo \"Error: no test specified\" && exit 1"
+                },
+                "keywords": [],
+                "author": "",
+                "license": "ISC",
+                "devDependencies": {
+                    "webpack": "^4.20.2",
+                    "webpack-cli": "^3.1.2"
+                },
+                "dependencies": {}
+            }
+        // In this example, there are implicit dependencies between the <script> tags. Our `index.js` file depends on `lodash` being included in the page before it runs. This is because `index.js` never explicitly declared a need for `lodash`; it just assumes that the global variable `_` exists. 
+        // There are problems with managing JS projects this way:
+            // It is not immediately apparent that the script depends on an external library.
+            // If a dependency is missing, or included in the wrong order, the application will not function properly.
+            // If a dependency is included but not used, the browser will be forced to download unnecessary code. 
+        // Let's use webpack to manage these scripts instead.
+
+    // Creating a Bundle
+        // First, we'll tweak our directory structure slightly, separating the "source" code (/src) from our "distribution" code (/dist). The "source" code is the code that we'll write and edit. The "distribution" code is the minimized and optimized `output` of our build process that will eventually be loaded in the browser. Tweak the directory structure as follows:
+            // project
+            webpack-demo
+            |- package.json
+            |- /dist
+                |- index.html
+            |- /src
+                |- index.js
+        // To bundle the `lodash` dependency with `index.js`, we'll need to install the library locally:
+            npm install --save lodash
+            // When installing a package that will be bundled into your production bundle, you should use `npm install --save`. If you're installing a package for development purposes (eg, a linter, testing libraries, etc) then you should use `npm install --save-dev`. More info can be founnd in the npm documentation - https://docs.npmjs.com/cli/install
+        // No, let's import `lodash` in our script:
+            // src/index.js
+            import _ from 'lodash';
+            function component() {
+                const element = document.createElement('div');
+                // Lodash, now imported by this script
+                element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+                return element;
+            }
+            document.body.appendChild(component());
+        // Now, since we'll be bundling our scripts, we have to update our `index.html` file. Let's remove the lodash <script>, as we now `import` it, and modify the other <script> tag to load the bunndle, instead of the raw `/src` file:
+            // dist/index.html
+            <!doctype html>
+            <html>
+            <head>
+                <title>Getting Started</title>
+            </head>
+            <body>
+                <script src="main.js"></script>
+            </body>
+            </html>
+        // In this setup, `index.js` explicitly requires `lodash` to be present, and binds it as `_` (no global scope pollution). By stating what dependencies a module needs, webpack can use this information to build a dependency graph. It then uses the graph to generate an optimized bundle where scripts will be executed in the correct order. 
+        // With that said, let's run `npx webpack`, which will take our script as `src/index.js` as the entry point, and will generate `dist/main.js` as the output. The `npx` command, which ships with Node 8.2/npm 5.2.0 or higher, runs the webpack binary (`./node_modules/.bin/webpack`) of the webpack package we installed in the beginning. 
+            npx webpack
+
+            ...
+            Built at: 13/06/2018 11:52:07
+              Asset      Size  Chunks             Chunk Names
+            main.js  70.4 KiB       0  [emitted]  main
+            ...
+            
+            WARNING in configuration
+            The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+            You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+            // Your output may vary a bit, but if the build is successful then you are good to go. Also, don't worry about the warning, we'll tackle that later
+        // Open `index.html` from the `dist` directory in your browser and, if everything went right, you should see the following text: "Hello webpack". 
+            // If you are getting a syntax error in the middle of minified JS when opening `index.html` in the browser, set `development mode` and run `npx webpack` again. This is related to running `npx webpack` on latest Node.js (v12.5+) instead of LTS version. 
+
+    // Modules 
+        // The `import` and `export` statemennts have been standardized in ES2015. They are supported in most of the browsers at this moment, however there are some browsers that don't recognize the new syntax. But don't worry, webpack does support them out of the box.
+        // Behind the scenes, webpack actually "transpiles" the code so that older browsers can also run it. If you inspect `dist/main.js`, you might be able to see how webpack does this. Besides `import` and `export`, webpack supports various other module syntaxes as well, we Module API (https://webpack.js.org/api/module-methods) for more info.
+        // Note that webpack will not alter any code other than `import` and `export` statements. If you are using other ES2015 features, make sure to use a transpiler such as Babel or Buble via webpack's loader system. 
+                
+    // Using a Configuration
+        // As a version 4, webpack doesn't require any configuration, but most projects will need a more complex setup, which is why webpack supports a configuration file. This is much more efficient than having to manually type in a lot of commands in the terminal, so let's create on: 
+            // project
+            webpack-demo
+            |- package.json
+            |- webpack.config.js
+            |- /dist
+                |- index.html
+            |- /src
+                |- index.js
+
+            // webpack.config.js
+            const path = require('path');
+            module.exports = {
+                entry: './src/index.js',
+                output: {
+                    filename: 'main.js',
+                    path: path.resolve(__dirname, 'dist'),
+                },
+            };
+        // Now, let's run the build again but instead using our new configuration file:
+            npx webpack --config webpack.config.js
+
+            ...
+              Asset      Size  Chunks             Chunk Names
+            main.js  70.4 KiB       0  [emitted]  main
+            ...
+            
+            WARNING in configuration
+            The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+            You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/
+            // If a `webpack.config.js` is present, the `webpack` command picks it up by default. We use the `--config` option here only to show that you can pass a configuration of any name. This will be useful for more complex configurations that need to be split into multiple files. 
+        // A configuration file allows far more flexibility than simple CLI usage. We can specify loader rules, plugins, resolve options and man other enhancements this way. See the configuration documentationn to learn more (https://webpack.js.org/configuration).
+
+    // NPM Scripts
+        // Given it's not particularly fun to run a local copy of webpack from the CLI, we can set up a little shortcut. Let's adjuct our package.json by adding an npm script:
+            // package.json
+            {
+                "name": "webpack-demo",
+                "version": "1.0.0",
+                "description": "",
+                "scripts": {
+                    "test": "echo \"Error: no test specified\" && exit 1",
+                    "build": "webpack"
+                },
+                "keywords": [],
+                "author": "",
+                "license": "ISC",
+                "devDependencies": {
+                    "webpack": "^4.20.2",
+                    "webpack-cli": "^3.1.2"
+                },
+                "dependencies": {
+                    "lodash": "^4.17.5"
+                }
+            }
+        // Now the `npm run build` command can be used in place of the `npx` command we used earlier. Note that within `scripts` we can nreference locally installed npm packages by name the same way we did with `npx`. This convention is the standard in most npm-based projects because it allows all contributors to use the same set of common scripts (each with flags like `--config` if necessary).
+        // Now run the following command and see if your script alias works:
+            npm run build
+
+            ...
+              Asset      Size  Chunks             Chunk Names
+            main.js  70.4 KiB       0  [emitted]  main
+            ...
+            
+            WARNING in configuration
+            The 'mode' option has not been set, webpack will fallback to 'production' for this value. Set 'mode' option to 'development' or 'production' to enable defaults for each environment.
+            You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/.
+        // Custom parameters can be passed to webpack by adding two dashes between the `npm run build` command and your parameters, eg `npm run build -- --colors`
+    
+    // There are a couple of key concepts to understanding how webpack works - entry and output. In this example, we rearranged the files into a `src` and `dist` folder. Technically we could have called those folders anything, but those names are typical. `src` is our source directory - in other words, `src` is where we will write all of the code that webpack is going to bundle up for us. When webpack runs, it goes through all of our files looking for any `import` statements and then compiles all of the code we need to run our site into a single file inside of the `dist` folder (short for distribution). Our entry file is the main application file that links (either directly or indirectly) to all of the other modules in our project. In this example, it is `/src/index.js`. The output file is the compiled version - `dist/main.js`
+
+
+
+
+// ES6 Modules
+    // (Via MDN) There are only two components to ES6 Modules: 
+        // import
+            // The static import statement is used to import read only live bindings which are exported by another module. Imported modules are in `strict mode` whether you declare them as such or not. The `import` statement cannot be used in embedded scripts unless such script has a `type="module"`. Bindings imported are called live bindings because they are updated by the module that exported the binding.
+            // There is also a function-like dynamic `import()`, which does not require scripts of `type="module"`.
+            // Backward compatibility can be ensured using attribute `nomodule` on the <script> tag.
+
+            // Syntax
+            import defaultExport from "module-name";
+                // ^ importing defaults
+            import * as name from "module-name";
+                // ^ import an entire module's content - call with myModule.methodName()
+            import { export1 } from "module-name";
+                // ^ import a single export from a module
+            import { export1 as alias1 } from "module-name";
+                // ^ import an export with a more convenient alias
+            import { export1 , export2 } from "module-name";
+                // ^ import multiple exports from module
+            import { foo , bar } from "module-name/path/to/specific/un-exported/file";
+                // ^ import multiple exports from a module
+            import { export1 , export2 as alias2 , [...] } from "module-name";
+            import defaultExport, { export1 [ , [...] ] } from "module-name";
+            import defaultExport, * as name from "module-name";
+            import "module-name";
+                // ^ import a module for its side effects only
+            var promise = import("module-name");
+
+            // defaultExport - Name that will refer to the default export from the module
+            // module-name - The module to import from. This is often a realtive of absolute path name to the .js file containing the module. Certain bundlers may permit or require the use of the extension; check your environment. Only single quoted and double quoted Strings are allowed.
+            // name - Name of the module object that will be used as a kind of namespace when referring to the imports.
+            // exportN - Name of the exports to be imported.
+            // aliasN - Names that will refer to the name imports.
+        // export
+            // The export statement is used whenn creating JS modules to export live bindings to functions, objects, or primitive values from the module so they can be used by other programs with the `import` statment. Bindings that are exported can nstill be modified locally; when nimported, although they can only be read by the importing module the value updates whenever it is updated by the exporting module.
+            // Exported modules are in "strict mode" whether you declare them as such or not. The export statement cannot be used in embedded scripts. 
+
+            // Syntax 
+                // There are two types of exports:
+                    // 1) Named Exports (Zero or more exports per module)
+                    // 2) Default Exports (One per module)
+                // nameN - identifier to be exported (so that it can be imported via `import` in another script)
+                    
+                    // Exporting individual features
+                    export let name1, name2, …, nameN; // also var, const
+                    export let name1 = …, name2 = …, …, nameN; // also var, const
+                    export function functionName(){...}
+                    export class ClassName {...}
+
+                    // Export list
+                    export { name1, name2, …, nameN };
+
+                    // Renaming exports
+                    export { variable1 as name1, variable2 as name2, …, nameN };
+
+                    // Exporting destructured assignments with renaming
+                    export const { name1, name2: bar } = o;
+
+                    // Default exports
+                    export default expression;
+                    export default function (…) { … } // also class, function*
+                    export default function name1(…) { … } // also class, function*
+                    export { name1 as default, … };
+
+                    // Aggregating modules
+                    export * from …; // does not set the default export
+                    export * as name1 from …; // Draft ECMAScript® 2O21
+                    export { name1, name2, …, nameN } from …;
+                    export { import1 as name1, import2 as name2, …, nameN } from …;
+                    export { default } from …;
+    
+    // The import statement is the same thing that you use in webpack and are simple to use:
+        // a file called functionOne.js
+        const functionOne = () => console.log('FUNCTION ONE!')
+        export { functionOne }
+        // another JS file
+        import { functionOne } from './functionOne'
+import { lookupService } from 'dns';
+        functionOne() //this should work as expected!
+    
+    // There are many benefits to writing your code in modules. One of the most compelling is code reuse. If, for instance, you have written some functions that manipulate the DOM in a specific way, putting all of those into their own file as a "module" meanns that you can copy that file and re-use it very easily.
+    
+    // Other benefits include all of the benefits to wrapping your code in factory functions or using the module patternn (the module patter and ES6 modules are not the same things). By using ES6 modules you can keep different parts of your code cleanly separated, which makes writing and mainting your code much easier and less error-prone. Keep in mind that you can export constructors, classes and factory functions from your modules.
+    
+    // To pull it all together, let's writ a simple module and thenn include it in our code. We are going to continue from where the webpack tutorial left off. Before beginning your file directory should look something like this:
+        |- dist 
+            |- main.js
+            |- index.html
+        |- src 
+            |- index.js 
+        |- package-lock.json
+        |- package.json 
+        |- webpack.config.js 
+    // and you should be able to bundle and runn webpack by simply typing `npx webpack` in the terminal
+
+    // Add a new file to the src directory called myName.js with the following contents:
+        const myNname = (name) => "Hi! My name is " + name;
+        export default myNname 
+    // Then in src/index.js import and use your new function.
+        // import your function
+        import myName from './myName';
+
+        function component() {
+            var element = document.createElement('div');
+            // use your function!
+            element.innerHTML = myName('Cody');
+            return element;
+        }
+        document.body.appendChild(component());
+    
+    // Now, if you run `npx webpack` in your project directory your page should show our new function being used.
+    // There are 2 different ways to use exports in your code: named exports and default exports. Which optino you use depends on what you're exporting. 
+        // As a general rule if you wannt to export multiple functions use named exports with this pattern: 
+            const functionOne = () => 'ONE'
+            const functionTwo = () => 'TWO'
+            
+            export {
+                functionOne,
+                functionTwo
+            }
+        // and to import them:
+            import {functionOne, functionTwo} from './myModule'
+        
+    // Using this pattern give you the freedom to only import the functions you need in the various files of your program. So it's perfectly fine to only import functionOne if that's the onnly one you need. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // jQuery 
     // The following is a bare minimum setup for utitlizing jQuery on a "real" website. We have a basic HTML5 structure stubbed out. jQuery is included as a <script> and the nwe perform a super simple jQuery task:

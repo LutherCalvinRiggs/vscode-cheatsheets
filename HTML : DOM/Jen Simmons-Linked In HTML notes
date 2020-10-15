@@ -15,9 +15,9 @@ Lists
         <li></li>           Will be marked with a dot
     </ul>
 
-    <0l>
+    <ol>
         <li></li>           Will be marked with a number
-    </0l>
+    </ol>
 
     <dl>                'Definition List' 
         <dt>            'Definition Term'
@@ -102,6 +102,7 @@ Text Flow Direction
     dir='rtl'       right to left 
 
 ARIA Roles
+    - IT IS MORE IMPORTANT TO USE SYMANTIC HTML THAN ARIA ROLES. ARIA roles are for when symantic HTML can't do the job.
     - HTML attributes that provide accessible information about that specific element
     aria-label='how you want something read by a screen reader'
     aria-hidden='true'  // removes something from the accessibility tree so a sreen reader skips it. Put the element you want to hide in a <div aria-hidden='true'> to hide it.
@@ -446,7 +447,7 @@ The HTML page
                 </body>
             </html>
 
-        The 'right way' of doing thins depends on the content of the page. If you're not sure what how to markup a page, find a page already on the web and see how they did theirs.
+        The 'right way' of doing this depends on the content of the page. If you're not sure how to markup a page, find a page already on the web and see how they did theirs.
 
 Form basics
     
