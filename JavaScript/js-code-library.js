@@ -2774,7 +2774,7 @@
                     "description": "",
                     "main": "index.js",
                     "scripts": {
-                    "test": "echo \"Error: no test specified\" && exit 1"
+                        "test": "echo \"Error: no test specified\" && exit 1"
                     },
                     "author": "",
                     "license": "ISC"
@@ -2788,12 +2788,12 @@
                     "description": "",
                     "main": "index.js",
                     "scripts": {
-                    "test": "echo \"Error: no test specified\" && exit 1"
+                        "test": "echo \"Error: no test specified\" && exit 1"
                     },
                     "author": "",
                     "license": "ISC",
                     "dependencies": {
-                    "moment": "^2.22.2"
+                        "moment": "^2.22.2"
                     }
                 }
             // This is useful later when sharing a project with others - instead of sharing the node_modules folder (which can get very large), you only nneed to share the package.json file and other developers can ninstall the required packages automatically with the command `npm install`.
@@ -2833,16 +2833,16 @@
                     "description": "",
                     "main": "index.js",
                     "scripts": {
-                    "test": "echo \"Error: no test specified\" && exit 1"
+                        "test": "echo \"Error: no test specified\" && exit 1"
                     },
                     "author": "",
                     "license": "ISC",
                     "dependencies": {
-                    "moment": "^2.19.1"
+                        "moment": "^2.19.1"
                     },
                     "devDependencies": {
-                    "webpack": "^4.17.1",
-                    "webpack-cli": "^3.1.0"
+                        "webpack": "^4.17.1",
+                        "webpack-cli": "^3.1.0"
                     }
                 }
         // 2) Now that we have webpack and webpack-cli installed as packages in the node_modules folder. You can use webpack-cli from the command line as follows:
@@ -3031,6 +3031,91 @@
 
 
 // npm (node package manager)
+    // Abridged Command List
+        // Base command to initialize a new package.json file
+            npm init 
+
+        // Add a new package (will be listed as "dependencies") - by default packages are installed locally
+            npm install <package-name> --save-dev
+            // Add the `--save-dev` keyword to install dev dependencies. This tells npm to install these as dev tools which will not be included in your production build, but will be used throughout development.
+        
+        // To install a package globally (package sits in /usr/local/lib/node_modules OR /usr/local/lib/node)
+            sudo npm install <package-name> -g 
+            // CMD+SHIFT+. will reveal hidden files
+            // If you need to change the directory for where npm installs globally => https://docs.npmjs.com/getting-started/fixing-npm-permissions 
+        
+        // To install a specific version of a package
+            npm install <package-name>@x.x.x 
+
+        // To check if any packages need to be updated
+            npm outdated        // for local packages
+            npm outdated -g     // for global packages
+            // Current version is what you have installed in the system
+            // Wanted version is the preferred version that you should be on
+            // Latest version is the latest version
+
+        // To update a package 
+            npm update <package-name> // doesn't always work for various reasons
+            npm install <package-name> // will update to the latest version
+            sudo npm install <package-name> -g // to updated global packages
+
+        // To remove a package
+            npm uninstall <package-name> 
+
+        // Semantic Versioning 
+            // How to list the versions of your dependencies in the package.json file
+                // x.x.x =>   <major-release> . <minor-release> . <patch-release>
+                // ^1.x.x => All minor and patches are OK (default when installing new packages)
+                // ~1.x.x => All patches only
+                // To be specific about a version, remove the tilde or character
+        
+        // The package-lock.json file
+            // When a file is installed, package.json is the input and package-lock.json is the output. This file will guarantee the same install every time we do an npm install, no matter who we pass this project to - as long as we commit the package-lock.json file to our repo, or include it when we pass the project to someone else. 
+            // This is a great way to control your versioning
+
+        // To verify your npm cache
+            npm cache verify 
+            // Will run a report to verify your cache. 
+                // npm keeps a cache of your install modules so that it doesn't have to get them every time. This can sometimes lead to unexpected results. When you try to install a module that should be working properly and it doesn't, or when a version of a module doesn't work, try clearing your cache
+
+        // To clear your npm cache
+            npm cache clean --force 
+
+        // To do an npm audit
+            npm audit 
+            // Whenever you install a new package, the command npm audit run automatically and tells you if there are any issues with the package (version 6 or above is needed). 
+            // The audit will show you 
+                // The level of the issue
+                    // If 'low' or 'moderate' you can fix them at your own leisure
+                    // If 'high' or 'critical' you should address them ASAP
+                // The name of the package where the issue is
+                // When it was patched 
+                // What dependency it is a part of
+                // Semver warning - doesn't always show up but if it does it means the patch could be breaking the package
+        // To fix any issues
+            npm audit fix 
+            // or install the packages one by one
+            npm install <package-name>  // this is suggested - the package name is listed in the audit
+
+        // npm scripts for a simple way to run commands
+            // These are listed in the package.json file in object format. The script to run is a value of a key. 
+            // You can find a list of preset commands at https://docs.npmjs.com/misc/scripts To run a preset command:
+                npm <preset-command>
+            // You can also create your own custom scripts
+                "scripts": { 
+                    "script-name": "code to run"
+                }
+            // When you run your "script-name", it will run the code in the cli
+            // To run the script
+                npm run <script-name>
+            // This allows you to do the same command with less code 
+
+        // npx was created to solve package pollution issues (needs version 5.2.0 or above)
+            npx <package-name>
+            // npx temporarily installs a package in order to create a new app. This keeps you from having to have the full package in your global directory or application
+            // You can also create scripts that run npx commands
+
+
     // The node package manager is a command line tool that gives you access to a gigantic repository of plugins, libraries and tools. It is the world's largest software registry. Open source developers from every continent use npm to share and borrow packages, and many organizations use npm to manage private development as well. 
     // Packages (or modules) on npm are simply directories that contain reusable code that can be downloaded from npm. These packages also contian a file called package.json that holds metadata about the files in the package. The typical website is built using many packages. These packages are designed to solve a problem and solve it well. 
 
