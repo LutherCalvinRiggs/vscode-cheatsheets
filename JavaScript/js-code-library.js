@@ -3141,7 +3141,7 @@
         // If there is no package.json file, the latest version of the package is installed. 
 
     // Installing a package with dist-tags
-        // Like `npm publish`, `npm install <package_name>` will use the `latest` tage by default.
+        // Like `npm publish`, `npm install <package_name>` will use the `latest` tag by default.
         // To override `example-package` at the version tagged with `beta`, you would run the following command:
             npm install example-package@beta 
 
@@ -3248,6 +3248,548 @@
 
 
 // Webpack
+    // Installing webpack
+        // In the project folder initialize npm to create a package.json file for your project
+            npm init 
+        // Install webpack and webpack cli
+            npm install webpack webpack-cli --save-dev 
+        // Check package.json to make sure your dependecies show webpack and webpack-cli
+            vi package.json 
+            // Use `:q` in the terminal to exit viewing the package.json
+        // If a project file is missing a `node_modules` folder, you can install / update any current dependencies in the package.json folder
+            npm install 
+    
+    // Set up your project directory by adding a `src` directory and a `dist` directory to the main project folder
+        // src is where you will keep all of your source files
+        // dist is where you will keep all the files intended for distribution for production 
+        // Add a index.js file to the src folder
+            // create a variable to import/require jquery
+                const $ = require("jquery");
+            // create a selector to set the html of #target to "hello world"
+                $("#target").html("hello world!");
+        // Add an index.html file to the dist folder
+            // Create a skeleton html file
+                <!DOCTYPE html>
+                <html>
+                    <head>
+                        <title>Getting Started with webpack</title>
+                    </head>
+                    <body>
+                        <h1 id="target"></h1>
+                        <script src="main.js"></script>
+                    </body>
+                </html>
+    
+    // Generate a main.js file using webpack
+        // Using the terminal in the main project directory, run the webpack command
+            // This will run the webpack command, look in the src folder for the index.js file, and then generate the main.js file in the dist folder
+            webpack // if webpack is installed globally
+            ./node_modules/.bin/webpack // to run webpack from you local project folder
+            npx webpack // does the same thing as ./node_modules/.bin/webpack - require npm 5.2.0 or higher
+    
+    // Open the index.html in your browser and see if "hello world!" has been added to the <h1>
+            
+    // Create a file called webpack.config.js in the root folder of the project
+        // This will set up all of the configuration opetions for webpack so that we don't have to manually type commands
+        // Create a "path" module for node.js to help us route our created files to the proper directory
+            const path = require("path");
+        // Use module.exports to set up an entry point and output point for our files
+            module.exports = {
+                entry: "./src/index.js",                        // our main JS file
+                output: {
+                    filename: "main.js",                        // the file we connect to index.html
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                }
+            }
+    
+    // Set a "build" script to run webpack
+        // Inside of package.json, inside the scripts key, replace the "test" key with a custom "build" key
+            "build": "webpack"  
+                // if this returns an error use 
+                    "build": "./node_modules/.bin/webpack"
+        // To run the command using the cli, in the root folder, input the following code into the terminal
+            npm run build       // npm run <custom-script-name>
+        // You can also run the script as a watch (similar to a live server update in a browser)
+            "build": "webpack -w"
+            "build": "./node_modules/.bin/webpack -w"
+            // You may still have to reload the browser
+        // USE CTRL+C TO EXIT A WATCH COMMAND
+
+    // Set up the babel-loader
+        // A loader takes languages like JSX or different versions of ECMAScript and converts them into vanilla JS before sending them to the browser
+        // Install the bable-loader and @babel/core and save them to our dev dependencies
+            npm install babel-loader @babel/core --save-dev
+                // babel-loader is the loader
+                // @babel/core is the actual package that handles the transformations
+        
+        // Make adjustments to the webpack.config.js by adding a `module: {}` to `module.exports`
+            module.exports = {
+                entry: "./src/index.js",                        // our main JS file
+                output: {
+                    filename: "main.js",                        // the file we connect to index.html
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader"  // use bable-loader
+                            }
+                        }
+                    ]
+                }
+            }
+            
+    // Use a preset to transform the code to compatibility
+        // Install the preset package and save to dev dependencies
+            npm install @babel/preset-env --save-dev
+        // Add the preset to the webpack.config.js file
+            module.exports = {
+                entry: "./src/index.js",                        // our main JS file
+                output: {
+                    filename: "main.js",                        // the file we connect to index.html
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader",  // use bable-loader
+                                options: {
+                                    presets: ['@babel/preset-env']  // compile to the standards of preset-env
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+    
+    // Making adjustments to use React instead of jQuery
+        // Install react and react-dom as dependencies using the --save flag
+            npm install react react-dom --save 
+        // In the index.js file replace the jQuery code with the following React code
+            import React from "react"
+            import { render } from "react-dom"
+            const Greeting = () => <h1>Hello from React!</h1>
+
+            render(
+                <Greeting />,
+                document.getElementById('target')
+            )
+        // To use webpack, babel and react together, install the babel react preset
+            npm install @babel/preset-react --save-dev
+        // Add the @babel/preset-react preset to the webpack.config.js file
+            module.exports = {
+                entry: "./src/index.js",                        // our main JS file
+                output: {
+                    filename: "main.js",                        // the file we connect to index.html
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader",  // use bable-loader
+                                options: {
+                                    // compile to the standards of preset-env
+                                    presets: ['@babel/preset-env', '@babel/preset-react']  
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        // Add a .babelrc file to the root directory
+            // This is another configuration file the lists the babel presets that we will be using
+            // Add the following presets to the .babelrc file
+                {
+                    "presets": ["@babel/preset-react", "@babel/preset-env"]
+                }
+        
+    // Loading CSS with webpack
+        // When CSS is bundled with webpack, it will only bundle the styles that our app uses
+        // First, go to the src folder and create a new file called style.css
+        // Second, in the index.js file, import the style.css file 
+            import './style.css'
+        // Using npm, install the style-loader and css-loader and save them to dev dependencies
+            npm install style-loader css-loader --save-dev
+        // Go back to the webpack.config.js file and define another rule
+            module.exports = {
+                entry: "./src/index.js",                        // our main JS file
+                output: {
+                    filename: "main.js",                        // the file we connect to index.html
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader",  // use bable-loader
+                                options: {
+                                    // compile to the standards of preset-env
+                                    presets: ['@babel/preset-env', '@babel/preset-react']  
+                                }
+                            }
+                        },
+                        {   // this object will look for css files and transform them
+                            test: /\.css$/,
+                            use: [
+                                {loader: 'style-loader'},
+                                {loader: 'css-loader'}
+                            ]
+                        }
+                    ]
+                }
+            }
+        // In the terminal, run a new build
+            npm run build
+        
+    // Loading images with webpack
+        // webpack inlines a URL to the image bundle and then returns it from require. Inlining images will reduce the number of http requests, thereby speeding up our applications.
+        // Start by installing url-loader using npm and save it to dev dependencies
+            npm install url-loader --save-dev
+        // To see an example, go to the index.js file and change the Greeting to the following:
+            const Greeting = () => {
+                return (
+                    <div>
+                        <h1>Hello from React</h1>
+                        <div id="image"></div>
+                    </div>
+                )
+            }
+        // In the CSS file, create an #image {} element and add some styling
+            #image {
+                background: url('ski-day.jpg');
+                height: 500px;
+                width: 500px;
+            }
+        // In the webpack.config.js file, and add another loader for the urls
+            module.exports = {
+                entry: "./src/index.js",                        // our main JS file
+                output: {
+                    filename: "main.js",                        // the file we connect to index.html
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader",  // use bable-loader
+                                options: {
+                                    // compile to the standards of preset-env
+                                    presets: ['@babel/preset-env', '@babel/preset-react']  
+                                }
+                            }
+                        },
+                        {   // this object will look for css files and transform them
+                            test: /\.css$/,
+                            use: [
+                                {loader: 'style-loader'},
+                                {loader: 'css-loader'}
+                            ]
+                        },
+                        {   // this object will load our URLs
+                            test: /\.(jpg|png)$/,
+                            use: [
+                                {loader: 'url-loader'}
+                            ]
+                        }
+                    ]
+                }
+            }
+    
+    // Using webpack-dev-server for live reloading of all of your assets
+        // Install webpack-dev-server and save to dev-dependencies
+            npm install webpack-dev-server --save-dev
+        // In the webpack.config.js file, add a node called devServer:
+            module.exports = {
+                entry: "./src/index.js",                        // our main JS file
+                output: {
+                    filename: "main.js",                        // the file we connect to index.html
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                devServer: {                                    // node for devServer
+                    contentBase: path.join(__dirname, "dist"),  
+                    port: 9000                                  // port to run on
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader",  // use bable-loader
+                                options: {
+                                    // compile to the standards of preset-env
+                                    presets: ['@babel/preset-env', '@babel/preset-react']  
+                                }
+                            }
+                        },
+                        {   // this object will look for css files and transform them
+                            test: /\.css$/,
+                            use: [
+                                {loader: 'style-loader'},
+                                {loader: 'css-loader'}
+                            ]
+                        },
+                        {   // this object will load our URLs
+                            test: /\.(jpg|png)$/,
+                            use: [
+                                {loader: 'url-loader'}
+                            ]
+                        }
+                    ]
+                }
+            }
+    // In the package.json file, add the following as another build script
+        // the full binary path is usually more compatible with all computers
+        "scripts": {
+            "build": "./node_modules/.bin/webpack -w",
+            "start:dev": "./node_modules/.bin/webpack-dev-server"
+        }
+    // Run the script in the terminal
+        npm run start:dev
+    // In the web browser, change the html address to the following to view your code in the browser
+        localhost:9000 
+
+    // What is code splitting
+        // Code splitting allows you to break up you code into different bundles using different entry points. You can tell webpack to bundle code for specific html pages and then webpack will download only the resources necessary for the page when loaded. 
+        // To create separate bundles for different pages, start buy going to the dist folder and adding a new .html file
+            about.html  // new example page, filled with skeleton html code
+        // In the src folder, create a new .js file
+            about.js 
+        // Link the .html file to the .js file by changing the <script> tag in the .html file <header>
+            <script src="about.bundle.js"></script>
+        // In the webpack.config.js file, adjust the entry point and output point as follows:
+            module.exports = {
+                entry: {
+                    index: "./src/index.js",                    // our main JS file
+                    about: "./src/about.js",                    // our about JS file
+                    contact: "./src/contact.js"                 // our contact JS file
+                },
+                output: {
+                    filename: "[name].bundle.js",               // creates bundle.js files for each html page
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                devServer: {                                    // node for devServer
+                    contentBase: path.join(__dirname, "dist"),  
+                    port: 9000                                  // port to run on
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader",  // use bable-loader
+                                options: {
+                                    // compile to the standards of preset-env
+                                    presets: ['@babel/preset-env', '@babel/preset-react']  
+                                }
+                            }
+                        },
+                        {   // this object will look for css files and transform them
+                            test: /\.css$/,
+                            use: [
+                                {loader: 'style-loader'},
+                                {loader: 'css-loader'}
+                            ]
+                        },
+                        {   // this object will load our URLs
+                            test: /\.(jpg|png)$/,
+                            use: [
+                                {loader: 'url-loader'}
+                            ]
+                        }
+                    ]
+                }
+            }
+        // Run the build again
+            npm run build 
+        
+    // To take the code splitting one step further, we can add the SplitChunks optimization
+        // In the webpack.config.js file, add the optimization as follows:
+            module.exports = {
+                entry: {
+                    index: "./src/index.js",                    // our main JS file
+                    about: "./src/about.js",                    // our about JS file
+                    contact: "./src/contact.js"                 // our contact JS file
+                },
+                output: {
+                    filename: "[name].bundle.js",               // creates bundle.js files for each html page
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                optimization: {                                 // looks for code repeated between bundles and
+                    splitChunks: {                              // creates a vendor bundle for that code
+                        chunks: "all"
+                    }
+                },
+                devServer: {                                    // node for devServer
+                    contentBase: path.join(__dirname, "dist"),  
+                    port: 9000                                  // port to run on
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader",  // use bable-loader
+                                options: {
+                                    // compile to the standards of preset-env
+                                    presets: ['@babel/preset-env', '@babel/preset-react']  
+                                }
+                            }
+                        },
+                        {   // this object will look for css files and transform them
+                            test: /\.css$/,
+                            use: [
+                                {loader: 'style-loader'},
+                                {loader: 'css-loader'}
+                            ]
+                        },
+                        {   // this object will load our URLs
+                            test: /\.(jpg|png)$/,
+                            use: [
+                                {loader: 'url-loader'}
+                            ]
+                        }
+                    ]
+                }
+            }
+            // After running the build you should see an asset named vendors-about-contact-index.bundle.js that will contain the React imports (when run in the demo it created a file name 935.bundle.js)
+        // Run the npm build
+            npm run build 
+    
+    // HTMLWebpackPlugin 
+        // This will generate an html file that links to the bundle
+        // Install the plugin using the following cli command and save it to dev dependencies
+            npm install html-webpack-plugin --save-dev 
+        // In the webpack.config.js file, add a new const variable and require it, also add the plugin as an array
+            const HtmlWebpackPlugin = require("html-webpack-plugin")
+            
+            module.exports = {
+                entry: {
+                    index: "./src/index.js",                    // our main JS file
+                    about: "./src/about.js",                    // our about JS file
+                    contact: "./src/contact.js"                 // our contact JS file
+                },
+                output: {
+                    filename: "[name].bundle.js",               // creates bundle.js files for each html page
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                optimization: {                                 // looks for code repeated between bundles and
+                    splitChunks: {                              // creates a vendor bundle for that code
+                        chunks: "all"
+                    }
+                },
+                plugins: [new HtmlWebpackPlugin()],             // add the html-webpack-plugin
+                devServer: {                                    // node for devServer
+                    contentBase: path.join(__dirname, "dist"),  
+                    port: 9000                                  // port to run on
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader",  // use bable-loader
+                                options: {
+                                    // compile to the standards of preset-env
+                                    presets: ['@babel/preset-env', '@babel/preset-react']  
+                                }
+                            }
+                        },
+                        {   // this object will look for css files and transform them
+                            test: /\.css$/,
+                            use: [
+                                {loader: 'style-loader'},
+                                {loader: 'css-loader'}
+                            ]
+                        },
+                        {   // this object will load our URLs
+                            test: /\.(jpg|png)$/,
+                            use: [
+                                {loader: 'url-loader'}
+                            ]
+                        }
+                    ]
+                }
+            }
+        // In the dist folder, delete all of the files and the plugin will create a .html file as well as a bundle
+        // To ensure that everything is working correctly, remove the `optimization: {}` from webpack.config.js
+        
+    // Preparing code for production
+        // Minify your code to make it production ready by using the webpack plugin "uglify"
+            npm install uglifyjs-webpack-plugin --save-dev
+        // Add the plug in to webpack.config.js
+            const UglifyJsPlugin = require("uglifyjs-webpack-plugin");    
+
+            module.exports = {
+                entry: {
+                    index: "./src/index.js",                    // our main JS file
+                    about: "./src/about.js",                    // our about JS file
+                    contact: "./src/contact.js"                 // our contact JS file
+                },
+                output: {
+                    filename: "[name].bundle.js",               // creates bundle.js files for each html page
+                    path: path.resolve(__dirname, "dist")       // where we look for the output
+                },
+                optimization: {                                 // looks for code repeated between bundles and
+                    splitChunks: {                              // creates a vendor bundle for that code
+                        chunks: "all"
+                    },
+                    minimizer: [new UglifyJsPlugin()]
+                },
+                plugins: [new HtmlWebpackPlugin()],             // add the html-webpack-plugin
+                devServer: {                                    // node for devServer
+                    contentBase: path.join(__dirname, "dist"),  
+                    port: 9000                                  // port to run on
+                },
+                module: {
+                    rules: [
+                        {
+                            test: /\.js$/,  // whenever a .js file is found, babel should transpile it
+                            exclude: /(node_modules)/,  // exclude the node_modules folder
+                            use: {
+                                loader: "babel-loader",  // use bable-loader
+                                options: {
+                                    // compile to the standards of preset-env
+                                    presets: ['@babel/preset-env', '@babel/preset-react']  
+                                }
+                            }
+                        },
+                        {   // this object will look for css files and transform them
+                            test: /\.css$/,
+                            use: [
+                                {loader: 'style-loader'},
+                                {loader: 'css-loader'}
+                            ]
+                        },
+                        {   // this object will load our URLs
+                            test: /\.(jpg|png)$/,
+                            use: [
+                                {loader: 'url-loader'}
+                            ]
+                        }
+                    ]
+                }
+            }
+
+
+
+
     // Webpack is simply a tool for bundling modules. There is a lot of talk across the net about how difficult and complex it is to set up and use, but at the moment our needs are few and the setup is simple enough. In fact, you cann see an example of getting it up and running on the front page of their website - https://webpack.js.org/
     // Webpack is a very powerful tool, and with that power comes a decent amount of complexity. Don't let that scare you off, the basic configuration is not difficult and proficiency with webpack looks amazing on resumes.
 
