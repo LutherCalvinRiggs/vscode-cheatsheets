@@ -4065,7 +4065,7 @@
         export { functionOne }
         // another JS file
         import { functionOne } from './functionOne'
-import { lookupService } from 'dns';
+        import { lookupService } from 'dns';
         functionOne() //this should work as expected!
     
     // There are many benefits to writing your code in modules. One of the most compelling is code reuse. If, for instance, you have written some functions that manipulate the DOM in a specific way, putting all of those into their own file as a "module" meanns that you can copy that file and re-use it very easily.
