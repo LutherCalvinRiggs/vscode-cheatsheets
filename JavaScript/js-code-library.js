@@ -6584,24 +6584,6 @@ value.isNaN();
         }
         sumPrimes(10);
 
-    // 
-      
-    
-
-      
-      
-
-
-
-
-
-
-
-
-
-
-
-
 // Does this anagram function even work?
 function stringAnagram(dictionary, query) {
     for (let q = 0; q < query.length-1; q++){
@@ -6619,3 +6601,280 @@ function stringAnagram(dictionary, query) {
     }
     console.log( tally );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Single Responsibility Principle
+    // A class, object, module, function, etc should only have ONE responsibility. This doesn't mean that it can only do one thing, but it does mean that everything it does should be part of one responsibility.
+    // Example: Separate DOM stuff from application logic.
+
+// Loosely Coupled Objects
+    // Take care to make sure that your individual objects can stand alone as much as possible. Loosely coupled objects rely so little on neach other that changing one does not mean you have to change another
+    // If we were writing a game and wanted to completely change how the User Interface worked, we should be able to do that without completely reworking the game logic. So we should be able to start off writing our game using primarily console.logs() and then add in the DOM functions later without touching the game logic.
+
+// SOLID Design Principles
+    // Single Responsibility Principle
+        // A class shoule have only one reason to change
+            // An object should do only one thing - a cup only holds a liquid
+        // Object Role Stereotypes
+            // By establishing a set of role stereotypes, developers can provide themselves with a set of templates which they can use as they go through the mental exercise of decomposing behavior into cohesive components.
+                // Information holder - an object designed to know certain information and provide that innformation to other objects
+                // Structurer - an object that maintains relationships between objects and information about those relationships
+                // Service provider - an object that performs specific work and offers services to others on demand.
+                // Controller - an object designed to make decisions and control a complex task
+                // Coordinator - an object that doesn't make many decisions but, in a rote or mechanical way, delegates work to other objects
+                // Interfacer - an object that transforms information or requests between distinct parts of a system
+        // Single Responsibility Principle Example
+            // This example facilitates the movement of product items into a shopping cart. It does NOT use the Single Responsibility Principle:
+                function Product(id, description) {
+                    this.getId = function() {
+                        return id;
+                    };
+                    this.getDescription = function() {
+                        return description;
+                    };
+                }
+                
+                function Cart(eventAggregator) {
+                    var items = [];
+                
+                    this.addItem = function(item) {
+                        items.push(item);
+                    };
+                }
+                
+                var products = [
+                    new Product(1, "Star Wars Lego Ship"),
+                    new Product(2, "Barbie Doll"),
+                    new Product(3, "Remote Control Airplane")];
+
+                var cart = new Cart();
+                
+                (function() {
+                    function addToCart() {
+                        var productId = $(this).attr('id');
+                        var product = $.grep(products, function(x) {
+                            return x.getId() == productId;
+                        })[0];
+                        cart.addItem(product);
+                
+                        var newItem = $('<li></li>')
+                            .html(product.getDescription())
+                            .attr('id-cart', product.getId())
+                            .appendTo("#cart");
+                    }
+                
+                    products.forEach(function(product) {
+                        var newItem = $('<li></li>')
+                            .html(product.getDescription())
+                            .attr('id', product.getId())
+                            .dblclick(addToCart)
+                            .appendTo("#products");
+                    });
+                })();
+            // The following is the same as the example above, but rewritten to use the Single Responsibility Principle
+                function Event(name) {
+                    this._handlers = [];
+                    this.name = name;
+                }
+                Event.prototype.addHandler = function(handler) {
+                    this._handlers.push(handler);
+                };
+                Event.prototype.removeHandler = function(handler) {
+                    for (var i = 0; i < _handlers.length; i++) {
+                        if (this._handlers[i] == handler) {
+                            this._handlers.splice(i, 1);
+                            break;
+                        }
+                    }
+                };
+                Event.prototype.fire = function(eventArgs) {
+                    this._handlers.forEach(function(h) {
+                        h(eventArgs);
+                    });
+                };
+                
+                var eventAggregator = (function() {
+                    var events = [];
+                
+                    function getEvent(eventName) {
+                        return $.grep(events, function(event) {
+                            return event.name === eventName;
+                        })[0];
+                    }
+                
+                    return {
+                        publish: function(eventName, eventArgs) {
+                            var event = getEvent(eventName);
+                
+                            if (!event) {
+                                event = new Event(eventName);
+                                events.push(event);
+                            }
+                            event.fire(eventArgs);
+                        },
+                
+                        subscribe: function(eventName, handler) {
+                            var event = getEvent(eventName);
+                
+                            if (!event) {
+                                event = new Event(eventName);
+                                events.push(event);
+                            }
+                
+                            event.addHandler(handler);
+                        }
+                    };
+                })();
+                
+                function Cart() {
+                    var items = [];
+                
+                    this.addItem = function(item) {
+                        items.push(item);
+                        eventAggregator.publish("itemAdded", item);
+                    };
+                }
+                
+                var cartView = (function() {
+                    eventAggregator.subscribe("itemAdded", function(eventArgs) {
+                        var newItem = $('<li></li>')
+                            .html(eventArgs.getDescription())
+                            .attr('id-cart', eventArgs.getId())
+                            .appendTo("#cart");
+                    });
+                })();
+                
+                var cartController = (function(cart) {
+                    eventAggregator.subscribe("productSelected", function(eventArgs) {
+                        cart.addItem(eventArgs.product);
+                    });
+                })(new Cart());
+                
+                function Product(id, description) {
+                    this.getId = function() {
+                        return id;
+                    };
+                    this.getDescription = function() {
+                        return description;
+                    };
+                }
+                
+                var products = [
+                    new Product(1, "Star Wars Lego Ship"),
+                    new Product(2, "Barbie Doll"),
+                    new Product(3, "Remote Control Airplane")];
+                
+                var productView = (function() {
+                    function onProductSelected() {
+                        var productId = $(this).attr('id');
+                        var product = $.grep(products, function(x) {
+                            return x.getId() == productId;
+                        })[0];
+                        eventAggregator.publish("productSelected", {
+                            product: product
+                        });
+                    }
+                
+                    products.forEach(function(product) {
+                        var newItem = $('<li></li>')
+                            .html(product.getDescription())
+                            .attr('id', product.getId())
+                            .dblclick(onProductSelected)
+                            .appendTo("#products");
+                    });
+                })();
+            // In our revised design, we've removed our anonymous function and replaced it with objects to coordinate each of the separate set of responsibilities. A cartView was introduced to coordinate the population of the cart desplay, a cartController was introduced to coordinate the population of the cart model, and a productView was introduced to coordinate the population of the products display. We also introduced an Event Aggregator to facilitate communication between the objects in a loosely-coupled way. 
+            // While this design results in a larger number of objects, each object now focuses on nfulfilling a specific role within the overall orchestration with minimal coupling between the objects.
+    // Open/Closed Principle
+        // Modules should be open to extension, but closed to modification.If someone wants to extend our module's behavior, they won't need to modify existing code to do so.
+        // Rule of thumb, if you have to open the JS file for the module in order to make a modification, you've failed at the open/closed principle.
+        // Example: 
+            let iceCreamFlavors = ['chocolate', 'vanilla'];
+            let iceCreamMaker = {
+                makeIceCream(flavor) {
+                    if (iceCreamFlavors.indexOf(flavor) > -1) {
+                        console.log('Great success. You now have ice cream.');
+                    } else {
+                        console.log('Epic fail. No ice cream for you.');
+                    }
+                },
+            };
+            export default iceCreamMaker;
+        // As you can see, there is no way to add an ice cream flavor without editing the iceCreamFlavor array. This can be changed by adding a method to the iceCreamMaker:
+            let iceCreamFlavors = ['chocolate', 'vanilla'];
+            let iceCreamMaker = {
+                makeIceCream(flavor) {
+                    if (iceCreamFlavors.indexOf(flavor) > -1) {
+                    console.log('Great success. You now have ice cream.');
+                    } else {
+                    console.log('Epic fail. No ice cream for you.');
+                    }
+                },
+                addFlavor(flavor) {
+                    iceCreamFlavors.push(flavor);
+                },
+            };
+            export default iceCreamMaker;
+        // Now we can add flavors of ice cream from anywhere in the code without openinng the iceCreamMaker.js file.
+    // Liskov Substitution Principle
+        // Every subclass/derived class should be substitutable for their base/parent class.
+            // In other words, a subclass should override the parent class methods in a way that does not break functionality from a cliennt's point of view.
+        // Sometimes, something that sounds right in nnnatural language doesn't quite work in code.
+            // In mathematics, a Square is a Rectangle. Indeed it is a specialization of a rectangle. The "is a" makes you want to model this with inheritance. However, if in code you made Square derive from Rectangle, then a Square should be usable anywhere you expect a Rectanngle. This makes for some strang behavior.
+            // Imagine you had SetWidth and SetHeight methods on your Rectangle base class; this seems perfectly logical. However if your Rectable reference pointed to a Squre, then SetWidth and SetHeight doesn't make sense because setting one would change the other to match it. In nthis case Square fails the Liskov Substitution Test with Rectangle and the abstraction of having Square inherit from Rectangle is a bad one.
+        // If it looks like a duck and quacks like a duck but needs batteries, you probably ahve the wrong abstraction.
+    // Interface Segregation Principle
+        // A client should never be forced to implemennt an interface that it doesn't use or clients shouldn't be forced to depend on methods they do not use.
+            // Whenever you expose a module for outside use, make sure only the bare essentials are required and the rest are optional.
+    // Dependency Inversion Principle (aka Dependency Injection or Inversion nof Controls)
+        // Entitites must depend on abstractions not on concretions. It states that the high level module must not depend on the low level module, but they should depend on abstractions. 
+        // This is all about handing over control from the function itself to the caller of the function. It defines who controls the type of parameters the function receives. 
+            
+// Inheritance is when you design your types around what they are
+// Composition is when you design your types around what they do
+    // Use factory functions to define the actions that will be performed
+        const barker = (state) => ({
+            bark: () => console.log('Woof, I am ' + state.name)
+        })
+
+        const driver = (state) => ({
+            drive: () => state.position = state.position + state.speed 
+        })
+
+        const killer = (state) => ({
+            kill: () => console.log('You are dead')
+        })
+
+        barker({name: 'karo'}).bark()   // Woof, I am karo
+    // These are factory functions, but instead of creating their own state internally, they accept their state as a function parameter so that they can share the same state.
+    // The following is what an actual instance factory function would look like:
+        const murderRobotDog = (name) => {
+            let state = {               // creates a state object and assigns some values
+                name,
+                speed: 100,
+                position: 0
+            }
+            return Object.assign(       // takes an object, {} in this case, and assigns the properties from 
+                {},                     // the other objects into the new object, then returns the new object 
+                barker(state),
+                driver(state),
+                killer(state)
+            )
+        }
+        murderRobotDog('sniffle').bark()    // 'Woof, I am sniffles'
+    // Now murderRobotDog will have all the abilities of a barker, driver and a killer
+
