@@ -3247,7 +3247,7 @@
 
 
 
-// Webpack
+// Webpack Startup Procedures
     // Installing webpack
         // In the project folder initialize npm to create a package.json file for your project
             npm init 
