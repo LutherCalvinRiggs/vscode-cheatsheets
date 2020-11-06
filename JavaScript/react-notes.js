@@ -229,4 +229,280 @@
             }
 
     // Rendering Lists
+        // You cann think of the React UI as being a reflection nof the data that we want to display.
+        // Using the Lake example from above, we can create a <ul> element to be a placeholder for our eventual Lake list.
+            // First we create an array of lakes to be displayed. 
+            // Then we will then pass that array to our App component. 
+            // Finally, we will replace the <div> with a <ul>, pass the lakeList array via (props) and then map over them
+            const lakeList = [
+                "Echo Lake",
+                "Maud Lake",
+                "Cascade Lake"
+            ]
+
+            function App(props) {
+                return (
+                    <ul>
+                        {props.lakes.map(lakes => (
+                            <li>{lake}</li>
+                        ))}
+                    </ul>
+                )
+            }
+            
+            ReactDOM.render(
+                <App lakes={lakeList} />,
+                document.getElementById('root')
+            )
+            // To destructure this, you cann replace props with lakes 
+                function App({ lakes }) {
+                    return (
+                        {lakes.map(lake => (
+                            <li>{lake}</li>
+                        ))}
+                    )
+                }
+            // This allows you to build a dynnamic list by only changing the values of the array
+        
+    // Rendering Lists of Objects
+        // To render a list from an array of object, the approach is pretty similar
+            //First, we need to change our App to use a <div> and them map over our lakes
+            // Instead of use a <ul> we will use a <div> with an <h2> inside of it that will display the lake name, and a <p> that will display the trailhead
+            const lakeList = [
+                { id: "1", name: "Echo", trailhead: "Echo" },
+                { id: "2", name: "Maud", trailhead: "Wrights" },
+                { id: "3", name: "Velma", trailhead: "Bayview" }
+            ]
+
+            function App(props) {
+                return (
+                    <div>
+                        {lakes.map(lake => (
+                            <div>
+                                <h2>{lake.name}</h2>
+                                <p>Accessed by: {lake.trailhead}</p>
+                            </div>
+                        ))}
+                    </div>
+                )
+            }
+            
+            ReactDOM.render(
+                <App lakes={lakeList} />,
+                document.getElementById('root')
+            )
+
+    // Adding Keys
+        // After coding the above example using objects, if you look in the console, you will see a warning regarding 'keys' that reads "Each child in a list should have a unique 'key' property."
+            // If you ever come across a warning like this, there is Create React App documentation that will tell you how to fix this.
+        // To fix this, we need to add a key (an identifier for a dynamically created element) to help react keep track of which items have been changed, added or removed.
+        // To rememdy this, we add a key to the <div> element and use the .id from the object
+            function App(props) {
+                return (
+                    <div key={lake.id}>
+                        {lakes.map(lake => (
+                            <div>
+                                <h2>{lake.name}</h2>
+                                <p>Accessed by: {lake.trailhead}</p>
+                            </div>
+                        ))}
+                    </div>
+                )
+            }
+            // THIS IS THE BEST OPTION
+        // Another way is to add a 'key' to a number list contained within an array by  passinng that to the App within the .render() call and then turning it into a string
+            const list = [1,2,3,4,5]
+            
+            function App({ items }) {
+                return (
+                    <ul>
+                        {items.map(item => (
+                            <li key={item.toString()}>
+                                {item}
+                            </li>
+                        ))}
+                    </ul>
+                )
+            }
+            
+            ReactDOM.render(
+                <App items={list} />,
+                document.getElementById('root')
+            )
+
+        // You could also assign an iterator to the function like below
+            function App({ items, i }) {
+                return (
+                    <ul>
+                        {items.map(item => (
+                            <li key={i}>
+                                {item}
+                            </li>
+                        ))}
+                    </ul>
+                )
+            }
+        // THE BEST OPTION IS TO USE A UNIQUE VALUE IN THE OBJECT OR A STRING TO KEEP TRACK OF THE ELEMENTS
+
+    // Conditional Rendering
+        // Sometimes you want to conditional render components based on the values of properties. Such as, rendering a component only when a user is logged in, or if it's a certain season.
+        // The following example will render different components based on the season
+            function Lake() {
+                return (
+                    <div>
+                        <h1> Visit Jenny Lake!</h1>
+                    </div>
+                )
+            }
+
+            function SkiResort() {
+                return (
+                    <div>
+                        <h1>Visit Jackson Hole Mountain Resort!</h1>
+                    </div>
+                )
+            }
+
+            function App(props) {
+                if (props.season === "summer") {
+                    return <Lake />
+                } else if (props.season === "winter") {
+                    return <SkiResort />
+                }
+            }
+        
+            ReactDOM.render(
+                <App season="winter"/>,
+                document.getElementById('root')
+            )
+        // To make the App more dynamic, we can pass the Lake and SkiResort name in via (props)
+            function Lake({ name }) {
+                return (
+                    <div>
+                        <h1> Visit {name}!</h1>
+                    </div>
+                )
+            }
+
+            function SkiResort({ name }) {
+                return (
+                    <div>
+                        <h1>Visit {name} Mountain Resort!</h1>
+                    </div>
+                )
+            }
+
+            function App(props) {
+                if (props.season === "summer") {
+                    return <Lake name="Jenny Lake"/>
+                } else if (props.season === "winter") {
+                    return <SkiResort name="Jackson Hole"/>
+                }
+            }
+        
+            ReactDOM.render(
+                <App season="winter"/>,
+                document.getElementById('root')
+            )
+        // This can be taken one step further by using a ternary statement to display these components
+            function Lake({ name }) {
+                return (
+                    <div>
+                        <h1> Visit {name}!</h1>
+                    </div>
+                )
+            }
+
+            function SkiResort({ name }) {
+                return (
+                    <div>
+                        <h1>Visit {name} Mountain Resort!</h1>
+                    </div>
+                )
+            }
+
+            function App(props) {
+                return (
+                    <div>
+                        {props.season === "summer" ? (
+                            <Lake name="Jenny Lake"/>
+                        ) : props.season === "winter" ? (
+                            <SkiResort name="Jackson Hole"/>
+                        ) : (
+                            <h1>Come back in the summer or winter!</h1>
+                        )}
+                    </div>
+                )
+            }
+        
+            ReactDOM.render(
+                <App season="winter"/>,
+                document.getElementById('root')
+            )
+
+    // React Fragments
+        // What if we wanted our App to render the <Lake /> and the <SkiResort /> components at the same time
+            function Lake() {
+                return (
+                    <h1>Lake!</h1>
+                )
+            }
+
+            function SkiResort() {
+                return (
+                    <h1>Ski Resort!</h1>
+                )
+            }
+
+            function App(props) {
+                return (
+                    <Lake />
+                    <SkiResort />
+                )
+            }
+        
+            ReactDOM.render(
+                <App />,
+                document.getElementById('root')
+            )
+        // The above code will render a Parsing Error saying 'Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>?'
+            // One way to deal with this is to wrap the sibling components in a <div>
+                function App(props) {
+                    return (
+                        <div>
+                            <Lake />
+                            <SkiResort />
+                        </div>
+                    )
+                }
+            // But this will result in a lot of <div> elements cluttering the App
+            // <React.fragment> is inteded to be used to deal with this issue of adjacent components, BUT a fragment will not wrap the components in any sort of extra tag
+                function App(props) {
+                    return (
+                        <React.Fragment>
+                            <Lake />
+                            <SkiResort />
+                        </React.Fragment>
+                    )
+                }
+            // You can also use the <React.Fragment> shorthand which is simply an empty open/close tag -> <>...</>
+                function App(props) {
+                    return (
+                        <>
+                            <Lake />
+                            <SkiResort />
+                        </>
+                    )
+                }
+            // Lastly, you can also render both of the components at the top levels (our root element)
+                ReactDOM.render(
+                    <>
+                        <Lake />
+                        <SkiResort />
+                    </>,
+                    document.getElementById('root')
+                )
+
+// React State with Hooks
+    // Understanding array desctructuring
         // 
